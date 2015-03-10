@@ -1,0 +1,50 @@
+# Generic excludes
+*~
+*.*#
+*.*~
+*.aux
+*.atsuo
+*.bak
+*.bbl
+*.blg
+*.class
+*.d
+*.dex
+*.dvi
+*.gz
+*.idx
+*.ilg
+*.ind
+*.log
+*.lof
+*.nlo
+*.o
+*.out
+*.prefs
+*.suo
+*.synctex
+*.toc
+*.tps
+
+# Platform-dependent files
+.DS_Store
+Thumbs.db
+
+# Project files in Atmel Studio
+Debug/
+Release/
+
+# Project files in Android Studio
+.gradle/
+build/
+local.properties
+
+# Project files in Eclipse
+bin/
+gen/
+obj/
+
+# Project files in IntelliJ IDEA
+.idea
+*.iml
+*.eml

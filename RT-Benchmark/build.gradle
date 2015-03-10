@@ -1,0 +1,97 @@
+/*
+ * Copyright (C) 2015 RTAndroid Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import org.apache.tools.ant.taskdefs.condition.Os
+
+repositories {
+    mavenCentral()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.0.0'
+    }
+}
+apply plugin: 'com.android.application'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
+    compile 'com.android.support:support-v4:20.+'
+    compile 'com.android.support:appcompat-v7:20.+'
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'org.apache.commons:commons-math3:3.4.1'
+    compile 'com.android.support:support-v4:21.0.3'
+}
+
+def getNdkExecutable() {
+    def ndkDir = android.plugin.ndkFolder
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        "$ndkDir/ndk-build.cmd"
+    }
+    else {
+        "$ndkDir/ndk-build"
+    }
+}
+
+task buildNative(type: Exec) {
+    commandLine getNdkExecutable(),
+            '-C', file('jni').absolutePath,
+            'APP_PLATFORM=android-17'
+}
+
+task cleanNative(type: Exec) {
+    commandLine getNdkExecutable(),
+            '-C', file('jni').absolutePath,
+            'clean'
+}
+
+android {
+    compileSdkVersion 17
+    buildToolsVersion "21.1.2"
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            aidl.srcDirs = ['src']
+            assets.srcDirs = ['assets']
+            java.srcDirs = ['src']
+            jni.srcDirs = []
+            jniLibs.srcDirs = ['libs']
+            renderscript.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            res.srcDirs = ['res']
+        }
+
+        // Move the tests to tests/java, tests/res, etc...
+        instrumentTest.setRoot('tests')
+
+        // Move the build types to build-types/<type>
+        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+        // This moves them out of them default location under src/<type>/... which would
+        // conflict with src/ being used by the main source set.
+        // Adding new build types or product flavors should be accompanied
+        // by a similar customization.
+        debug.setRoot('build/debug')
+        release.setRoot('build/release')
+
+        // Consider native libraries on build and clean
+        tasks.withType(JavaCompile) { compileTask -> compileTask.dependsOn buildNative }
+        clean.dependsOn cleanNative
+    }
+}

@@ -1,0 +1,21 @@
+*       text=auto
+
+# Use platform specific line ending
+*.txt   text
+*.java  text diff=java
+*.xml   text
+*.st    text
+*.h     text diff=cpp
+*.cpp   text diff=cpp
+
+# Use Unix/Android line ending for templates
+assets/templates/*.h     eol=lf
+assets/templates/*.cpp   eol=lf
+assets/templates/*.st    eol=lf
+
+# Keep platform line-endings for scripts
+*.bat   eol=crlf
+*.sh    eol=lf
+
+# Flag binaries
+*.png   binary

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Copyright (C) 2015 RTAndroid Project
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<resources>
+
+    <string name="app_name">RT-Benchmark</string>
+
+    <string-array name="app_tabs">
+        <item>Run Benchmark</item>
+        <item>Results</item>
+    </string-array>
+
+    <string name="run_header_general">General</string>
+    <string name="run_input_benchmark">Benchmark</string>
+    <string name="run_input_parameter">Parameter</string>
+
+    <string name="run_header_advanced">Advanced</string>
+    <string name="run_input_cycles">Cycles</string>
+    <string name="run_input_sleep">Sleep</string>
+
+    <string name="run_button_run">Run Benchmark</string>
+
+    <string name="run_input_sleep_unit">ms</string>
+    <string name="run_input_no_unit"></string>
+
+    <string name="dialog_missing_test_case_title">Missing test cases!</string>
+    <string name="dialog_missing_test_case_msg">Please select at least two test cases from the list to be able to compare results.</string>
+
+    <string name="result_statistic_calc_min">Calculation Minimum</string>
+    <string name="result_statistic_calc_mean">Calculation Average</string>
+    <string name="result_statistic_calc_max">Calculation Maximum</string>
+    <string name="result_statistic_calc_deviation">Calculation Standard Deviation</string>
+
+    <string name="result_statistic_sleep_min">Sleep Difference Minimum</string>
+    <string name="result_statistic_sleep_mean">Sleep Difference Average</string>
+    <string name="result_statistic_sleep_max">Sleep Difference Maximum</string>
+    <string name="result_statistic_sleep_deviation">Sleep Standard Deviation</string>
+</resources>
