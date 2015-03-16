@@ -48,7 +48,9 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
     {
         mInflater = LayoutInflater.from(context);
         mTestCases = cases;
+
         mSelectedCases = new TreeSet<TestCase>();
+        mSelectedCases.addAll(cases);
     }
 
     @Override
@@ -79,7 +81,7 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
     public View getView(int i, View convertView, ViewGroup parent)
     {
         // Inflate new view if necessary
-        if(convertView == null)
+        if (convertView == null)
         {
             convertView = mInflater.inflate(R.layout.test_case_item, parent, false);
         }
@@ -99,7 +101,7 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
     public void OnCheckedChanged(TestCaseItem item, boolean checked)
     {
         TestCase testCase = item.getTestCase();
-        if(checked)
+        if (checked)
         {
             mSelectedCases.add(testCase);
         }
@@ -117,7 +119,8 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
         return mSelectedCases;
     }
 
-    public void restoreInstance(Bundle savedInstanceState) {
+    public void restoreInstance(Bundle savedInstanceState)
+    {
         Gson gson = new Gson();
         String jsonTestCases = savedInstanceState.getString(BUNDLE_SELECTED_CASES, "");
         TestCase[] cases = gson.fromJson(jsonTestCases, TestCase[].class);
@@ -125,7 +128,8 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
         mSelectedCases.addAll(Arrays.asList(cases));
     }
 
-    public void saveInstance(Bundle outState) {
+    public void saveInstance(Bundle outState)
+    {
         // Convert to array
         TestCase[] selected = new TestCase[mSelectedCases.size()];
         mSelectedCases.toArray(selected);

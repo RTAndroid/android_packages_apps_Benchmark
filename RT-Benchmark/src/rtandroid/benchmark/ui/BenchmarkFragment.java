@@ -110,8 +110,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_benchmark, container, false);
@@ -140,7 +139,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         mSleepDisplay.setText(Integer.toString(mConfig.SleepMs) + " ms");
 
         mConfig.BenchmarkIdx = prefs.getInt(KEY_BENCHMARK, 0);
-        if(mConfig.getBenchmark() == null)
+        if (mConfig.getBenchmark() == null)
         {
             mConfig.BenchmarkIdx = 0;
         }

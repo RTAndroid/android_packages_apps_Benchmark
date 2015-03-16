@@ -34,7 +34,7 @@ import rtandroid.RealTimeWrapper;
 public class BenchmarkExecutor implements Runnable
 {
     private static final String TAG = BenchmarkExecutor.class.getSimpleName();
-    private static final String RESULT_FOLDER = "LatencySuite";
+    private static final String RESULT_FOLDER = "Benchmark";
     private static final String FILE_TEMPLATE =  RESULT_FOLDER.toLowerCase(Locale.getDefault()) + "_b=%s_p=%d_s=%d_c=%d_case=%s.csv";
     private static final int GUI_UPDATE_TIME = 1000;
 
@@ -142,6 +142,10 @@ public class BenchmarkExecutor implements Runnable
 
         // Clean everything up
         cpuLock.release();
+
+        // Let the CPU cooldown
+        try { Thread.sleep(500); }
+        catch (Exception ignored) { }
 
         // Notify the GUI that the worker thread is done
         final Intent finishedIntent = new Intent(BenchmarkService.ACTION_FINISHED);

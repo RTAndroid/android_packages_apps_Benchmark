@@ -77,7 +77,7 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b)
     {
-        if(mListener != null)
+        if (mListener != null)
         {
             mListener.OnCheckedChanged(this, b);
         }
@@ -112,13 +112,13 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
         StringBuilder details = new StringBuilder();
 
         int priority = testCase.getRealtimePriority();
-        if(priority == TestCase.NO_REALTIME_PRIORITY)
+        if (priority == TestCase.NO_REALTIME_PRIORITY)
         {
-            details.append("No realtime priority");
+            details.append("No real-time priority");
         }
         else
         {
-            details.append("Realtime priority: ").append(priority);
+            details.append("Real-time priority: ").append(priority);
         }
         details.append(", ");
 

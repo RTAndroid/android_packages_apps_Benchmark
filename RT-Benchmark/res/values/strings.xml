@@ -21,7 +21,7 @@
     <string name="app_name">RT-Benchmark</string>
 
     <string-array name="app_tabs">
-        <item>Run Benchmark</item>
+        <item>Benchmark</item>
         <item>Results</item>
     </string-array>
 
