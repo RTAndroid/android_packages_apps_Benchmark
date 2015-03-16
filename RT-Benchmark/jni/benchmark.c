@@ -38,7 +38,7 @@ void lib_getTimeDiff(struct timespec* start, struct timespec* end, struct timesp
 
 // ---------------------------------------------------
 
-JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_NativeLib_libInit(JNIEnv* env, jobject obj, jstring filename)
+JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_BenchmarkLib_libInit(JNIEnv* env, jobject obj, jstring filename)
 {
     // get char* to filename
     mLogFilename = (*env)->GetStringUTFChars(env, filename, 0);
@@ -59,7 +59,7 @@ JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_NativeLib_libInit(JNIEnv
     }
 }
 
-JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_NativeLib_libWriteLong(JNIEnv* env, jobject obj, jlong val)
+JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_BenchmarkLib_libWriteLong(JNIEnv* env, jobject obj, jlong val)
 {
 	// nothing to do, if we can't save our results :(
 	if (mIsLogWritable == 0) { return; }
@@ -74,7 +74,7 @@ JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_NativeLib_libWriteLong(J
 	}
 }
 
-JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_NativeLib_libWriteTime(JNIEnv* env, jobject obj)
+JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_BenchmarkLib_libWriteTime(JNIEnv* env, jobject obj)
 {
     // nothing to do, if we can't save our results :(
     if (mIsLogWritable == 0) { return; }
@@ -89,10 +89,10 @@ JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_NativeLib_libWriteTime(J
     time += now.tv_nsec / 1000;
 
     // use existing functions for writing
-    Java_rtandroid_benchmark_service_NativeLib_libWriteLong(env, obj, time);
+    Java_rtandroid_benchmark_service_BenchmarkLib_libWriteLong(env, obj, time);
 }
 
-JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_NativeLib_libWriteCR(JNIEnv* env, jobject obj)
+JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_BenchmarkLib_libWriteCR(JNIEnv* env, jobject obj)
 {
     // nothing to do, if we can't save our results :(
     if (mIsLogWritable == 0) { return; }
@@ -107,7 +107,7 @@ JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_NativeLib_libWriteCR(JNI
     }
 }
 
-JNIEXPORT jlong JNICALL Java_rtandroid_benchmark_service_NativeLib_libSleep(JNIEnv* env, jobject obj, jint ms)
+JNIEXPORT jlong JNICALL Java_rtandroid_benchmark_service_BenchmarkLib_libSleep(JNIEnv* env, jobject obj, jint ms)
 {
     // get the current time stamp
     struct timespec start;
