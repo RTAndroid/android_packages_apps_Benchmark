@@ -13,9 +13,9 @@
 #include <sys/select.h>
 
 #include <android/log.h>
-#define LOG(...) __android_log_print(ANDROID_LOG_DEBUG, "TestsuiteJNI", __VA_ARGS__)
+#define LOG(...) __android_log_print(ANDROID_LOG_DEBUG, "BenchmarkJNI", __VA_ARGS__)
 
-#include "testsuite.h"
+#include "benchmark.h"
 
 // ---------------------------------------------------
 

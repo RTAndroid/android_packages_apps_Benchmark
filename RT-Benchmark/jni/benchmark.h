@@ -1,7 +1,7 @@
 #include <jni.h>
 
-#ifndef TESTSUITE_H
-#define TESTSUITE_H
+#ifndef BENCHMARK_H
+#define BENCHMARK_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,4 +18,4 @@ JNIEXPORT jlong JNICALL Java_rtandroid_benchmark_service_NativeLib_libSleep(JNIE
 }
 #endif
 
-#endif // TESTSUITE_H
+#endif // BENCHMARK_H

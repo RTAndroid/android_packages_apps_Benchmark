@@ -16,14 +16,14 @@
 
 package rtandroid.benchmark.service;
 
-public class NativeLib
+public class BenchmarkLib
 {
     static
     {
-        System.loadLibrary("testsuite");
+        System.loadLibrary("benchmark");
     }
 
-    public NativeLib(String filename)
+    public BenchmarkLib(String filename)
     {
         libInit(filename);
     }

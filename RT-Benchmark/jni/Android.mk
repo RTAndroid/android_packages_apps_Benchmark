@@ -16,9 +16,9 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := testsuite
+LOCAL_MODULE := benchmark
 
-LOCAL_SRC_FILES := testsuite.c
+LOCAL_SRC_FILES := benchmark.c
 
 LOCAL_LDLIBS := -llog
 	

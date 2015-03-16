@@ -45,7 +45,7 @@ public class BenchmarkExecutor implements Runnable
     private final int mSleep;
     private final TestCase mTestCase;
 
-    private NativeLib mLib = null;
+    private BenchmarkLib mLib = null;
     private String mFileName = null;
 
     private boolean mInterrupted = false;
@@ -68,7 +68,7 @@ public class BenchmarkExecutor implements Runnable
         mFileName = new File(resultFolder, fileName).getAbsolutePath();
 
         // Create the library
-        mLib = new NativeLib(mFileName);
+        mLib = new BenchmarkLib(mFileName);
         mInterrupted = false;
     }
 
