@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package rtandroid.benchmark.ui;
+package rtandroid.benchmark.ui.views;
 
 import android.content.Context;
 import android.util.AttributeSet;

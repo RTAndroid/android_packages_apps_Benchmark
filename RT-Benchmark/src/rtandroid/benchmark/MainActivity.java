@@ -32,6 +32,8 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -48,12 +50,31 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String KEY_TEST_CASES = "test_cases";
 
-    private static final TestCase[] DEFAULT_TEST_CASES =
+    private static final TestCase[] DEFAULT_TEST_CASES;
+    private static final Map<Integer, TestCaseResult.Kind> RESULT_VIEW_MAP;
+
+    static
     {
-        new TestCase(0, "Standard Android (Non-RT)"),
-        new TestCase(1, "Partial Real-Time Support", 60, TestCase.NO_POWER_LEVEL),
-        new TestCase(2, "Full Real-Time Support", 90, 70)
-    };
+        TestCase[] cases =
+        {
+            new TestCase(0, "Standard Android (Non-RT)"),
+            new TestCase(1, "Partial Real-Time Support", 60, TestCase.NO_POWER_LEVEL),
+            new TestCase(2, "Full Real-Time Support", 90, 70)
+        };
+        DEFAULT_TEST_CASES = cases;
+
+        Map<Integer, TestCaseResult.Kind> viewMap = new HashMap<Integer, TestCaseResult.Kind>();
+        viewMap.put(R.id.calc_minimum, TestCaseResult.Kind.CALCULATION_MINIMUM);
+        viewMap.put(R.id.calc_mean, TestCaseResult.Kind.CALCULATION_MEAN);
+        viewMap.put(R.id.calc_maximum, TestCaseResult.Kind.CALCULATION_MAXIMUM);
+        viewMap.put(R.id.calc_deviation, TestCaseResult.Kind.CALCULATION_DEVIATION);
+        viewMap.put(R.id.sleep_minimum, TestCaseResult.Kind.SLEEP_MINIMUM);
+        viewMap.put(R.id.sleep_mean, TestCaseResult.Kind.SLEEP_MEAN);
+        viewMap.put(R.id.sleep_maximum, TestCaseResult.Kind.SLEEP_MAXIMUM);
+        viewMap.put(R.id.sleep_deviation, TestCaseResult.Kind.SLEEP_DEVIATION);
+
+        RESULT_VIEW_MAP = Collections.unmodifiableMap(viewMap);
+    }
 
     private FragmentTabHost mTabHost;
     private ViewPager mViewPager;
@@ -110,24 +131,11 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
         {
             for(TestCaseResult result : mResults) { result.evaluate(); }
 
-            StatisticView v;
-            v = (StatisticView) findViewById(R.id.calc_minimum);
-            v.setResult(getResultMap(TestCaseResult.Kind.CALCULATION_MINIMUM));
-            v = (StatisticView) findViewById(R.id.calc_mean);
-            v.setResult(getResultMap(TestCaseResult.Kind.CALCULATION_MEAN));
-            v = (StatisticView) findViewById(R.id.calc_maximum);
-            v.setResult(getResultMap(TestCaseResult.Kind.CALCULATION_MAXIMUM));
-            v = (StatisticView) findViewById(R.id.calc_deviation);
-            v.setResult(getResultMap(TestCaseResult.Kind.CALCULATION_DEVIATION));
-
-            v = (StatisticView) findViewById(R.id.sleep_minimum);
-            v.setResult(getResultMap(TestCaseResult.Kind.SLEEP_MINIMUM));
-            v = (StatisticView) findViewById(R.id.sleep_mean);
-            v.setResult(getResultMap(TestCaseResult.Kind.SLEEP_MEAN));
-            v = (StatisticView) findViewById(R.id.sleep_maximum);
-            v.setResult(getResultMap(TestCaseResult.Kind.SLEEP_MAXIMUM));
-            v = (StatisticView) findViewById(R.id.sleep_deviation);
-            v.setResult(getResultMap(TestCaseResult.Kind.SLEEP_DEVIATION));
+            for(Map.Entry<Integer, TestCaseResult.Kind> entry : RESULT_VIEW_MAP.entrySet())
+            {
+                StatisticView v = (StatisticView) findViewById(entry.getKey());
+                v.setResult(getResultMap(entry.getValue()));
+            }
 
             mViewPager.setCurrentItem(1, true);
         }

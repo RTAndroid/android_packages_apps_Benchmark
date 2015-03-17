@@ -31,7 +31,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import rtandroid.benchmark.R;
-import rtandroid.benchmark.ui.TestCaseItem;
+import rtandroid.benchmark.ui.views.TestCaseItem;
 
 /**
  * Adapter for a list of test cases.
