@@ -18,13 +18,16 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="rtandroid.benchmark.ui.BenchmarkFragment">
+    android:orientation="vertical">
 
-    <!-- Run settings as header, button as footer -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Test Cases"
+        style="@style/sectionHeader"/>
+
     <ListView
         android:id="@+id/test_case_list"
         android:layout_width="match_parent"

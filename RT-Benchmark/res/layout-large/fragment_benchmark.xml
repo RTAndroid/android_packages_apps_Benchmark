@@ -21,14 +21,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     tools:context="rtandroid.benchmark.ui.BenchmarkFragment">
 
-    <!-- Run settings as header, button as footer -->
-    <ListView
-        android:id="@+id/test_case_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+    <!-- Run settings -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="35"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/right_side_line">
+
+        <include layout="@layout/benchmark_settings"/>
+
+    </LinearLayout>
+
+    <!-- Test cases to run -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="65"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/right_side_line">
+
+        <include layout="@layout/benchmark_test_cases"/>
+
+    </LinearLayout>
 
 </LinearLayout>

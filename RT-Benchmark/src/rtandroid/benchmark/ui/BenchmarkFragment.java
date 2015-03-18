@@ -59,6 +59,8 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
                                                             BenchmarkPickerDialog.OnValueSelectedListener,
                                                             ProgressDialog.OnProgressListener
 {
+    private static final String TAG = BenchmarkFragment.class.getSimpleName();
+
     // Range values and default values
     private static final int PARAMETER_MIN = 50;
     private static final int PARAMETER_MAX = 500;
@@ -79,11 +81,11 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     private static final String KEY_CYCLES = "cycles";
     private static final String KEY_SLEEP = "sleep";
 
-    private static final String TAG = BenchmarkFragment.class.getSimpleName();
-
     private OnFragmentInteractionListener mListener;
     private TestCaseAdapter mTestCaseAdapter;
     private List<TestCase> mTestCases;
+
+    private boolean mIsTwinMode;
 
     private TextView mBenchmarkDisplay;
     private TextView mParameterDisplay;
@@ -113,7 +115,21 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_benchmark, container, false);
+        View root = inflater.inflate(R.layout.fragment_benchmark, container, false);
+
+        // Adapt to phone layout
+        mIsTwinMode = (root.findViewById(R.id.start_benchmark) != null);
+        if(!mIsTwinMode)
+        {
+            View header = inflater.inflate(R.layout.benchmark_settings, null, false);
+            View footer = inflater.inflate(R.layout.benchmark_test_cases, null, false);
+
+            ListView listView = (ListView) root.findViewById(R.id.test_case_list);
+            listView.addHeaderView(header);
+            listView.addFooterView(footer);
+        }
+
+        return root;
     }
 
     @Override

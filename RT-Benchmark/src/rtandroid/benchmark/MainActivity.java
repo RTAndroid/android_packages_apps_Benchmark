@@ -59,7 +59,7 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
         {
             new TestCase(0, "Standard Android (Non-RT)"),
             new TestCase(1, "Partial Real-Time Support", 60, TestCase.NO_POWER_LEVEL),
-            new TestCase(2, "Full Real-Time Support", 90, 70)
+            new TestCase(2, "Full Real-Time Support", 90, 70),
         };
         DEFAULT_TEST_CASES = cases;
 
