@@ -25,33 +25,35 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.widget.SpinnerAdapter;
 import android.widget.TabHost;
 
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import rtandroid.benchmark.data.BenchmarkConfiguration;
+import rtandroid.benchmark.data.BenchmarkResult;
+import rtandroid.benchmark.data.BenchmarkResultAdapter;
 import rtandroid.benchmark.data.TestCase;
-import rtandroid.benchmark.data.TestCaseResult;
+import rtandroid.benchmark.data.ResultAnalyzer;
 import rtandroid.benchmark.ui.BenchmarkFragment;
 import rtandroid.benchmark.ui.ResultFragment;
-import rtandroid.benchmark.ui.views.StatisticView;
 
-public class MainActivity extends ActionBarActivity implements BenchmarkFragment.OnFragmentInteractionListener
+public class MainActivity extends ActionBarActivity implements BenchmarkFragment.OnFragmentInteractionListener,
+                                                                ResultFragment.OnFragmentInteractionListener
 {
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final String KEY_TEST_CASES = "test_cases";
+    private static final String KEY_RESULTS = "results";
 
     private static final TestCase[] DEFAULT_TEST_CASES;
-    private static final Map<Integer, TestCaseResult.Kind> RESULT_VIEW_MAP;
 
     static
     {
@@ -62,25 +64,15 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
             new TestCase(2, "Full Real-Time Support", 90, 70),
         };
         DEFAULT_TEST_CASES = cases;
-
-        Map<Integer, TestCaseResult.Kind> viewMap = new HashMap<Integer, TestCaseResult.Kind>();
-        viewMap.put(R.id.calc_minimum, TestCaseResult.Kind.CALCULATION_MINIMUM);
-        viewMap.put(R.id.calc_mean, TestCaseResult.Kind.CALCULATION_MEAN);
-        viewMap.put(R.id.calc_maximum, TestCaseResult.Kind.CALCULATION_MAXIMUM);
-        viewMap.put(R.id.calc_deviation, TestCaseResult.Kind.CALCULATION_DEVIATION);
-        viewMap.put(R.id.sleep_minimum, TestCaseResult.Kind.SLEEP_MINIMUM);
-        viewMap.put(R.id.sleep_mean, TestCaseResult.Kind.SLEEP_MEAN);
-        viewMap.put(R.id.sleep_maximum, TestCaseResult.Kind.SLEEP_MAXIMUM);
-        viewMap.put(R.id.sleep_deviation, TestCaseResult.Kind.SLEEP_DEVIATION);
-
-        RESULT_VIEW_MAP = Collections.unmodifiableMap(viewMap);
     }
 
     private FragmentTabHost mTabHost;
     private ViewPager mViewPager;
 
-    private final List<TestCaseResult> mResults = new ArrayList<TestCaseResult>();
     private BenchmarkConfiguration mBenchmarkConfig;
+    private BenchmarkResult mCurrentResult;
+    private List<BenchmarkResult> mResults;
+    private BenchmarkResultAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -113,31 +105,23 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     @Override
     public void onBenchmarkStart(BenchmarkConfiguration config)
     {
-        mResults.clear();
         mBenchmarkConfig = config;
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String name = mBenchmarkConfig.getBenchmark().getName();
+        String resultName = String.format("%s (%s)", dateFormat.format(new Date()), name);
+        mCurrentResult = new BenchmarkResult(resultName);
+
     }
 
     @Override
     public void onTestCaseCompleted(TestCase testCase, String fileName)
     {
-        TestCaseResult result = new TestCaseResult(mBenchmarkConfig, testCase, fileName);
-        mResults.add(result);
-    }
-
-    @Override
-    public void onBenchmarkFinished()
-    {
         try
         {
-            for(TestCaseResult result : mResults) { result.evaluate(); }
-
-            for(Map.Entry<Integer, TestCaseResult.Kind> entry : RESULT_VIEW_MAP.entrySet())
-            {
-                StatisticView v = (StatisticView) findViewById(entry.getKey());
-                v.setResult(getResultMap(entry.getValue()));
-            }
-
-            mViewPager.setCurrentItem(1, true);
+            ResultAnalyzer result = new ResultAnalyzer(mBenchmarkConfig, fileName);
+            result.evaluate();
+            mCurrentResult.addResult(testCase.getName(), result.getResults());
         }
         catch (IOException e)
         {
@@ -145,18 +129,25 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
         }
     }
 
-    private Map<String, Integer> getResultMap(TestCaseResult.Kind kind)
+    @Override
+    public void onBenchmarkFinished()
     {
-        Map<String, Integer> results = new TreeMap<String, Integer>();
+        // Add result to list
+        mResults.add(mCurrentResult);
+        mAdapter.notifyDataSetChanged();
 
-        for(TestCaseResult result : mResults)
-        {
-            String name = result.getTestCase().getName();
-            int value = result.getResults().get(kind);
-            results.put(name, value);
-        }
+        // Save results
+        BenchmarkResult[] results = new BenchmarkResult[mResults.size()];
+        mResults.toArray(results);
 
-        return results;
+        Gson gson = new Gson();
+        String jsonResults = gson.toJson(results, BenchmarkResult[].class);
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .edit()
+            .putString(KEY_RESULTS, jsonResults)
+            .apply();
+
+        mViewPager.setCurrentItem(1, true);
     }
 
     @Override
@@ -188,10 +179,27 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
         String jsonTestCases = gson.toJson(cases, TestCase[].class);
 
         // Save to settings
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        prefs.edit()
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .edit()
             .putString(KEY_TEST_CASES, jsonTestCases)
-            .commit();
+            .apply();
+    }
+
+    @Override
+    public SpinnerAdapter getResultAdapter()
+    {
+        // Try to load from settings
+        String defaultResults = getResources().getString(R.string.default_results);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String jsonTestCases = prefs.getString(KEY_RESULTS, defaultResults);
+
+        Gson gson = new Gson();
+        BenchmarkResult[] results = gson.fromJson(jsonTestCases, BenchmarkResult[].class);
+        mResults = new ArrayList<BenchmarkResult>();
+        mResults.addAll(Arrays.asList(results));
+
+        mAdapter = new BenchmarkResultAdapter(this, mResults);
+        return mAdapter;
     }
 
     /**

@@ -41,6 +41,8 @@
     <string name="dialog_missing_test_case_title">Missing test cases!</string>
     <string name="dialog_missing_test_case_msg">Please select at least two test cases from the list to be able to compare results.</string>
 
+    <string name="result_switch_name">Result:</string>
+
     <string name="result_statistic_calc_min">Calculation Minimum</string>
     <string name="result_statistic_calc_mean">Calculation Average</string>
     <string name="result_statistic_calc_max">Calculation Maximum</string>
@@ -50,4 +52,7 @@
     <string name="result_statistic_sleep_mean">Sleep Difference Average</string>
     <string name="result_statistic_sleep_max">Sleep Difference Maximum</string>
     <string name="result_statistic_sleep_deviation">Sleep Standard Deviation</string>
+
+    <string name="default_results">[{\"mName\":\"Sample Benchmark Result\",\"mResults\":{\"Full Real-Time Support\":{\"SLEEP_MAXIMUM\":65,\"CALCULATION_MAXIMUM\":72125,\"CALCULATION_DEVIATION\":6081,\"SLEEP_DEVIATION\":6,\"SLEEP_MEAN\":36,\"CALCULATION_MEAN\":5980,\"SLEEP_MINIMUM\":21,\"CALCULATION_MINIMUM\":2958},\"Partial Real-Time Support\":{\"SLEEP_MAXIMUM\":213,\"CALCULATION_MAXIMUM\":99000,\"CALCULATION_DEVIATION\":10618,\"SLEEP_DEVIATION\":22,\"SLEEP_MEAN\":118,\"CALCULATION_MEAN\":21185,\"SLEEP_MINIMUM\":24,\"CALCULATION_MINIMUM\":3500},\"Standard Android (Non-RT)\":{\"SLEEP_MAXIMUM\":555,\"CALCULATION_MAXIMUM\":157709,\"CALCULATION_DEVIATION\":15881,\"SLEEP_DEVIATION\":41,\"SLEEP_MEAN\":175,\"CALCULATION_MEAN\":22314,\"SLEEP_MINIMUM\":90,\"CALCULATION_MINIMUM\":3625}}}]</string>
+
 </resources>

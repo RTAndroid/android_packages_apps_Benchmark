@@ -24,32 +24,22 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import rtandroid.benchmark.data.BenchmarkResult.Kind;
+
 /**
- * Evaluates data of test cases and provides statistical information.
+ * Evaluates data of a test case and provides statistical information.
  */
-public class TestCaseResult
+public class ResultAnalyzer
 {
-    public enum Kind {
-        CALCULATION_MINIMUM,
-        CALCULATION_MAXIMUM,
-        CALCULATION_MEAN,
-        CALCULATION_DEVIATION,
-        SLEEP_MINIMUM,
-        SLEEP_MAXIMUM,
-        SLEEP_MEAN,
-        SLEEP_DEVIATION,
-    };
 
     private final BenchmarkConfiguration mConfig;
-    private final TestCase mCase;
     private final String mFileName;
 
     private Map<Kind, Integer> mResult = new HashMap<Kind, Integer>(Kind.values().length);
 
-    public TestCaseResult(BenchmarkConfiguration config, TestCase testCase, String fileName)
+    public ResultAnalyzer(BenchmarkConfiguration config, String fileName)
     {
         mConfig = config;
-        mCase = testCase;
         mFileName = fileName;
     }
 
@@ -91,11 +81,6 @@ public class TestCaseResult
         mResult.put(Kind.SLEEP_DEVIATION, (int) sleepStatistic.getStandardDeviation());
 
         reader.close();
-    }
-
-    public TestCase getTestCase()
-    {
-        return mCase;
     }
 
     /**
