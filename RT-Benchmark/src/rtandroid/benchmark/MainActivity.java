@@ -37,33 +37,31 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import rtandroid.benchmark.data.BenchmarkConfiguration;
 import rtandroid.benchmark.data.BenchmarkResult;
 import rtandroid.benchmark.data.BenchmarkResultAdapter;
-import rtandroid.benchmark.data.TestCase;
 import rtandroid.benchmark.data.ResultAnalyzer;
+import rtandroid.benchmark.data.TestCase;
 import rtandroid.benchmark.ui.BenchmarkFragment;
 import rtandroid.benchmark.ui.ResultFragment;
 
 public class MainActivity extends ActionBarActivity implements BenchmarkFragment.OnFragmentInteractionListener,
                                                                 ResultFragment.OnFragmentInteractionListener
 {
-    private static final String TAG = MainActivity.class.getSimpleName();
     private static final String KEY_TEST_CASES = "test_cases";
     private static final String KEY_RESULTS = "results";
 
     private static final TestCase[] DEFAULT_TEST_CASES;
-
     static
     {
-        TestCase[] cases =
+        DEFAULT_TEST_CASES = new TestCase[]
         {
             new TestCase(0, "Standard Android (Non-RT)"),
             new TestCase(1, "Partial Real-Time Support", 60, TestCase.NO_POWER_LEVEL),
             new TestCase(2, "Full Real-Time Support", 90, 70),
         };
-        DEFAULT_TEST_CASES = cases;
     }
 
     private FragmentTabHost mTabHost;
@@ -107,11 +105,10 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     {
         mBenchmarkConfig = config;
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
         String name = mBenchmarkConfig.getBenchmark().getName();
         String resultName = String.format("%s (%s)", dateFormat.format(new Date()), name);
         mCurrentResult = new BenchmarkResult(resultName);
-
     }
 
     @Override

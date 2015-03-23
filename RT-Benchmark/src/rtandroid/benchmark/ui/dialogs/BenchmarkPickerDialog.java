@@ -53,7 +53,7 @@ public class BenchmarkPickerDialog extends DialogFragment implements DialogInter
         // Create value list
         Benchmark[] benchmarks = BenchmarkManager.getBenchmarks();
         String[] benchmarkNames = new String[benchmarks.length];
-        for(int i = 0; i < benchmarks.length; i++)
+        for (int i = 0; i < benchmarks.length; i++)
         {
             benchmarkNames[i] = benchmarks[i].getName();
         }
@@ -82,7 +82,7 @@ public class BenchmarkPickerDialog extends DialogFragment implements DialogInter
     @Override
     public void onClick(DialogInterface dialogInterface, int i)
     {
-        if(mListener != null)
+        if (mListener != null)
         {
             // Pass value to listener
             int requestCode = getTargetRequestCode();

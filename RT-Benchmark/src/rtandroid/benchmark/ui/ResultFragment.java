@@ -66,8 +66,7 @@ public class ResultFragment extends Fragment implements AdapterView.OnItemSelect
      */
     public static ResultFragment newInstance()
     {
-        ResultFragment fragment = new ResultFragment();
-        return fragment;
+        return new ResultFragment();
     }
 
     public ResultFragment() { }
@@ -93,6 +92,9 @@ public class ResultFragment extends Fragment implements AdapterView.OnItemSelect
                 mSpinner.setSelection(mAdapter.getCount()-1);
             }
         });
+
+        View view = getView();
+        if (view == null) { return; }
 
         mSpinner = (Spinner) getView().findViewById(R.id.run_benchmark_list);
         mSpinner.setAdapter(mAdapter);
@@ -125,15 +127,19 @@ public class ResultFragment extends Fragment implements AdapterView.OnItemSelect
     {
         BenchmarkResult result = (BenchmarkResult) mAdapter.getItem(i);
 
-        for(Map.Entry<Integer, BenchmarkResult.Kind> entry : RESULT_VIEW_MAP.entrySet())
+        view = getView();
+        if (view == null) { return; }
+
+        for (Map.Entry<Integer, BenchmarkResult.Kind> entry : RESULT_VIEW_MAP.entrySet())
         {
-            StatisticView v = (StatisticView) getView().findViewById(entry.getKey());
+            StatisticView v = (StatisticView) view.findViewById(entry.getKey());
             v.setResult(result.getResult(entry.getValue()));
         }
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
+    public void onNothingSelected(AdapterView<?> parent)
+    {
         // Nothing to do here
     }
 
