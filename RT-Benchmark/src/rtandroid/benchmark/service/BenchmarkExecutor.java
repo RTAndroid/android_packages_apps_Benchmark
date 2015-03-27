@@ -36,7 +36,7 @@ public class BenchmarkExecutor implements Runnable
     private static final String TAG = BenchmarkExecutor.class.getSimpleName();
     private static final String RESULT_FOLDER = "Benchmark";
     private static final String FILE_TEMPLATE =  RESULT_FOLDER.toLowerCase(Locale.getDefault()) + "_b=%s_p=%d_s=%d_c=%d_case=%s.csv";
-    private static final int GUI_UPDATE_TIME = 1000;
+    private static final int GUI_UPDATE_TIME = 1500;
 
     private final Context mContext;
     private final Benchmark mBenchmark;
@@ -44,9 +44,8 @@ public class BenchmarkExecutor implements Runnable
     private final int mCycles;
     private final int mSleep;
     private final TestCase mTestCase;
-
-    private BenchmarkLib mLib = null;
-    private String mFileName = null;
+    private final BenchmarkLib mLib;
+    private final String mFileName;
 
     private boolean mInterrupted = false;
 
@@ -75,13 +74,13 @@ public class BenchmarkExecutor implements Runnable
     @Override
     public void run()
     {
-        String msg = String.format(Locale.US, "Benchmark '%s' with case '%s' started", mBenchmark.getName(), mTestCase.getName());
-        Log.d(TAG, msg);
+        String msgStart = String.format(Locale.US, "Benchmark '%s' with case '%s' started", mBenchmark.getName(), mTestCase.getName());
+        Log.d(TAG, msgStart);
 
         // We always acquire a cpu lock
         CpuLock cpuLock = new CpuLock(mContext);
 
-        // Set everything up (power level, priority etc)
+        // Set the power level to a fixed value
         int powerLevel = mTestCase.getPowerLevel();
         if (powerLevel != TestCase.NO_POWER_LEVEL)
         {
@@ -89,6 +88,10 @@ public class BenchmarkExecutor implements Runnable
             cpuLock.setPowerLevel(powerLevel);
         }
 
+        // This prevents the cpu from deep sleep even w/o locking the power level
+        cpuLock.acquire();
+
+        // Set real-time priority value
         int priority = mTestCase.getRealtimePriority();
         if (priority != TestCase.NO_REALTIME_PRIORITY)
         {
@@ -102,9 +105,6 @@ public class BenchmarkExecutor implements Runnable
             }
             catch (RemoteException e) { throw new RuntimeException(e); }
         }
-
-        // This prevents the cpu from deep sleep even w/o locking the power level
-        cpuLock.acquire();
 
         // Notify activity about start
         final Intent startIntent = new Intent(BenchmarkService.ACTION_START);
@@ -131,12 +131,13 @@ public class BenchmarkExecutor implements Runnable
             mLib.libWriteCR();
 
             // Send progress to activity
-            if ((System.currentTimeMillis() - updateTimestamp) >= GUI_UPDATE_TIME)
+            long time = System.currentTimeMillis();
+            if ((time - updateTimestamp) >= GUI_UPDATE_TIME)
             {
                 updateIntent.putExtra(BenchmarkService.EXTRA_ITERATIONS, iteration);
                 mContext.sendBroadcast(updateIntent);
 
-                updateTimestamp = System.currentTimeMillis();
+                updateTimestamp = time;
             }
         }
 
@@ -153,13 +154,12 @@ public class BenchmarkExecutor implements Runnable
         finishedIntent.putExtra(BenchmarkService.EXTRA_FILENAME, mFileName);
         mContext.sendBroadcast(finishedIntent);
 
-        Log.d(TAG, "Benchmark terminated");
+        String msgFinish = String.format(Locale.US, "Benchmark '%s' with case '%s' terminated", mBenchmark.getName(), mTestCase.getName());
+        Log.d(TAG, msgFinish);
     }
-
 
     public void cancel()
     {
         mInterrupted = true;
     }
-
 }
