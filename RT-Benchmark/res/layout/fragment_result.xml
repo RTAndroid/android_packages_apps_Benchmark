@@ -29,6 +29,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/result_switch_name"
+                android:layout_marginRight="16dp"/>
+
+            <Spinner
+                android:id="@+id/run_benchmark_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
         <rtandroid.benchmark.ui.views.StatisticView
             android:id="@+id/calc_minimum"
             android:layout_width="match_parent"

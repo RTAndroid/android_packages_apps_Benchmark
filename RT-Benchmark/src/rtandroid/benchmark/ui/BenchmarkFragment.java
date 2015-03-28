@@ -138,6 +138,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         super.onActivityCreated(savedInstanceState);
 
         View root = getView();
+        if (root == null) { return; }
 
         // Find views for benchmark settings
         mBenchmarkDisplay = (TextView) root.findViewById(R.id.input_benchmark_display);
@@ -155,11 +156,8 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         mSleepDisplay.setText(Integer.toString(mConfig.SleepMs) + " ms");
 
         mConfig.BenchmarkIdx = prefs.getInt(KEY_BENCHMARK, 0);
-        if (mConfig.getBenchmark() == null)
-        {
-            mConfig.BenchmarkIdx = 0;
-        }
-        mBenchmarkDisplay.setText(mConfig.getBenchmark().getName());
+        if (mConfig.getBenchmark() == null) { mConfig.BenchmarkIdx = 0; }
+                                       else { mBenchmarkDisplay.setText(mConfig.getBenchmark().getName()); }
 
 
         // Register touch handler
@@ -283,7 +281,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         Set<TestCase> selectedCases = mTestCaseAdapter.getSelectedTestCases();
 
         // Abort if no test cases were selected
-        if(selectedCases.size() < 2)
+        if (selectedCases.size() < 2)
         {
             new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.dialog_missing_test_case_title)
@@ -300,7 +298,6 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         }
 
         // Show dialog
-        Benchmark[] benchmarks = BenchmarkManager.getBenchmarks();
         DialogFragment dialog = ProgressDialog.newInstance(mConfig.getBenchmark().getName(), selectedCases.size(), mConfig.Cycles);
         dialog.setTargetFragment(this, 0);
         dialog.show(getFragmentManager(), null);
@@ -335,16 +332,16 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         {
             // Find corresponding test case
             TestCase completedTest = null;
-            for(TestCase testCase : mTestCases)
+            for (TestCase testCase : mTestCases)
             {
-                if(testCase.getId() == id)
+                if (testCase.getId() == id)
                 {
                     completedTest = testCase;
                     break;
                 }
             }
 
-            if(completedTest == null)
+            if (completedTest == null)
             {
                 throw new RuntimeException("Unknown test case completed!");
             }
@@ -356,7 +353,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onBenchmarkFinished()
     {
-        if(mListener != null)
+        if (mListener != null)
         {
             mListener.onBenchmarkFinished();
         }
