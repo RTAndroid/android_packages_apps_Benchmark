@@ -53,7 +53,9 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
     private OnProgressListener mListener;
     private BroadcastReceiver mUpdateReceiver;
 
+    private boolean mIsWarmupPhase = false;
     private String mCurrentTestCaseName = "";
+
     private int mCasesTotal;
     private int mCasesCompleted = 0;
     private int mCyclesTotal;
@@ -129,8 +131,6 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         }
     }
 
-
-
     @Override
     public void onAttach(Activity activity)
     {
@@ -139,6 +139,7 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         // Register listener
         mUpdateReceiver = new UpdateReceiver();
         IntentFilter filter = new IntentFilter();
+        filter.addAction(BenchmarkService.ACTION_WARMUP);
         filter.addAction(BenchmarkService.ACTION_START);
         filter.addAction(BenchmarkService.ACTION_UPDATE);
         filter.addAction(BenchmarkService.ACTION_FINISHED);
@@ -180,7 +181,7 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         stopService();
 
         // Notify listener
-        if(mListener != null)
+        if (mListener != null)
         {
             mListener.onBenchmarkCanceled();
         }
@@ -191,9 +192,11 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         int completedCycles = mCasesCompleted * mCyclesPerRun + mCyclesCompleted;
 
         mTotalProgress.setText(String.format(Locale.US, "Total: %d%%", 100 * completedCycles / mCyclesTotal));
-        mCurrentProgress.setText(String.format(Locale.US, "%s: %d%%", mCurrentTestCaseName, 100 * mCyclesCompleted / mCyclesPerRun));
-
         mTotalProgressBar.setProgress(mCasesCompleted * mCyclesPerRun + mCyclesCompleted);
+
+        String warmup = String.format(Locale.US, "Preparing '%s'", mCurrentTestCaseName);
+        String running = String.format(Locale.US, "%s: %d%%", mCurrentTestCaseName, 100 * mCyclesCompleted / mCyclesPerRun);
+        mCurrentProgress.setText(mIsWarmupPhase ? warmup : running);
         mCurrentProgressBar.setProgress(mCyclesCompleted);
     }
 
@@ -209,19 +212,26 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         public void onReceive(Context context, Intent intent)
         {
             String action = intent.getAction();
-            if(action.equals(BenchmarkService.ACTION_START))
+
+            if (action.equals(BenchmarkService.ACTION_WARMUP))
             {
+                mIsWarmupPhase = true;
                 mCurrentTestCaseName = intent.getStringExtra(BenchmarkService.EXTRA_TEST_CASE_NAME);
             }
-            else if(action.equals(BenchmarkService.ACTION_UPDATE))
+            else if (action.equals(BenchmarkService.ACTION_START))
+            {
+                mIsWarmupPhase = false;
+                mCurrentTestCaseName = intent.getStringExtra(BenchmarkService.EXTRA_TEST_CASE_NAME);
+            }
+            else if (action.equals(BenchmarkService.ACTION_UPDATE))
             {
                 mCyclesCompleted = intent.getIntExtra(BenchmarkService.EXTRA_ITERATIONS, -1);
-                if(mCyclesCompleted == -1 || mCasesCompleted > mCyclesPerRun)
+                if (mCyclesCompleted == -1 || mCasesCompleted > mCyclesPerRun)
                 {
                     throw new RuntimeException("Invalid count of completed cycles received");
                 }
             }
-            else if(action.equals(BenchmarkService.ACTION_FINISHED))
+            else if (action.equals(BenchmarkService.ACTION_FINISHED))
             {
                 mCyclesCompleted = 0;
                 mCasesCompleted++;
@@ -235,7 +245,7 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
                 }
 
                 // Close
-                if(mCasesCompleted == mCasesTotal)
+                if (mCasesCompleted == mCasesTotal)
                 {
                     stopService();
                     dismiss();

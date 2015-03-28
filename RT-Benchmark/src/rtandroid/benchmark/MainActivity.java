@@ -47,7 +47,6 @@ import rtandroid.benchmark.ui.views.StatisticView;
 
 public class MainActivity extends ActionBarActivity implements BenchmarkFragment.OnFragmentInteractionListener
 {
-    private static final String TAG = MainActivity.class.getSimpleName();
     private static final String KEY_TEST_CASES = "test_cases";
 
     private static final TestCase[] DEFAULT_TEST_CASES;
@@ -58,9 +57,11 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
         TestCase[] cases =
         {
             new TestCase(0, "Standard Android (Non-RT)"),
-            new TestCase(1, "Partial Real-Time Support", 60, TestCase.NO_POWER_LEVEL),
-            new TestCase(2, "Full Real-Time Support", 90, 70),
+            new TestCase(1, "Minimal Real-Time Support", 20, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK),
+            new TestCase(2, "Basic Real-Time Support", 40, 40, TestCase.NO_CORE_LOCK),
+            new TestCase(3, "Advanced Real-Time Support", 90, 90, 1),
         };
+
         DEFAULT_TEST_CASES = cases;
 
         Map<Integer, TestCaseResult.Kind> viewMap = new HashMap<Integer, TestCaseResult.Kind>();
@@ -149,7 +150,7 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     {
         Map<String, Integer> results = new TreeMap<String, Integer>();
 
-        for(TestCaseResult result : mResults)
+        for (TestCaseResult result : mResults)
         {
             String name = result.getTestCase().getName();
             int value = result.getResults().get(kind);
@@ -198,11 +199,12 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
      * Takes care about the fragment switching.
      */
     class TabNavigator extends FragmentPagerAdapter implements TabHost.OnTabChangeListener,
-                                                                ViewPager.OnPageChangeListener
+                                                               ViewPager.OnPageChangeListener
     {
         private Fragment[] mFragments;
 
-        public TabNavigator(FragmentManager manager) {
+        public TabNavigator(FragmentManager manager)
+        {
             super(manager);
 
             // Prepare all fragments

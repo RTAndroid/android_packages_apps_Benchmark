@@ -16,42 +16,51 @@
 
 package rtandroid.benchmark.data;
 
+import android.support.annotation.NonNull;
+
 /**
  * Represents a possible test case.
  */
 public class TestCase implements Comparable
 {
-    public static final int NO_REALTIME_PRIORITY = -1;
-    public static final int REALTIME_PRIORITY_MIN = 0;
-    public static final int REALTIME_PRIORITY_MAX = 99;
+    public static final int NO_PRIORITY = -1;
+    public static final int PRIORITY_MIN = 1;
+    public static final int PRIORITY_MAX = 99;
 
     public static final int NO_POWER_LEVEL = -1;
     public static final int POWER_LEVEL_MIN = 1;
     public static final int POWER_LEVEL_MAX = 100;
 
+    public static final int NO_CORE_LOCK = -1;
+    public static final int CORE_LOCK_MIN = 1;
+    public static final int CORE_LOC_MAX = 3;
+
     private int mId;
     private String mName;
-    private int mRealtimePriority;
+    private int mPriority;
     private int mPowerLevel;
+    private int mCpuCore;
 
     /**
      * Initialize test case as normal android system.
      */
     public TestCase(int id, String name)
     {
-        this(id, name, NO_REALTIME_PRIORITY, NO_POWER_LEVEL);
+        this(id, name, NO_PRIORITY, NO_POWER_LEVEL, NO_CORE_LOCK);
     }
 
     /**
      * Initialize test case with given values.
      */
-    public TestCase(int id, String name, int realtimePriority, int powerLevel)
+    public TestCase(int id, String name, int priority, int powerLevel, int cpuCore)
     {
         mId = id;
         mName = name;
+
         // Try to set values
-        setRealtimePriority(realtimePriority);
+        setPriority(priority);
         setPowerLevel(powerLevel);
+        setCpuCore(cpuCore);
     }
 
     public int getId()
@@ -76,18 +85,18 @@ public class TestCase implements Comparable
 
     public int getRealtimePriority()
     {
-        return mRealtimePriority;
+        return mPriority;
     }
 
-    public void setRealtimePriority(int realtimePriority)
+    public void setPriority(int priority)
     {
         // Catch illegal values
-        if(realtimePriority != NO_REALTIME_PRIORITY &&
-                (realtimePriority < REALTIME_PRIORITY_MIN && REALTIME_PRIORITY_MAX < realtimePriority))
+        if (priority != NO_PRIORITY && (priority < PRIORITY_MIN || PRIORITY_MAX < priority))
         {
             throw new RuntimeException("Illegal realtime priority value");
         }
-        this.mRealtimePriority = realtimePriority;
+
+        mPriority = priority;
     }
 
     public int getPowerLevel()
@@ -98,25 +107,42 @@ public class TestCase implements Comparable
     public void setPowerLevel(int powerLevel)
     {
         // Catch illegal values
-        if(powerLevel != NO_POWER_LEVEL && (powerLevel < POWER_LEVEL_MIN || POWER_LEVEL_MAX < powerLevel))
+        if (powerLevel != NO_POWER_LEVEL && (powerLevel < POWER_LEVEL_MIN || POWER_LEVEL_MAX < powerLevel))
         {
             throw new RuntimeException("Illegal power level value");
         }
-        this.mPowerLevel = powerLevel;
+
+        mPowerLevel = powerLevel;
+    }
+
+    public int getCpuCore()
+    {
+        return mCpuCore;
+    }
+
+    public void setCpuCore(int cpuCore)
+    {
+        // Catch illegal values
+        if (cpuCore != NO_CORE_LOCK && (cpuCore < CORE_LOCK_MIN || CORE_LOC_MAX < cpuCore))
+        {
+            throw new RuntimeException("Illegal cpu core value");
+        }
+
+        mCpuCore = cpuCore;
     }
 
     @Override
     public boolean equals(Object o)
     {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
 
         TestCase testCase = (TestCase) o;
 
-        if (mId != testCase.mId) return false;
-        if (mPowerLevel != testCase.mPowerLevel) return false;
-        if (mRealtimePriority != testCase.mRealtimePriority) return false;
-        if (!mName.equals(testCase.mName)) return false;
+        if (mId != testCase.mId) { return false; }
+        if (mPowerLevel != testCase.mPowerLevel) { return false; }
+        if (mPriority != testCase.mPriority) { return false; }
+        if (!mName.equals(testCase.mName)) { return false; }
 
         return true;
     }
@@ -126,20 +152,20 @@ public class TestCase implements Comparable
     {
         int result = mId;
         result = 31 * result + mName.hashCode();
-        result = 31 * result + mRealtimePriority;
+        result = 31 * result + mPriority;
         result = 31 * result + mPowerLevel;
         return result;
     }
 
     @Override
-    public int compareTo(Object o)
+    public int compareTo(@NonNull Object o)
     {
-        if(this.equals(o))
+        if (this.equals(o))
         {
             return 0;
         }
 
-        if(o instanceof TestCase)
+        if (o instanceof TestCase)
         {
             TestCase other = (TestCase)o;
             return this.getName().compareTo(other.getName());

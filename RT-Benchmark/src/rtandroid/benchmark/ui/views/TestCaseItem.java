@@ -112,7 +112,7 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
         StringBuilder details = new StringBuilder();
 
         int priority = testCase.getRealtimePriority();
-        if (priority == TestCase.NO_REALTIME_PRIORITY)
+        if (priority == TestCase.NO_PRIORITY)
         {
             details.append("No real-time priority");
         }

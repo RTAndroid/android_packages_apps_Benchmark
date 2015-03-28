@@ -55,17 +55,17 @@ import rtandroid.benchmark.ui.dialogs.ProgressDialog;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener} interface.
  */
 public class BenchmarkFragment extends Fragment implements View.OnClickListener,
-                                                            NumberPickerDialog.OnValueSelectedListener,
-                                                            BenchmarkPickerDialog.OnValueSelectedListener,
-                                                            ProgressDialog.OnProgressListener
+                                                           NumberPickerDialog.OnValueSelectedListener,
+                                                           BenchmarkPickerDialog.OnValueSelectedListener,
+                                                           ProgressDialog.OnProgressListener
 {
     private static final String TAG = BenchmarkFragment.class.getSimpleName();
 
     // Range values and default values
-    private static final int PARAMETER_MIN = 50;
-    private static final int PARAMETER_MAX = 500;
-    private static final int PARAMETER_STEP = 50;
-    private static final int PARAMETER_DEFAULT = 200;
+    private static final int PARAMETER_MIN = 10;
+    private static final int PARAMETER_MAX = 1000;
+    private static final int PARAMETER_STEP = 10;
+    private static final int PARAMETER_DEFAULT = 100;
     private static final int CYCLES_MIN = 500;
     private static final int CYCLES_MAX = 20000;
     private static final int CYCLES_STEP = 500;

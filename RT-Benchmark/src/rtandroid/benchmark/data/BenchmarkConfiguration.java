@@ -32,10 +32,8 @@ public class BenchmarkConfiguration
     public Benchmark getBenchmark()
     {
         Benchmark[] benchmarks = BenchmarkManager.getBenchmarks();
-        if(BenchmarkIdx >= benchmarks.length)
-        {
-            return null;
-        }
+        if (BenchmarkIdx >= benchmarks.length) { return null; }
+
         return benchmarks[BenchmarkIdx];
     }
 }

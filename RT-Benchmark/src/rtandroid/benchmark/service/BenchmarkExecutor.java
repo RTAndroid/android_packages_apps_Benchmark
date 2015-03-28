@@ -19,17 +19,14 @@ package rtandroid.benchmark.service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
-import android.os.RemoteException;
 import android.util.Log;
 
 import java.io.File;
 import java.util.Locale;
 
+import rtandroid.benchmark.RealTimeUtils;
 import rtandroid.benchmark.benchmarks.Benchmark;
 import rtandroid.benchmark.data.TestCase;
-import rtandroid.CpuLock;
-import rtandroid.IRealTimeService;
-import rtandroid.RealTimeWrapper;
 
 public class BenchmarkExecutor implements Runnable
 {
@@ -77,33 +74,25 @@ public class BenchmarkExecutor implements Runnable
         String msgStart = String.format(Locale.US, "Benchmark '%s' with case '%s' started", mBenchmark.getName(), mTestCase.getName());
         Log.d(TAG, msgStart);
 
-        // We always acquire a cpu lock
-        CpuLock cpuLock = new CpuLock(mContext);
-
-        // Set the power level to a fixed value
+        // This prevents the cpu from deep sleep
         int powerLevel = mTestCase.getPowerLevel();
-        if (powerLevel != TestCase.NO_POWER_LEVEL)
-        {
-            Log.i(TAG, "Acquiring power lock at " + powerLevel);
-            cpuLock.setPowerLevel(powerLevel);
-        }
-
-        // This prevents the cpu from deep sleep even w/o locking the power level
-        cpuLock.acquire();
+        int cpuCore = mTestCase.getCpuCore();
+        Object lock = RealTimeUtils.acquireLock(mContext, powerLevel, cpuCore);
 
         // Set real-time priority value
         int priority = mTestCase.getRealtimePriority();
-        if (priority != TestCase.NO_REALTIME_PRIORITY)
+        RealTimeUtils.setPriority(priority);
+
+        // Notify activity about start
+        final Intent warmupIntent = new Intent(BenchmarkService.ACTION_WARMUP);
+        warmupIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_NAME, mTestCase.getName());
+        mContext.sendBroadcast(warmupIntent);
+
+        // Warming up phase
+        for (int i = 0; i < 50; i++)
         {
-            Log.i(TAG, "Setting the RT priority to " + priority);
-            int tid = android.os.Process.myTid();
-            try
-            {
-                IRealTimeService service = RealTimeWrapper.getService();
-                service.setSchedulingPolicy(tid, RealTimeWrapper.SCHED_POLICY_FIFO);
-                service.setPriority(tid, priority);
-            }
-            catch (RemoteException e) { throw new RuntimeException(e); }
+            mLib.libSleep(mSleep);
+            mBenchmark.execute(mParameter);
         }
 
         // Notify activity about start
@@ -142,7 +131,7 @@ public class BenchmarkExecutor implements Runnable
         }
 
         // Clean everything up
-        cpuLock.release();
+        RealTimeUtils.releaseLock(lock);
 
         // Let the CPU cooldown
         try { Thread.sleep(500); }

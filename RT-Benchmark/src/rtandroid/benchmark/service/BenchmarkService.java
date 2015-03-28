@@ -28,6 +28,7 @@ import rtandroid.benchmark.data.TestCase;
 
 public class BenchmarkService extends IntentService
 {
+    public static final String ACTION_WARMUP = "rtandroid.benchmark.ACTION_WARMUP";
     public static final String ACTION_START = "rtandroid.benchmark.ACTION_START";
     public static final String ACTION_UPDATE = "rtandroid.benchmark.ACTION_UPDATE";
     public static final String ACTION_FINISHED = "rtandroid.benchmark.ACTION_FINISHED";

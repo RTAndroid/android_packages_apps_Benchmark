@@ -29,7 +29,8 @@ import java.util.Map;
  */
 public class TestCaseResult
 {
-    public enum Kind {
+    public enum Kind
+    {
         CALCULATION_MINIMUM,
         CALCULATION_MAXIMUM,
         CALCULATION_MEAN,
@@ -38,7 +39,7 @@ public class TestCaseResult
         SLEEP_MAXIMUM,
         SLEEP_MEAN,
         SLEEP_DEVIATION,
-    };
+    }
 
     private final BenchmarkConfiguration mConfig;
     private final TestCase mCase;
@@ -60,7 +61,8 @@ public class TestCaseResult
 
         BufferedReader reader = new BufferedReader(new FileReader(mFileName));
         String line;
-        while ((line = reader.readLine()) != null) {
+        while ((line = reader.readLine()) != null)
+        {
             String[] parts = line.split(";", 3);
 
             try
