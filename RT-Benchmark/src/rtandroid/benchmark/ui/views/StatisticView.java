@@ -40,6 +40,7 @@ public class StatisticView extends LinearLayout
     private static final String KEY_NAME = "name";
     private static final String KEY_VALUE = "value";
     private static final String KEY_MAXIMUM = "maximum";
+    private static final String KEY_DISPLAY_MS = "display_ms";
 
     //
     // Constructors simply passing data forward
@@ -71,28 +72,30 @@ public class StatisticView extends LinearLayout
         TableLayout table = (TableLayout) findViewById(R.id.test_case_table);
         table.removeAllViewsInLayout();
 
-        // Find maximum
+        // Find maximum and display unit
         int max = 0;
-        for(Integer value : results.values())
+        boolean displayMs = true;
+        for (Integer value : results.values())
         {
             max = Math.max(max, value);
+            displayMs = displayMs && (value > 1000);
         }
 
         // Add values
-        for(Map.Entry<String, Integer> result : results.entrySet())
+        for (Map.Entry<String, Integer> result : results.entrySet())
         {
-            addItem(result.getKey(), result.getValue(), max);
+            addItem(result.getKey(), result.getValue(), max, displayMs);
         }
     }
 
-    private void addItem(String name, int value, int max)
+    private void addItem(String name, int value, int max, boolean displayMs)
     {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         TableLayout table = (TableLayout) findViewById(R.id.test_case_table);
 
         StatisticViewItem item = (StatisticViewItem) inflater.inflate(R.layout.view_statistic_item, this, false);
         item.setName(name);
-        item.setValue(value);
+        item.setValue(value, displayMs);
         item.setMaxValue(max);
         table.addView(item);
     }
@@ -108,21 +111,30 @@ public class StatisticView extends LinearLayout
         ArrayList<String> names = new ArrayList<String>();
         ArrayList<Integer> values = new ArrayList<Integer>();
         ArrayList<Integer> maximum = new ArrayList<Integer>();
+        ArrayList<Boolean> displayMs = new ArrayList<Boolean>();
 
-        for(int i = 0; i < table.getChildCount(); i++)
+        for (int i = 0; i < table.getChildCount(); i++)
         {
             StatisticViewItem item = (StatisticViewItem) table.getChildAt(i);
-            if(item != null)
+            if (item != null)
             {
                 names.add(item.getName());
                 values.add(item.getValue());
                 maximum.add(item.getMaxValue());
+                displayMs.add(item.isDisplayModeMs());
             }
+        }
+
+        boolean[] displayMsArray = new boolean[displayMs.size()];
+        for (int i = 0; i < displayMs.size(); i++)
+        {
+            displayMsArray[i] = displayMs.get(i);
         }
 
         bundle.putStringArrayList(KEY_NAME, names);
         bundle.putIntegerArrayList(KEY_VALUE, values);
         bundle.putIntegerArrayList(KEY_MAXIMUM, maximum);
+        bundle.putBooleanArray(KEY_DISPLAY_MS, displayMsArray);
 
         return bundle;
     }
@@ -130,17 +142,18 @@ public class StatisticView extends LinearLayout
     @Override
     protected void onRestoreInstanceState(Parcelable state)
     {
-        if(state instanceof Bundle)
+        if (state instanceof Bundle)
         {
             Bundle bundle = (Bundle) state;
 
             ArrayList<String> names = bundle.getStringArrayList(KEY_NAME);
             ArrayList<Integer> values = bundle.getIntegerArrayList(KEY_VALUE);
             ArrayList<Integer> maximum = bundle.getIntegerArrayList(KEY_MAXIMUM);
+            boolean[] displayMs = bundle.getBooleanArray(KEY_DISPLAY_MS);
 
-            for(int i = 0; i < names.size(); i++)
+            for (int i = 0; i < names.size(); i++)
             {
-                addItem(names.get(i), values.get(i), maximum.get(i));
+                addItem(names.get(i), values.get(i), maximum.get(i), displayMs[i]);
             }
 
             state = bundle.getParcelable(KEY_SUPER);

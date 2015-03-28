@@ -123,13 +123,24 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
         details.append(", ");
 
         int powerLevel = testCase.getPowerLevel();
-        if(powerLevel == TestCase.NO_POWER_LEVEL)
+        if (powerLevel == TestCase.NO_POWER_LEVEL)
         {
             details.append("No power level");
         }
         else
         {
             details.append("Power level: ").append(powerLevel).append("%");
+        }
+        details.append(", ");
+
+        int cpuCore = testCase.getCpuCore();
+        if (cpuCore == TestCase.NO_CORE_LOCK)
+        {
+            details.append("No cpu core lock");
+        }
+        else
+        {
+            details.append("Cpu core lock: ").append(cpuCore);
         }
 
         mTestCase = testCase;

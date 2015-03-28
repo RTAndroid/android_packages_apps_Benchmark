@@ -21,6 +21,8 @@ import android.util.AttributeSet;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import rtandroid.benchmark.R;
 
 /**
@@ -28,6 +30,8 @@ import rtandroid.benchmark.R;
  */
 public class StatisticViewItem extends TableRow
 {
+    private boolean mDisplayModeMs;
+
     //
     // Constructors simply passing data forward
     //
@@ -58,13 +62,26 @@ public class StatisticViewItem extends TableRow
         return valueBar.getValue();
     }
 
-    public void setValue(int value)
+    public void setValue(int value, boolean displayMs)
     {
         HorizontalBarView valueBar = (HorizontalBarView) findViewById(R.id.test_case_bar);
         valueBar.setValue(value);
+        mDisplayModeMs = displayMs;
 
         TextView resultValue = (TextView) findViewById(R.id.test_case_value);
-        resultValue.setText(Integer.toString(value) + " us");
+        String displayValue;
+        String unit;
+        if(displayMs)
+        {
+            displayValue = String.format(Locale.getDefault(), "%.1f", (float)value/1000);
+            unit = "ms";
+        }
+        else
+        {
+            displayValue = String.format(Locale.getDefault(), "%d", value);;
+            unit = "μs";
+        }
+        resultValue.setText(String.format("%s %s", displayValue, unit));
     }
 
     public int getMaxValue()
@@ -77,5 +94,10 @@ public class StatisticViewItem extends TableRow
     {
         HorizontalBarView valueBar = (HorizontalBarView) findViewById(R.id.test_case_bar);
         valueBar.setMaxValue(max);
+    }
+
+    public boolean isDisplayModeMs()
+    {
+        return mDisplayModeMs;
     }
 }

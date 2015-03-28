@@ -78,7 +78,7 @@ public class RealTimeUtils
             return wakeLock;
         }
 
-        // Acquire a fullly functional cpu lock
+        // Acquire a fully functional cpu lock
         CpuLock cpuLock = new CpuLock(context);
 
         // Set the power level to a fixed value
