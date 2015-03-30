@@ -23,7 +23,6 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 import rtandroid.CpuLock;
 import rtandroid.IRealTimeService;
@@ -91,11 +90,10 @@ public class RealTimeUtils
         // Set a cpu core to lock this process on
         if (cpuCore != TestCase.NO_CORE_LOCK)
         {
-            ArrayList<Integer> list = new ArrayList<Integer>();
-            list.add(cpuCore);
+            Integer[] list = new Integer[] { cpuCore };
             int tid = android.os.Process.myTid();
             Log.i(TAG, "Setting cpu core of tid " + tid + " to " + cpuCore);
-            cpuLock.setUsedCores(tid, list, false);
+            cpuLock.setUsedCores(tid, list, true);
         }
 
         // This will prevent the cpu from sleep even w/o fixed power level

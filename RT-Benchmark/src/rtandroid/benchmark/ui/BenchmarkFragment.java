@@ -40,8 +40,6 @@ import java.util.List;
 import java.util.Set;
 
 import rtandroid.benchmark.R;
-import rtandroid.benchmark.benchmarks.Benchmark;
-import rtandroid.benchmark.benchmarks.BenchmarkManager;
 import rtandroid.benchmark.data.BenchmarkConfiguration;
 import rtandroid.benchmark.data.TestCase;
 import rtandroid.benchmark.data.TestCaseAdapter;
@@ -62,18 +60,18 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     private static final String TAG = BenchmarkFragment.class.getSimpleName();
 
     // Range values and default values
-    private static final int PARAMETER_MIN = 10;
+    private static final int PARAMETER_MIN = 100;
     private static final int PARAMETER_MAX = 1000;
-    private static final int PARAMETER_STEP = 10;
-    private static final int PARAMETER_DEFAULT = 100;
-    private static final int CYCLES_MIN = 500;
+    private static final int PARAMETER_STEP = 100;
+    private static final int PARAMETER_DEFAULT = 300;
+    private static final int CYCLES_MIN = 1000;
     private static final int CYCLES_MAX = 20000;
-    private static final int CYCLES_STEP = 500;
-    private static final int CYCLES_DEFAULT = 500;
+    private static final int CYCLES_STEP = 1000;
+    private static final int CYCLES_DEFAULT = 1000;
     private static final int SLEEP_MIN = 10;
     private static final int SLEEP_MAX = 1000;
     private static final int SLEEP_STEP = 10;
-    private static final int SLEEP_DEFAULT = 100;
+    private static final int SLEEP_DEFAULT = 10;
 
     // Preference keys
     private static final String KEY_BENCHMARK = "benchmark";
@@ -84,8 +82,6 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     private OnFragmentInteractionListener mListener;
     private TestCaseAdapter mTestCaseAdapter;
     private List<TestCase> mTestCases;
-
-    private boolean mIsTwinMode;
 
     private TextView mBenchmarkDisplay;
     private TextView mParameterDisplay;
@@ -118,8 +114,8 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         View root = inflater.inflate(R.layout.fragment_benchmark, container, false);
 
         // Adapt to phone layout
-        mIsTwinMode = (root.findViewById(R.id.start_benchmark) != null);
-        if(!mIsTwinMode)
+        boolean isTwinMode = (root.findViewById(R.id.start_benchmark) != null);
+        if (!isTwinMode)
         {
             View header = inflater.inflate(R.layout.benchmark_settings, null, false);
             View footer = inflater.inflate(R.layout.benchmark_test_cases, null, false);
@@ -159,7 +155,6 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         if (mConfig.getBenchmark() == null) { mConfig.BenchmarkIdx = 0; }
                                        else { mBenchmarkDisplay.setText(mConfig.getBenchmark().getName()); }
 
-
         // Register touch handler
         root.findViewById(R.id.benchmark).setOnClickListener(this);
         root.findViewById(R.id.parameter).setOnClickListener(this);
@@ -176,7 +171,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         listView.setAdapter(mTestCaseAdapter);
 
         // Restore state
-        if(savedInstanceState != null)
+        if (savedInstanceState != null)
         {
             mTestCaseAdapter.restoreInstance(savedInstanceState);
         }
@@ -215,7 +210,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     public void onClick(View view)
     {
         DialogFragment dialog = null;
-        switch(view.getId())
+        switch (view.getId())
         {
             case R.id.benchmark:
                 dialog = BenchmarkPickerDialog.newInstance();
@@ -253,7 +248,6 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
             case R.id.benchmark:
                 mConfig.BenchmarkIdx = value;
                 prefs.edit().putInt(KEY_BENCHMARK, mConfig.BenchmarkIdx).commit();
-                Benchmark[] benchmarks = BenchmarkManager.getBenchmarks();
                 mBenchmarkDisplay.setText(mConfig.getBenchmark().getName());
                 break;
             case R.id.parameter:
@@ -292,7 +286,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         }
 
         // Notify listener
-        if(mListener != null)
+        if (mListener != null)
         {
             mListener.onBenchmarkStart(mConfig);
         }
