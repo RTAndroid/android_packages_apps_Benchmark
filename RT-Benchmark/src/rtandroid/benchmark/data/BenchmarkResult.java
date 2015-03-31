@@ -1,8 +1,8 @@
 package rtandroid.benchmark.data;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 /**
  * Stores the result of a benchmark.
@@ -21,7 +21,7 @@ public class BenchmarkResult
     };
 
     private String mName;
-    private final Map<String, Map<Kind, Integer>> mResults = new TreeMap<String, Map<Kind, Integer>>();
+    private final Map<String, Map<Kind, Integer>> mResults = new LinkedHashMap<String, Map<Kind, Integer>>();
 
     public BenchmarkResult(String name)
     {
@@ -50,7 +50,7 @@ public class BenchmarkResult
 
     public Map<String, Integer> getResult(Kind kind)
     {
-        Map<String, Integer> results = new TreeMap<String, Integer>();
+        Map<String, Integer> results = new LinkedHashMap<String, Integer>();
 
         for(Map.Entry<String, Map<Kind, Integer>> e : mResults.entrySet())
         {

@@ -49,7 +49,7 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
         mInflater = LayoutInflater.from(context);
         mTestCases = cases;
 
-        mSelectedCases = new TreeSet<TestCase>();
+        mSelectedCases = new TreeSet<TestCase>(new TestCase.PriorityComparator());
         mSelectedCases.addAll(cases);
     }
 

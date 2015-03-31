@@ -16,12 +16,12 @@
 
 package rtandroid.benchmark.data;
 
-import android.support.annotation.NonNull;
+import java.util.Comparator;
 
 /**
  * Represents a possible test case.
  */
-public class TestCase implements Comparable
+public class TestCase
 {
     public static final int NO_PRIORITY = -1;
     public static final int PRIORITY_MIN = 1;
@@ -157,20 +157,25 @@ public class TestCase implements Comparable
         return result;
     }
 
-    @Override
-    public int compareTo(@NonNull Object o)
+
+    public static class PriorityComparator implements Comparator<TestCase>
     {
-        if (this.equals(o))
+        @Override
+        public int compare(TestCase testCase1, TestCase testCase2)
         {
-            return 0;
-        }
+            int prio1 = testCase1.getPrioritySum();
+            int prio2 = testCase2.getPrioritySum();
 
-        if (o instanceof TestCase)
-        {
-            TestCase other = (TestCase)o;
-            return this.getName().compareTo(other.getName());
+            if(prio1 == prio2) { return 0; }
+            else if(prio1 < prio2) { return -1; }
+            else { return 1; }
         }
+    }
 
-        throw new ClassCastException();
+    private int getPrioritySum()
+    {
+        int sum = getRealtimePriority() + getPowerLevel();
+        if(getCpuCore() != NO_CORE_LOCK) { sum += 100; }
+        return sum;
     }
 }
