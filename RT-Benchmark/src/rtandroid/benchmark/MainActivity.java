@@ -48,7 +48,7 @@ import rtandroid.benchmark.ui.BenchmarkFragment;
 import rtandroid.benchmark.ui.ResultFragment;
 
 public class MainActivity extends ActionBarActivity implements BenchmarkFragment.OnFragmentInteractionListener,
-                                                                ResultFragment.OnFragmentInteractionListener
+                                                               ResultFragment.OnFragmentInteractionListener
 {
     private static final String KEY_TEST_CASES = "test_cases";
     private static final String KEY_RESULTS = "results";
@@ -59,9 +59,8 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
         DEFAULT_TEST_CASES = new TestCase[]
         {
             new TestCase(0, "Standard Android (Non-RT)"),
-            new TestCase(1, "Minimal Real-Time Support", 30, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK),
-            new TestCase(2, "Basic Real-Time Support", 60, 60, TestCase.NO_CORE_LOCK),
-            new TestCase(3, "Advanced Real-Time Support", 90, 90, 1),
+            new TestCase(1, "Partial Real-Time Support", 40, 40, TestCase.NO_CORE_LOCK),
+            new TestCase(2, "Full Real-Time Support", 90, 90, 1),
         };
     }
 

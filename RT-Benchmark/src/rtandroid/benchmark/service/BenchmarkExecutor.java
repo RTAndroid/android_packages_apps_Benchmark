@@ -84,18 +84,6 @@ public class BenchmarkExecutor implements Runnable
         RealTimeUtils.setPriority(priority);
 
         // Notify activity about start
-        final Intent warmupIntent = new Intent(BenchmarkService.ACTION_WARMUP);
-        warmupIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_NAME, mTestCase.getName());
-        mContext.sendBroadcast(warmupIntent);
-
-        // Warming up phase
-        for (int i = 0; i < 50; i++)
-        {
-            mLib.libSleep(mSleep);
-            mBenchmark.execute(mParameter);
-        }
-
-        // Notify activity about start
         final Intent startIntent = new Intent(BenchmarkService.ACTION_START);
         startIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_NAME, mTestCase.getName());
         mContext.sendBroadcast(startIntent);

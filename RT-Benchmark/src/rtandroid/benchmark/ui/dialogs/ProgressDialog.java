@@ -53,7 +53,6 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
     private OnProgressListener mListener;
     private BroadcastReceiver mUpdateReceiver;
 
-    private boolean mIsWarmupPhase = false;
     private String mCurrentTestCaseName = "";
 
     private int mCasesTotal;
@@ -139,7 +138,6 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         // Register listener
         mUpdateReceiver = new UpdateReceiver();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(BenchmarkService.ACTION_WARMUP);
         filter.addAction(BenchmarkService.ACTION_START);
         filter.addAction(BenchmarkService.ACTION_UPDATE);
         filter.addAction(BenchmarkService.ACTION_FINISHED);
@@ -194,9 +192,7 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         mTotalProgress.setText(String.format(Locale.US, "Total: %d%%", 100 * completedCycles / mCyclesTotal));
         mTotalProgressBar.setProgress(mCasesCompleted * mCyclesPerRun + mCyclesCompleted);
 
-        String warmup = String.format(Locale.US, "Preparing '%s'", mCurrentTestCaseName);
-        String running = String.format(Locale.US, "%s: %d%%", mCurrentTestCaseName, 100 * mCyclesCompleted / mCyclesPerRun);
-        mCurrentProgress.setText(mIsWarmupPhase ? warmup : running);
+        mCurrentProgress.setText(String.format(Locale.US, "%s: %d%%", mCurrentTestCaseName, 100 * mCyclesCompleted / mCyclesPerRun));
         mCurrentProgressBar.setProgress(mCyclesCompleted);
     }
 
@@ -213,14 +209,8 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         {
             String action = intent.getAction();
 
-            if (action.equals(BenchmarkService.ACTION_WARMUP))
+            if (action.equals(BenchmarkService.ACTION_START))
             {
-                mIsWarmupPhase = true;
-                mCurrentTestCaseName = intent.getStringExtra(BenchmarkService.EXTRA_TEST_CASE_NAME);
-            }
-            else if (action.equals(BenchmarkService.ACTION_START))
-            {
-                mIsWarmupPhase = false;
                 mCurrentTestCaseName = intent.getStringExtra(BenchmarkService.EXTRA_TEST_CASE_NAME);
             }
             else if (action.equals(BenchmarkService.ACTION_UPDATE))

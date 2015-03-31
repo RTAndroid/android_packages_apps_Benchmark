@@ -9,7 +9,8 @@ import java.util.Set;
  */
 public class BenchmarkResult
 {
-    public enum Kind {
+    public enum Kind
+    {
         CALCULATION_MINIMUM,
         CALCULATION_MAXIMUM,
         CALCULATION_MEAN,

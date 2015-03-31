@@ -63,7 +63,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     private static final int PARAMETER_MIN = 100;
     private static final int PARAMETER_MAX = 1000;
     private static final int PARAMETER_STEP = 100;
-    private static final int PARAMETER_DEFAULT = 300;
+    private static final int PARAMETER_DEFAULT = 200;
     private static final int CYCLES_MIN = 1000;
     private static final int CYCLES_MAX = 20000;
     private static final int CYCLES_STEP = 1000;
@@ -232,7 +232,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         }
 
         // Show dialog if desired
-        if(dialog != null)
+        if (dialog != null)
         {
             dialog.setTargetFragment(this, view.getId());
             dialog.show(getFragmentManager(), null);
@@ -286,10 +286,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         }
 
         // Notify listener
-        if (mListener != null)
-        {
-            mListener.onBenchmarkStart(mConfig);
-        }
+        if (mListener != null) { mListener.onBenchmarkStart(mConfig); }
 
         // Show dialog
         DialogFragment dialog = ProgressDialog.newInstance(mConfig.getBenchmark().getName(), selectedCases.size(), mConfig.Cycles);
@@ -305,7 +302,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         intent.putExtra(BenchmarkService.EXTRA_SLEEP, mConfig.SleepMs);
 
         Gson gson = new Gson();
-        for(TestCase testCase : selectedCases)
+        for (TestCase testCase : selectedCases)
         {
             String jsonTestCase = gson.toJson(testCase, TestCase.class);
             intent.putExtra(BenchmarkService.EXTRA_TEST_CASE, jsonTestCase);

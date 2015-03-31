@@ -28,7 +28,6 @@ import rtandroid.benchmark.data.TestCase;
 
 public class BenchmarkService extends IntentService
 {
-    public static final String ACTION_WARMUP = "rtandroid.benchmark.ACTION_WARMUP";
     public static final String ACTION_START = "rtandroid.benchmark.ACTION_START";
     public static final String ACTION_UPDATE = "rtandroid.benchmark.ACTION_UPDATE";
     public static final String ACTION_FINISHED = "rtandroid.benchmark.ACTION_FINISHED";
@@ -85,7 +84,7 @@ public class BenchmarkService extends IntentService
         int cycles = intent.getIntExtra(EXTRA_CYCLES, EXTRA_NOT_FOUND);
         int sleep = intent.getIntExtra(EXTRA_SLEEP, EXTRA_NOT_FOUND);
 
-        if(benchmarkIdx == EXTRA_NOT_FOUND || parameter == EXTRA_NOT_FOUND || sleep == EXTRA_NOT_FOUND || cycles == EXTRA_NOT_FOUND)
+        if (benchmarkIdx == EXTRA_NOT_FOUND || parameter == EXTRA_NOT_FOUND || sleep == EXTRA_NOT_FOUND || cycles == EXTRA_NOT_FOUND)
         {
             throw new RuntimeException("Missing extras in Intent from Activity!");
         }
@@ -113,6 +112,5 @@ public class BenchmarkService extends IntentService
         {
             // Ignore it
         }
-
     }
 }
