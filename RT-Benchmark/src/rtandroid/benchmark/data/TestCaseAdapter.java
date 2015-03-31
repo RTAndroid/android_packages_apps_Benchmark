@@ -26,6 +26,7 @@ import android.widget.BaseAdapter;
 import com.google.gson.Gson;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -93,6 +94,7 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
         TestCaseItem item = (TestCaseItem) convertView;
         item.fill(testCase, selected);
         item.setOnCheckedChangeListener(this);
+        item.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) item.getContext());
 
         return convertView;
     }
@@ -108,6 +110,39 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
         else
         {
             mSelectedCases.remove(testCase);
+        }
+    }
+
+    @Override
+    public void notifyDataSetChanged()
+    {
+        super.notifyDataSetChanged();
+
+        // Remove all not existing test cases
+        cleanSelectionSet();
+    }
+
+    @Override
+    public void notifyDataSetInvalidated()
+    {
+        super.notifyDataSetInvalidated();
+
+        // Remove all not existing test cases
+        cleanSelectionSet();
+    }
+
+    /**
+     * Remove all non-existing selection elements.
+     */
+    private void cleanSelectionSet()
+    {
+        Iterator<TestCase> iter = mSelectedCases.iterator();
+        while (iter.hasNext())
+        {
+            if(!mTestCases.contains(iter.next()))
+            {
+                iter.remove();
+            }
         }
     }
 

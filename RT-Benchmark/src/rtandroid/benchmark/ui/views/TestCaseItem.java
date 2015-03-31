@@ -30,8 +30,8 @@ import rtandroid.benchmark.data.TestCase;
 /**
  * Selectable list item of a test case.
  */
-public class TestCaseItem extends RelativeLayout implements View.OnClickListener, View.OnLongClickListener,
-                                                                    CompoundButton.OnCheckedChangeListener
+public class TestCaseItem extends RelativeLayout implements View.OnClickListener,
+                                                            CompoundButton.OnCheckedChangeListener
 {
     private OnCheckedChangeListener mListener;
     private CheckBox mCheckBox;
@@ -57,7 +57,6 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
         // Register listeners
         mCheckBox.setOnCheckedChangeListener(this);
         setOnClickListener(this);
-        setOnLongClickListener(this);
     }
 
     @Override
@@ -65,13 +64,6 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
     {
         // Behave as if checkbox was clicked
         mCheckBox.performClick();
-    }
-
-    @Override
-    public boolean onLongClick(View view)
-    {
-        // TODO: Provide possibility to edit and delete
-        return true;
     }
 
     @Override
@@ -140,7 +132,7 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
         }
         else
         {
-            details.append("Cpu core lock: ").append(cpuCore);
+            details.append("Cpu core lock");
         }
 
         mTestCase = testCase;

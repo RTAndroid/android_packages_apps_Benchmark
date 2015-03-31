@@ -34,10 +34,12 @@
     <string name="run_input_sleep">Sleep</string>
 
     <string name="run_button_run">Run Benchmark</string>
+    <string name="run_button_add_case">New Test Case</string>
 
     <string name="run_input_sleep_unit">ms</string>
     <string name="run_input_no_unit"></string>
 
+    <string name="dialog_test_case_title">Configure Test Case</string>
     <string name="dialog_missing_test_case_title">Missing test cases!</string>
     <string name="dialog_missing_test_case_msg">Please select at least two test cases from the list to be able to compare results.</string>
 

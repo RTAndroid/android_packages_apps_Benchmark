@@ -27,9 +27,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,9 +43,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import rtandroid.benchmark.MainActivity;
 import rtandroid.benchmark.R;
-import rtandroid.benchmark.benchmarks.Benchmark;
-import rtandroid.benchmark.benchmarks.BenchmarkManager;
 import rtandroid.benchmark.data.BenchmarkConfiguration;
 import rtandroid.benchmark.data.TestCase;
 import rtandroid.benchmark.data.TestCaseAdapter;
@@ -49,6 +52,8 @@ import rtandroid.benchmark.service.BenchmarkService;
 import rtandroid.benchmark.ui.dialogs.BenchmarkPickerDialog;
 import rtandroid.benchmark.ui.dialogs.NumberPickerDialog;
 import rtandroid.benchmark.ui.dialogs.ProgressDialog;
+import rtandroid.benchmark.ui.dialogs.TestCaseDialog;
+import rtandroid.benchmark.ui.views.TestCaseItem;
 
 /**
  * A fragment allowing to execute different benchmarks with different test cases.
@@ -57,7 +62,8 @@ import rtandroid.benchmark.ui.dialogs.ProgressDialog;
 public class BenchmarkFragment extends Fragment implements View.OnClickListener,
                                                            NumberPickerDialog.OnValueSelectedListener,
                                                            BenchmarkPickerDialog.OnValueSelectedListener,
-                                                           ProgressDialog.OnProgressListener
+                                                           ProgressDialog.OnProgressListener,
+                                                           TestCaseDialog.OnTestCaseSaveListener
 {
     private static final String TAG = BenchmarkFragment.class.getSimpleName();
 
@@ -166,6 +172,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         root.findViewById(R.id.cycles).setOnClickListener(this);
         root.findViewById(R.id.sleep).setOnClickListener(this);
         root.findViewById(R.id.start_benchmark).setOnClickListener(this);
+        root.findViewById(R.id.add_test_case).setOnClickListener(this);
 
         // Fill test case list
         mTestCases = new ArrayList<TestCase>();
@@ -174,6 +181,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
 
         ListView listView = (ListView) root.findViewById(R.id.test_case_list);
         listView.setAdapter(mTestCaseAdapter);
+        listView.setOnCreateContextMenuListener(this);
 
         // Restore state
         if(savedInstanceState != null)
@@ -232,6 +240,9 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
             case R.id.start_benchmark:
                 startBenchmark();
                 break;
+            case R.id.add_test_case:
+                dialog = TestCaseDialog.newInstance();
+                break;
             default:
                 throw new RuntimeException("Click event from unknown view received!");
         }
@@ -245,6 +256,47 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        TestCaseItem testCaseView = (TestCaseItem) info.targetView;
+        TestCase testCase = testCaseView.getTestCase();
+
+        // Display only for non-default test cases
+        if(testCase.getId() > MainActivity.DEFAULT_TEST_CASE_ID_MAX)
+        {
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.menu_test_case, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        TestCaseDialog dialog;
+
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        TestCaseItem testCaseView = (TestCaseItem) info.targetView;
+        TestCase testCase = testCaseView.getTestCase();
+
+        switch (item.getItemId()) {
+            case R.id.menu_edit:
+                dialog = TestCaseDialog.newInstance(testCase);
+                dialog.setTargetFragment(this, 0);
+                dialog.show(getFragmentManager(), "");
+                return true;
+            case R.id.menu_delete:
+                mTestCases.remove(testCase);
+                mTestCaseAdapter.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
     public void onValueSelected(int requestCode, int value)
     {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -253,7 +305,6 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
             case R.id.benchmark:
                 mConfig.BenchmarkIdx = value;
                 prefs.edit().putInt(KEY_BENCHMARK, mConfig.BenchmarkIdx).commit();
-                Benchmark[] benchmarks = BenchmarkManager.getBenchmarks();
                 mBenchmarkDisplay.setText(mConfig.getBenchmark().getName());
                 break;
             case R.id.parameter:
@@ -356,6 +407,51 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         if (mListener != null)
         {
             mListener.onBenchmarkFinished();
+        }
+    }
+
+    @Override
+    public void onTestCaseSave(TestCase testCase)
+    {
+        // New item: Find next id
+        if(testCase.getId() == 0)
+        {
+
+            int maxId = MainActivity.DEFAULT_TEST_CASE_ID_MAX;
+            for (TestCase c : mTestCases)
+            {
+                maxId = Math.max(maxId, c.getId());
+            }
+            testCase.setId(maxId + 1);
+
+            // Add it
+            mTestCases.add(testCase);
+        }
+        // Edited item: Update item
+        else
+        {
+            // Find index
+            int index = 0;
+            for (int i = 0; i < mTestCases.size(); i++)
+            {
+                if(mTestCases.get(i).getId() == testCase.getId())
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            // Replace case
+            mTestCases.remove(index);
+            mTestCases.add(index, testCase);
+        }
+
+        mTestCaseAdapter.notifyDataSetChanged();
+
+        // Save list
+        if (mListener != null)
+        {
+            mListener.saveTestCases(mTestCases);
         }
     }
 

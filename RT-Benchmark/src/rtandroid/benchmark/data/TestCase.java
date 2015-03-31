@@ -31,9 +31,8 @@ public class TestCase implements Comparable
     public static final int POWER_LEVEL_MIN = 1;
     public static final int POWER_LEVEL_MAX = 100;
 
-    public static final int NO_CORE_LOCK = -1;
+    public static final int NO_CORE_LOCK = 0;
     public static final int CORE_LOCK_MIN = 1;
-    public static final int CORE_LOC_MAX = 3;
 
     private int mId;
     private String mName;
@@ -123,7 +122,8 @@ public class TestCase implements Comparable
     public void setCpuCore(int cpuCore)
     {
         // Catch illegal values
-        if (cpuCore != NO_CORE_LOCK && (cpuCore < CORE_LOCK_MIN || CORE_LOC_MAX < cpuCore))
+        int coreCount = Runtime.getRuntime().availableProcessors();
+        if (cpuCore != NO_CORE_LOCK && (cpuCore < CORE_LOCK_MIN || coreCount <= cpuCore))
         {
             throw new RuntimeException("Illegal cpu core value");
         }

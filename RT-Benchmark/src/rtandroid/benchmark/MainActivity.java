@@ -50,6 +50,8 @@ import rtandroid.benchmark.ui.ResultFragment;
 public class MainActivity extends ActionBarActivity implements BenchmarkFragment.OnFragmentInteractionListener,
                                                                 ResultFragment.OnFragmentInteractionListener
 {
+    public static final int DEFAULT_TEST_CASE_ID_MAX = 9;
+
     private static final String KEY_TEST_CASES = "test_cases";
     private static final String KEY_RESULTS = "results";
 
@@ -151,7 +153,8 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     @Override
     public List<TestCase> loadTestCases()
     {
-        TestCase[] cases = DEFAULT_TEST_CASES;
+        List<TestCase> testCaseList = new ArrayList<TestCase>();
+        testCaseList.addAll(Arrays.asList(DEFAULT_TEST_CASES));
 
         // Try to load from settings
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -159,22 +162,26 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
         {
             Gson gson = new Gson();
             String jsonTestCases = prefs.getString(KEY_TEST_CASES, "");
-            cases = gson.fromJson(jsonTestCases, TestCase[].class);
+            TestCase[] cases = gson.fromJson(jsonTestCases, TestCase[].class);
+            testCaseList.addAll(Arrays.asList(cases));
         }
 
-        return Arrays.asList(cases);
+        return testCaseList;
     }
 
     @Override
     public void saveTestCases(List<TestCase> testCases)
     {
+        // Filter out all default test cases
+        testCases = testCases.subList(DEFAULT_TEST_CASES.length, testCases.size());
+
         // Convert to array
-        TestCase[] cases = new TestCase[testCases.size()];
-        testCases.toArray(cases);
+        TestCase[] casesArray = new TestCase[testCases.size()];
+        testCases.toArray(casesArray);
 
         // Serialize it
         Gson gson = new Gson();
-        String jsonTestCases = gson.toJson(cases, TestCase[].class);
+        String jsonTestCases = gson.toJson(casesArray, TestCase[].class);
 
         // Save to settings
         PreferenceManager.getDefaultSharedPreferences(this)
