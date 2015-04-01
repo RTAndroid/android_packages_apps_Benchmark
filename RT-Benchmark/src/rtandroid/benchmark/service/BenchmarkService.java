@@ -68,10 +68,8 @@ public class BenchmarkService extends IntentService
         super.onDestroy();
 
         // Signal stopping
-        if(mExecutor != null)
-        {
-            mExecutor.cancel();
-        }
+        if (mExecutor != null) { mExecutor.cancel(); }
+
         Log.d(TAG, "BenchmarkService destroyed");
     }
 
@@ -90,11 +88,10 @@ public class BenchmarkService extends IntentService
         }
 
         Benchmark[] benchmarks = BenchmarkManager.getBenchmarks();
-        if(benchmarkIdx >= benchmarks.length)
+        if (benchmarkIdx >= benchmarks.length)
         {
             throw new RuntimeException("Invalid benchmark index in Intent from Activity!");
         }
-        Benchmark benchmark = benchmarks[benchmarkIdx];
 
         Gson gson = new Gson();
         String jsonTestCase = intent.getStringExtra(EXTRA_TEST_CASE);
@@ -103,7 +100,7 @@ public class BenchmarkService extends IntentService
         // Start actual work in separate thread
         try
         {
-            mExecutor = new BenchmarkExecutor(getBaseContext(), benchmark, parameter, cycles, sleep, testCase);
+            mExecutor = new BenchmarkExecutor(getBaseContext(), benchmarks[benchmarkIdx], parameter, cycles, sleep, testCase);
             Thread thread = new Thread(mExecutor);
             thread.start();
             thread.join();

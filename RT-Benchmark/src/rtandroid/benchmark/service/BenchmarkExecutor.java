@@ -33,7 +33,7 @@ public class BenchmarkExecutor implements Runnable
     private static final String TAG = BenchmarkExecutor.class.getSimpleName();
     private static final String RESULT_FOLDER = "Benchmark";
     private static final String FILE_TEMPLATE =  RESULT_FOLDER.toLowerCase(Locale.getDefault()) + "_b=%s_p=%d_s=%d_c=%d_case=%s.csv";
-    private static final int GUI_UPDATE_TIME = 1500;
+    private static final int GUI_UPDATE_TIME = 1200;
 
     private final Context mContext;
     private final Benchmark mBenchmark;
@@ -55,12 +55,14 @@ public class BenchmarkExecutor implements Runnable
         mSleep = sleep;
         mTestCase = testCase;
 
+        // Assure the folder exists
+        File resultFolder = new File(Environment.getExternalStorageDirectory(), RESULT_FOLDER);
+        resultFolder.mkdirs();
+
         // Generate the filename
         String benchmarkName = mBenchmark.getName().replaceAll("\\s","").replace('/', '-');
         String caseName = mTestCase.getName().replaceAll("\\s","").replace('/', '-');
         String fileName = String.format(Locale.US, FILE_TEMPLATE, benchmarkName, mParameter, mSleep, mCycles, caseName);
-        File resultFolder = new File(Environment.getExternalStorageDirectory(), RESULT_FOLDER);
-        resultFolder.mkdirs();
         mFileName = new File(resultFolder, fileName).getAbsolutePath();
 
         // Create the library
@@ -88,10 +90,9 @@ public class BenchmarkExecutor implements Runnable
         startIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_NAME, mTestCase.getName());
         mContext.sendBroadcast(startIntent);
 
-        // Perform benchmark
+        // Perform the actual benchmark
         long updateTimestamp = System.currentTimeMillis();
         final Intent updateIntent = new Intent(BenchmarkService.ACTION_UPDATE);
-
         for (int iteration = 0; (iteration < mCycles) && !mInterrupted; iteration++)
         {
             // Sleep a bit
@@ -111,10 +112,9 @@ public class BenchmarkExecutor implements Runnable
             long time = System.currentTimeMillis();
             if ((time - updateTimestamp) >= GUI_UPDATE_TIME)
             {
+                updateTimestamp = time;
                 updateIntent.putExtra(BenchmarkService.EXTRA_ITERATIONS, iteration);
                 mContext.sendBroadcast(updateIntent);
-
-                updateTimestamp = time;
             }
         }
 

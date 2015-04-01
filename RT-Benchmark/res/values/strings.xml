@@ -39,7 +39,7 @@
     <string name="run_input_no_unit"></string>
 
     <string name="dialog_missing_test_case_title">Missing test cases!</string>
-    <string name="dialog_missing_test_case_msg">Please select at least two test cases from the list to be able to compare results.</string>
+    <string name="dialog_missing_test_case_msg">Please select at least one test case from the list.</string>
 
     <string name="result_switch_name">Saved results:</string>
 

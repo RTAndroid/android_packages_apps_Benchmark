@@ -275,7 +275,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         Set<TestCase> selectedCases = mTestCaseAdapter.getSelectedTestCases();
 
         // Abort if no test cases were selected
-        if (selectedCases.size() < 2)
+        if (selectedCases.isEmpty())
         {
             new AlertDialog.Builder(getActivity())
                     .setTitle(R.string.dialog_missing_test_case_title)
@@ -319,35 +319,36 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onTestCaseCompleted(int id, String fileName)
     {
-        if(mListener != null)
+        // can't notify without the listener
+        if (mListener == null) { return; }
+
+        // Find corresponding test case
+        TestCase completedTest = null;
+        for (TestCase testCase : mTestCases)
         {
-            // Find corresponding test case
-            TestCase completedTest = null;
-            for (TestCase testCase : mTestCases)
+            if (testCase.getId() == id)
             {
-                if (testCase.getId() == id)
-                {
-                    completedTest = testCase;
-                    break;
-                }
+                completedTest = testCase;
+                break;
             }
-
-            if (completedTest == null)
-            {
-                throw new RuntimeException("Unknown test case completed!");
-            }
-
-            mListener.onTestCaseCompleted(completedTest, fileName);
         }
+
+        // Which test was it?
+        if (completedTest == null)
+        {
+            throw new RuntimeException("Unknown test case completed!");
+        }
+
+        mListener.onTestCaseCompleted(completedTest, fileName);
     }
 
     @Override
     public void onBenchmarkFinished()
     {
-        if (mListener != null)
-        {
-            mListener.onBenchmarkFinished();
-        }
+        // can't notify without the listener
+        if (mListener == null) { return; }
+
+        mListener.onBenchmarkFinished();
     }
 
     /**
