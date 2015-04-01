@@ -108,7 +108,7 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         // Build dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         Dialog dlg = builder
-                .setTitle(String.format(Locale.US, "Performing %s Benchmark...", benchmarkName))
+                .setTitle(benchmarkName)
                 .setView(v)
                 .setNegativeButton(android.R.string.cancel, this)
                 .create();

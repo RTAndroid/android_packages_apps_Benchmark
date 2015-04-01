@@ -25,8 +25,8 @@ public class BenchmarkManager
     {
         return new Benchmark[]
         {
-            new FibonacciIterative(),
-            new MatrixMultiplication()
+            new MatrixMultiplication(),
+            new FibonacciIteractive()
         };
     }
 }

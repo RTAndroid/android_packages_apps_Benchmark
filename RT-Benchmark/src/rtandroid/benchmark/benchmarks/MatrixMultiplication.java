@@ -19,7 +19,7 @@ package rtandroid.benchmark.benchmarks;
 public class MatrixMultiplication implements Benchmark
 {
     private static final String NAME = "Matrix-Multiplication";
-    private static final int MATRIX_SIZE = 30;
+    private static final int MATRIX_SIZE = 10;
 
     private long mMatrix[][] = new long[MATRIX_SIZE][MATRIX_SIZE];
 

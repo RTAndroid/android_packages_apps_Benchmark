@@ -60,17 +60,17 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     private static final String TAG = BenchmarkFragment.class.getSimpleName();
 
     // Range values and default values
-    private static final int PARAMETER_MIN = 100;
-    private static final int PARAMETER_MAX = 1000;
-    private static final int PARAMETER_STEP = 100;
+    private static final int PARAMETER_MIN = 200;
+    private static final int PARAMETER_MAX = 2000;
+    private static final int PARAMETER_STEP = 200;
     private static final int PARAMETER_DEFAULT = 200;
     private static final int CYCLES_MIN = 1000;
     private static final int CYCLES_MAX = 20000;
     private static final int CYCLES_STEP = 1000;
     private static final int CYCLES_DEFAULT = 1000;
-    private static final int SLEEP_MIN = 10;
-    private static final int SLEEP_MAX = 1000;
-    private static final int SLEEP_STEP = 10;
+    private static final int SLEEP_MIN = 1;
+    private static final int SLEEP_MAX = 100;
+    private static final int SLEEP_STEP = 1;
     private static final int SLEEP_DEFAULT = 10;
 
     // Preference keys
