@@ -33,7 +33,7 @@ public class BenchmarkExecutor implements Runnable
     private static final String TAG = BenchmarkExecutor.class.getSimpleName();
     private static final String RESULT_FOLDER = "Benchmark";
     private static final String FILE_TEMPLATE =  RESULT_FOLDER.toLowerCase(Locale.getDefault()) + "_b=%s_p=%d_s=%d_c=%d_case=%s.csv";
-    private static final int GUI_UPDATE_TIME = 1200;
+    private static final long GUI_UPDATE_TIME = 500 * 1000 * 1000; // in ms
 
     private final Context mContext;
     private final Benchmark mBenchmark;
@@ -102,7 +102,7 @@ public class BenchmarkExecutor implements Runnable
         }
 
         // Perform the actual benchmark
-        long updateTimestamp = System.currentTimeMillis();
+        long updateTimestamp = System.nanoTime();
         final Intent updateIntent = new Intent(BenchmarkService.ACTION_UPDATE);
         for (int iteration = 0; (iteration < mCycles) && !mInterrupted; iteration++)
         {
@@ -120,7 +120,7 @@ public class BenchmarkExecutor implements Runnable
             mLib.libWriteCR();
 
             // Send progress to activity
-            long time = System.currentTimeMillis();
+            long time = System.nanoTime();
             if ((time - updateTimestamp) >= GUI_UPDATE_TIME)
             {
                 updateTimestamp = time;

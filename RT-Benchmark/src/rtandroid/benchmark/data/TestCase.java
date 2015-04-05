@@ -153,7 +153,10 @@ public class TestCase
     private int getSortingValue()
     {
         int value = getRealtimePriority() + getPowerLevel();
+
         if (getCpuCore() != NO_CORE_LOCK) { value += 100; }
+        if (getName().contains("Warmup")) { value -= 500; }
+
         return value;
     }
 }

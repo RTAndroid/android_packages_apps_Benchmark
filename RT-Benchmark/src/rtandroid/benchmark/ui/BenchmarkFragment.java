@@ -268,6 +268,9 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
             return;
         }
 
+        // Add a warmup case
+        selectedCases.add(new TestCase("Warmup Phase", TestCase.NO_PRIORITY, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK));
+
         // Notify listener
         if (mListener != null) { mListener.onBenchmarkStart(mConfig); }
 
@@ -312,13 +315,8 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
             if (testCase.getName().equals(name)) { completedTest = testCase; }
         }
 
-        // Which test was it?
-        if (completedTest == null)
-        {
-            throw new RuntimeException("Unknown test case completed!");
-        }
-
-        mListener.onTestCaseCompleted(completedTest, filename);
+        // Add only valid tests to shown statistics
+        if (completedTest != null) { mListener.onTestCaseCompleted(completedTest, filename); }
     }
 
     @Override
