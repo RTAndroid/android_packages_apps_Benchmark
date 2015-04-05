@@ -19,7 +19,7 @@ public class BenchmarkResult
         SLEEP_MAXIMUM,
         SLEEP_MEAN,
         SLEEP_DEVIATION,
-    };
+    }
 
     private String mName;
     private final Map<String, Map<Kind, Integer>> mResults = new LinkedHashMap<String, Map<Kind, Integer>>();

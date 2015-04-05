@@ -30,6 +30,8 @@ import android.widget.TabHost;
 
 import com.google.gson.Gson;
 
+import junit.framework.Test;
+
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,9 +60,9 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     {
         DEFAULT_TEST_CASES = new TestCase[]
         {
-            new TestCase(0, "Standard Android (Non-RT)"),
-            new TestCase(1, "Partial Real-Time Support", 40, 40, TestCase.NO_CORE_LOCK),
-            new TestCase(2, "Full Real-Time Support", 90, 90, 1),
+            new TestCase("Standard Android (Non-RT)", TestCase.NO_PRIORITY, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK),
+            new TestCase("Basic Real-Time Support", 40, 70, TestCase.NO_CORE_LOCK),
+            new TestCase("Advanced Real-Time Support", 90, 95, TestCase.CORE_LOCK_MIN),
         };
     }
 
@@ -202,21 +204,16 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     /**
      * Takes care about the fragment switching.
      */
-    class TabNavigator extends FragmentPagerAdapter implements TabHost.OnTabChangeListener,
-                                                               ViewPager.OnPageChangeListener
+    private class TabNavigator extends FragmentPagerAdapter implements TabHost.OnTabChangeListener, ViewPager.OnPageChangeListener
     {
-        private Fragment[] mFragments;
+        private final Fragment[] mFragments;
 
         public TabNavigator(FragmentManager manager)
         {
             super(manager);
 
             // Prepare all fragments
-            mFragments = new Fragment[]
-            {
-                BenchmarkFragment.newInstance(),
-                ResultFragment.newInstance()
-            };
+            mFragments = new Fragment[] { new BenchmarkFragment(), new ResultFragment() };
         }
 
         @Override

@@ -38,7 +38,6 @@ public class BenchmarkService extends IntentService
     public static final String EXTRA_SLEEP = "sleep";
     public static final String EXTRA_TEST_CASE = "test_case";
 
-    public static final String EXTRA_TEST_CASE_ID = "test_case_id";
     public static final String EXTRA_TEST_CASE_NAME = "test_case_name";
     public static final String EXTRA_ITERATIONS = "iterations";
     public static final String EXTRA_FILENAME = "filename";

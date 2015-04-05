@@ -227,11 +227,11 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
                 mCasesCompleted++;
 
                 // Notify
-                if(mListener != null)
+                if (mListener != null)
                 {
-                    int id = intent.getIntExtra(BenchmarkService.EXTRA_TEST_CASE_ID, -1);
-                    String fileName = intent.getStringExtra(BenchmarkService.EXTRA_FILENAME);
-                    mListener.onTestCaseCompleted(id, fileName);
+                    String name = intent.getStringExtra(BenchmarkService.EXTRA_TEST_CASE_NAME);
+                    String filename = intent.getStringExtra(BenchmarkService.EXTRA_FILENAME);
+                    mListener.onTestCaseCompleted(name, filename);
                 }
 
                 // Close
@@ -240,10 +240,7 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
                     stopService();
                     dismiss();
 
-                    if(mListener != null)
-                    {
-                        mListener.onBenchmarkFinished();
-                    }
+                    if (mListener != null) { mListener.onBenchmarkFinished(); }
                 }
             }
             else
@@ -261,10 +258,10 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
      */
     public interface OnProgressListener
     {
-        public void onTestCaseCompleted(int id, String fileName);
+        void onTestCaseCompleted(String name, String filename);
 
-        public void onBenchmarkFinished();
+        void onBenchmarkFinished();
 
-        public void onBenchmarkCanceled();
+        void onBenchmarkCanceled();
     }
 }

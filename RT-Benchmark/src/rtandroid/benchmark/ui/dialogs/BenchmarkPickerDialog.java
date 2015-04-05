@@ -23,7 +23,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
 
 import rtandroid.benchmark.R;
 import rtandroid.benchmark.benchmarks.Benchmark;
@@ -48,8 +47,6 @@ public class BenchmarkPickerDialog extends DialogFragment implements DialogInter
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-
         // Create value list
         Benchmark[] benchmarks = BenchmarkManager.getBenchmarks();
         String[] benchmarkNames = new String[benchmarks.length];
@@ -96,6 +93,6 @@ public class BenchmarkPickerDialog extends DialogFragment implements DialogInter
      */
     public interface OnValueSelectedListener
     {
-        public void onValueSelected(int requestCode, int value);
+        void onValueSelected(int requestCode, int value);
     }
 }

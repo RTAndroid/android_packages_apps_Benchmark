@@ -57,7 +57,11 @@ public class BenchmarkExecutor implements Runnable
 
         // Assure the folder exists
         File resultFolder = new File(Environment.getExternalStorageDirectory(), RESULT_FOLDER);
-        resultFolder.mkdirs();
+        if (!resultFolder.exists())
+        {
+            boolean res = resultFolder.mkdirs();
+            if (!res) { throw new RuntimeException("Cannot create the output directory!"); }
+        }
 
         // Generate the filename
         String benchmarkName = mBenchmark.getName().replaceAll("\\s","").replace('/', '-');
@@ -89,6 +93,13 @@ public class BenchmarkExecutor implements Runnable
         final Intent startIntent = new Intent(BenchmarkService.ACTION_START);
         startIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_NAME, mTestCase.getName());
         mContext.sendBroadcast(startIntent);
+
+        // Allow a short warmup of the new thread
+        for (int iteration = 0; iteration < 100; iteration++)
+        {
+            mLib.libSleep(mSleep);
+            mBenchmark.execute(mParameter);
+        }
 
         // Perform the actual benchmark
         long updateTimestamp = System.currentTimeMillis();
@@ -127,7 +138,7 @@ public class BenchmarkExecutor implements Runnable
 
         // Notify the GUI that the worker thread is done
         final Intent finishedIntent = new Intent(BenchmarkService.ACTION_FINISHED);
-        finishedIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_ID, mTestCase.getId());
+        finishedIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_NAME, mTestCase.getName());
         finishedIntent.putExtra(BenchmarkService.EXTRA_FILENAME, mFileName);
         mContext.sendBroadcast(finishedIntent);
 

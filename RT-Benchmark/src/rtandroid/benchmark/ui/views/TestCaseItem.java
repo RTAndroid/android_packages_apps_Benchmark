@@ -154,6 +154,6 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
      */
     public interface OnCheckedChangeListener
     {
-        public void OnCheckedChanged(TestCaseItem item, boolean checked);
+        void OnCheckedChanged(TestCaseItem item, boolean checked);
     }
 }

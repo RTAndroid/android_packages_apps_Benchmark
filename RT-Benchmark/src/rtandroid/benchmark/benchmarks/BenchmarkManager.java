@@ -21,7 +21,7 @@ package rtandroid.benchmark.benchmarks;
  */
 public class BenchmarkManager
 {
-    public static final Benchmark[] getBenchmarks()
+    public static Benchmark[] getBenchmarks()
     {
         return new Benchmark[]
         {

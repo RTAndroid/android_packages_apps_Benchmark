@@ -35,42 +35,22 @@ public class TestCase
     public static final int CORE_LOCK_MIN = 1;
     public static final int CORE_LOC_MAX = 3;
 
-    private int mId;
     private String mName;
     private int mPriority;
     private int mPowerLevel;
     private int mCpuCore;
 
     /**
-     * Initialize test case as normal android system.
-     */
-    public TestCase(int id, String name)
-    {
-        this(id, name, NO_PRIORITY, NO_POWER_LEVEL, NO_CORE_LOCK);
-    }
-
-    /**
      * Initialize test case with given values.
      */
-    public TestCase(int id, String name, int priority, int powerLevel, int cpuCore)
+    public TestCase(String name, int priority, int powerLevel, int cpuCore)
     {
-        mId = id;
         mName = name;
 
         // Try to set values
         setPriority(priority);
         setPowerLevel(powerLevel);
         setCpuCore(cpuCore);
-    }
-
-    public int getId()
-    {
-        return mId;
-    }
-
-    public void setId(int id)
-    {
-        this.mId = id;
     }
 
     public String getName()
@@ -80,7 +60,7 @@ public class TestCase
 
     public void setName(String name)
     {
-        this.mName = name;
+        mName = name;
     }
 
     public int getRealtimePriority()
@@ -139,9 +119,8 @@ public class TestCase
 
         TestCase testCase = (TestCase) o;
 
-        if (mId != testCase.mId) { return false; }
-        if (mPowerLevel != testCase.mPowerLevel) { return false; }
         if (mPriority != testCase.mPriority) { return false; }
+        if (mPowerLevel != testCase.mPowerLevel) { return false; }
         if (!mName.equals(testCase.mName)) { return false; }
 
         return true;
@@ -150,21 +129,20 @@ public class TestCase
     @Override
     public int hashCode()
     {
-        int result = mId;
-        result = 31 * result + mName.hashCode();
+        int result = mName.hashCode();
         result = 31 * result + mPriority;
         result = 31 * result + mPowerLevel;
+        result = 31 * result + mCpuCore;
         return result;
     }
 
-
-    public static class PriorityComparator implements Comparator<TestCase>
+    public static class TestCaseComparator implements Comparator<TestCase>
     {
         @Override
         public int compare(TestCase testCase1, TestCase testCase2)
         {
-            int prio1 = testCase1.getPrioritySum();
-            int prio2 = testCase2.getPrioritySum();
+            int prio1 = testCase1.getSortingValue();
+            int prio2 = testCase2.getSortingValue();
 
             if(prio1 == prio2) { return 0; }
             else if(prio1 < prio2) { return -1; }
@@ -172,10 +150,10 @@ public class TestCase
         }
     }
 
-    private int getPrioritySum()
+    private int getSortingValue()
     {
-        int sum = getRealtimePriority() + getPowerLevel();
-        if(getCpuCore() != NO_CORE_LOCK) { sum += 100; }
-        return sum;
+        int value = getRealtimePriority() + getPowerLevel();
+        if (getCpuCore() != NO_CORE_LOCK) { value += 100; }
+        return value;
     }
 }

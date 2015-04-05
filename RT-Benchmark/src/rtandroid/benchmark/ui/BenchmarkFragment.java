@@ -79,6 +79,8 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     private static final String KEY_CYCLES = "cycles";
     private static final String KEY_SLEEP = "sleep";
 
+    private final BenchmarkConfiguration mConfig = new BenchmarkConfiguration();
+
     private OnFragmentInteractionListener mListener;
     private TestCaseAdapter mTestCaseAdapter;
     private List<TestCase> mTestCases;
@@ -87,25 +89,6 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     private TextView mParameterDisplay;
     private TextView mCyclesDisplay;
     private TextView mSleepDisplay;
-
-    private final BenchmarkConfiguration mConfig = new BenchmarkConfiguration();
-
-    /**
-     * @return New instance of fragment RunBenchmarkFragment.
-     */
-    public static BenchmarkFragment newInstance()
-    {
-        BenchmarkFragment fragment = new BenchmarkFragment();
-        return fragment;
-    }
-
-    public BenchmarkFragment() { }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -317,7 +300,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onTestCaseCompleted(int id, String fileName)
+    public void onTestCaseCompleted(String name, String filename)
     {
         // can't notify without the listener
         if (mListener == null) { return; }
@@ -326,11 +309,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         TestCase completedTest = null;
         for (TestCase testCase : mTestCases)
         {
-            if (testCase.getId() == id)
-            {
-                completedTest = testCase;
-                break;
-            }
+            if (testCase.getName().equals(name)) { completedTest = testCase; }
         }
 
         // Which test was it?
@@ -339,7 +318,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
             throw new RuntimeException("Unknown test case completed!");
         }
 
-        mListener.onTestCaseCompleted(completedTest, fileName);
+        mListener.onTestCaseCompleted(completedTest, filename);
     }
 
     @Override
@@ -359,14 +338,14 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
      */
     public interface OnFragmentInteractionListener
     {
-        public void onBenchmarkStart(BenchmarkConfiguration config);
+        void onBenchmarkStart(BenchmarkConfiguration config);
 
-        public void onTestCaseCompleted(TestCase testCase, String fileName);
+        void onTestCaseCompleted(TestCase testCase, String fileName);
 
-        public void onBenchmarkFinished();
+        void onBenchmarkFinished();
 
-        public List<TestCase> loadTestCases();
+        List<TestCase> loadTestCases();
 
-        public void saveTestCases(List<TestCase> testCases);
+        void saveTestCases(List<TestCase> testCases);
     }
 }
