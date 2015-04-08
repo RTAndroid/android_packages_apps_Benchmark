@@ -21,7 +21,7 @@ public class MatrixMultiplication implements Benchmark
     private static final String NAME = "Matrix-Multiplication";
     private static final int MATRIX_SIZE = 10;
 
-    private long mMatrix[][] = new long[MATRIX_SIZE][MATRIX_SIZE];
+    private final long mMatrix[][] = new long[MATRIX_SIZE][MATRIX_SIZE];
 
     @Override
     public void execute(int parameter)

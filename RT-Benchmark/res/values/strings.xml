@@ -33,6 +33,8 @@
     <string name="run_input_cycles">Cycles</string>
     <string name="run_input_sleep">Sleep</string>
 
+    <string name="run_header_test_cases">Test Cases</string>
+
     <string name="run_button_run">Run Benchmark</string>
 
     <string name="run_input_sleep_unit">ms</string>

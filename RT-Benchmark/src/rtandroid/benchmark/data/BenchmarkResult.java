@@ -21,7 +21,7 @@ public class BenchmarkResult
         SLEEP_DEVIATION,
     }
 
-    private String mName;
+    private final String mName;
     private final Map<String, Map<Kind, Integer>> mResults = new LinkedHashMap<String, Map<Kind, Integer>>();
 
     public BenchmarkResult(String name)

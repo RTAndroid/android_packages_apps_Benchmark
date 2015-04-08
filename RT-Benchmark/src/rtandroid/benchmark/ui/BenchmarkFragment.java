@@ -100,10 +100,10 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         boolean isTwinMode = (root.findViewById(R.id.start_benchmark) != null);
         if (!isTwinMode)
         {
-            View header = inflater.inflate(R.layout.benchmark_settings, null, false);
-            View footer = inflater.inflate(R.layout.benchmark_test_cases, null, false);
-
             ListView listView = (ListView) root.findViewById(R.id.test_case_list);
+
+            View header = inflater.inflate(R.layout.benchmark_settings, listView, false);
+            View footer = inflater.inflate(R.layout.benchmark_test_cases, listView, false);
             listView.addHeaderView(header);
             listView.addFooterView(footer);
         }
@@ -230,22 +230,22 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         {
             case R.id.benchmark:
                 mConfig.BenchmarkIdx = value;
-                prefs.edit().putInt(KEY_BENCHMARK, mConfig.BenchmarkIdx).commit();
+                prefs.edit().putInt(KEY_BENCHMARK, mConfig.BenchmarkIdx).apply();
                 mBenchmarkDisplay.setText(mConfig.getBenchmark().getName());
                 break;
             case R.id.parameter:
                 mConfig.Parameter = value;
-                prefs.edit().putInt(KEY_PARAMETER, mConfig.Parameter).commit();
+                prefs.edit().putInt(KEY_PARAMETER, mConfig.Parameter).apply();
                 mParameterDisplay.setText(Integer.toString(mConfig.Parameter));
                 break;
             case R.id.cycles:
                 mConfig.Cycles = value;
-                prefs.edit().putInt(KEY_CYCLES, mConfig.Cycles).commit();
+                prefs.edit().putInt(KEY_CYCLES, mConfig.Cycles).apply();
                 mCyclesDisplay.setText(Integer.toString(mConfig.Cycles));
                 break;
             case R.id.sleep:
                 mConfig.SleepMs = value;
-                prefs.edit().putInt(KEY_SLEEP, mConfig.SleepMs).commit();
+                prefs.edit().putInt(KEY_SLEEP, mConfig.SleepMs).apply();
                 mSleepDisplay.setText(Integer.toString(mConfig.SleepMs));
                 break;
             default:

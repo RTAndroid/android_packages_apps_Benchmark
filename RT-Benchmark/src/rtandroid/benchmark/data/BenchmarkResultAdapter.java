@@ -32,7 +32,7 @@ import java.util.List;
 public class BenchmarkResultAdapter extends BaseAdapter implements SpinnerAdapter
 {
     private final LayoutInflater mInflater;
-    private List<BenchmarkResult> mResults;
+    private final List<BenchmarkResult> mResults;
 
     public BenchmarkResultAdapter(Context context, List<BenchmarkResult> results)
     {

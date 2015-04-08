@@ -34,7 +34,7 @@ public class ResultAnalyzer
     private final BenchmarkConfiguration mConfig;
     private final String mFileName;
 
-    private Map<Kind, Integer> mResult = new HashMap<Kind, Integer>(Kind.values().length);
+    private final Map<Kind, Integer> mResult = new HashMap<Kind, Integer>(Kind.values().length);
 
     public ResultAnalyzer(BenchmarkConfiguration config, String fileName)
     {
@@ -92,7 +92,7 @@ public class ResultAnalyzer
      */
     public Map<Kind, Integer> getResults()
     {
-        if(mResult == null)
+        if(mResult.isEmpty())
         {
             throw new IllegalStateException("No statistics are available before evaluation!");
         }
