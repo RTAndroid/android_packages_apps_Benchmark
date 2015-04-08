@@ -99,7 +99,7 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
     }
 
     @Override
-    public void OnCheckedChanged(TestCaseItem item, boolean checked)
+    public void onCheckedChanged(TestCaseItem item, boolean checked)
     {
         TestCase testCase = item.getTestCase();
         if (checked)
