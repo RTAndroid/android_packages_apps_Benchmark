@@ -30,10 +30,9 @@
 
     <TextView
         android:id="@+id/picker_unit"
-        android:paddingLeft="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="unit"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 </LinearLayout>

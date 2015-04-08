@@ -16,12 +16,12 @@
 
 package rtandroid.benchmark.data;
 
-import android.support.annotation.NonNull;
+import java.util.Comparator;
 
 /**
  * Represents a possible test case.
  */
-public class TestCase implements Comparable
+public class TestCase
 {
     public static final int NO_PRIORITY = -1;
     public static final int PRIORITY_MIN = 1;
@@ -34,42 +34,22 @@ public class TestCase implements Comparable
     public static final int NO_CORE_LOCK = 0;
     public static final int CORE_LOCK_MIN = 1;
 
-    private int mId;
     private String mName;
     private int mPriority;
     private int mPowerLevel;
     private int mCpuCore;
 
     /**
-     * Initialize test case as normal android system.
-     */
-    public TestCase(int id, String name)
-    {
-        this(id, name, NO_PRIORITY, NO_POWER_LEVEL, NO_CORE_LOCK);
-    }
-
-    /**
      * Initialize test case with given values.
      */
-    public TestCase(int id, String name, int priority, int powerLevel, int cpuCore)
+    public TestCase(String name, int priority, int powerLevel, int cpuCore)
     {
-        mId = id;
         mName = name;
 
         // Try to set values
         setPriority(priority);
         setPowerLevel(powerLevel);
         setCpuCore(cpuCore);
-    }
-
-    public int getId()
-    {
-        return mId;
-    }
-
-    public void setId(int id)
-    {
-        this.mId = id;
     }
 
     public String getName()
@@ -79,7 +59,7 @@ public class TestCase implements Comparable
 
     public void setName(String name)
     {
-        this.mName = name;
+        mName = name;
     }
 
     public int getRealtimePriority()
@@ -139,9 +119,8 @@ public class TestCase implements Comparable
 
         TestCase testCase = (TestCase) o;
 
-        if (mId != testCase.mId) { return false; }
-        if (mPowerLevel != testCase.mPowerLevel) { return false; }
         if (mPriority != testCase.mPriority) { return false; }
+        if (mPowerLevel != testCase.mPowerLevel) { return false; }
         if (!mName.equals(testCase.mName)) { return false; }
 
         return true;
@@ -150,27 +129,34 @@ public class TestCase implements Comparable
     @Override
     public int hashCode()
     {
-        int result = mId;
-        result = 31 * result + mName.hashCode();
+        int result = mName.hashCode();
         result = 31 * result + mPriority;
         result = 31 * result + mPowerLevel;
+        result = 31 * result + mCpuCore;
         return result;
     }
 
-    @Override
-    public int compareTo(@NonNull Object o)
+    public static class TestCaseComparator implements Comparator<TestCase>
     {
-        if (this.equals(o))
+        @Override
+        public int compare(TestCase testCase1, TestCase testCase2)
         {
-            return 0;
-        }
+            int prio1 = testCase1.getSortingValue();
+            int prio2 = testCase2.getSortingValue();
 
-        if (o instanceof TestCase)
-        {
-            TestCase other = (TestCase)o;
-            return this.getName().compareTo(other.getName());
+            if(prio1 == prio2) { return 0; }
+            else if(prio1 < prio2) { return -1; }
+            else { return 1; }
         }
+    }
 
-        throw new ClassCastException();
+    private int getSortingValue()
+    {
+        int value = getRealtimePriority() + getPowerLevel();
+
+        if (getCpuCore() != NO_CORE_LOCK) { value += 100; }
+        if (getName().contains("Warmup")) { value -= 500; }
+
+        return value;
     }
 }

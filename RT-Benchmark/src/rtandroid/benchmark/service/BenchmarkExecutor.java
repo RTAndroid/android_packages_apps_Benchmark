@@ -33,7 +33,7 @@ public class BenchmarkExecutor implements Runnable
     private static final String TAG = BenchmarkExecutor.class.getSimpleName();
     private static final String RESULT_FOLDER = "Benchmark";
     private static final String FILE_TEMPLATE =  RESULT_FOLDER.toLowerCase(Locale.getDefault()) + "_b=%s_p=%d_s=%d_c=%d_case=%s.csv";
-    private static final int GUI_UPDATE_TIME = 1500;
+    private static final long GUI_UPDATE_TIME = 500 * 1000 * 1000; // in ms
 
     private final Context mContext;
     private final Benchmark mBenchmark;
@@ -55,12 +55,18 @@ public class BenchmarkExecutor implements Runnable
         mSleep = sleep;
         mTestCase = testCase;
 
+        // Assure the folder exists
+        File resultFolder = new File(Environment.getExternalStorageDirectory(), RESULT_FOLDER);
+        if (!resultFolder.exists())
+        {
+            boolean res = resultFolder.mkdirs();
+            if (!res) { throw new RuntimeException("Cannot create the output directory!"); }
+        }
+
         // Generate the filename
         String benchmarkName = mBenchmark.getName().replaceAll("\\s","").replace('/', '-');
         String caseName = mTestCase.getName().replaceAll("\\s","").replace('/', '-');
         String fileName = String.format(Locale.US, FILE_TEMPLATE, benchmarkName, mParameter, mSleep, mCycles, caseName);
-        File resultFolder = new File(Environment.getExternalStorageDirectory(), RESULT_FOLDER);
-        resultFolder.mkdirs();
         mFileName = new File(resultFolder, fileName).getAbsolutePath();
 
         // Create the library
@@ -77,33 +83,28 @@ public class BenchmarkExecutor implements Runnable
         // This prevents the cpu from deep sleep
         int powerLevel = mTestCase.getPowerLevel();
         int cpuCore = mTestCase.getCpuCore();
-        Object lock = RealTimeUtils.acquireLock(mContext, powerLevel, cpuCore);
+        boolean exclusive = true; // TODO: mTestCase.isCpuLockExclusive();
+        Object lock = RealTimeUtils.acquireLock(mContext, powerLevel, cpuCore, exclusive);
 
         // Set real-time priority value
         int priority = mTestCase.getRealtimePriority();
         RealTimeUtils.setPriority(priority);
 
         // Notify activity about start
-        final Intent warmupIntent = new Intent(BenchmarkService.ACTION_WARMUP);
-        warmupIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_NAME, mTestCase.getName());
-        mContext.sendBroadcast(warmupIntent);
+        final Intent startIntent = new Intent(BenchmarkService.ACTION_START);
+        startIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_NAME, mTestCase.getName());
+        mContext.sendBroadcast(startIntent);
 
-        // Warming up phase
-        for (int i = 0; i < 50; i++)
+        // Allow a short warmup of the new thread
+        for (int iteration = 0; iteration < 50; iteration++)
         {
             mLib.libSleep(mSleep);
             mBenchmark.execute(mParameter);
         }
 
-        // Notify activity about start
-        final Intent startIntent = new Intent(BenchmarkService.ACTION_START);
-        startIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_NAME, mTestCase.getName());
-        mContext.sendBroadcast(startIntent);
-
-        // Perform benchmark
-        long updateTimestamp = System.currentTimeMillis();
+        // Perform the actual benchmark
+        long updateTimestamp = System.nanoTime();
         final Intent updateIntent = new Intent(BenchmarkService.ACTION_UPDATE);
-
         for (int iteration = 0; (iteration < mCycles) && !mInterrupted; iteration++)
         {
             // Sleep a bit
@@ -120,13 +121,12 @@ public class BenchmarkExecutor implements Runnable
             mLib.libWriteCR();
 
             // Send progress to activity
-            long time = System.currentTimeMillis();
+            long time = System.nanoTime();
             if ((time - updateTimestamp) >= GUI_UPDATE_TIME)
             {
+                updateTimestamp = time;
                 updateIntent.putExtra(BenchmarkService.EXTRA_ITERATIONS, iteration);
                 mContext.sendBroadcast(updateIntent);
-
-                updateTimestamp = time;
             }
         }
 
@@ -139,7 +139,7 @@ public class BenchmarkExecutor implements Runnable
 
         // Notify the GUI that the worker thread is done
         final Intent finishedIntent = new Intent(BenchmarkService.ACTION_FINISHED);
-        finishedIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_ID, mTestCase.getId());
+        finishedIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_NAME, mTestCase.getName());
         finishedIntent.putExtra(BenchmarkService.EXTRA_FILENAME, mFileName);
         mContext.sendBroadcast(finishedIntent);
 

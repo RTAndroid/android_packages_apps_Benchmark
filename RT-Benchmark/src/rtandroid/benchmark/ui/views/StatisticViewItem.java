@@ -78,7 +78,7 @@ public class StatisticViewItem extends TableRow
         }
         else
         {
-            displayValue = String.format(Locale.getDefault(), "%d", value);;
+            displayValue = String.format(Locale.getDefault(), "%d", value);
             unit = "μs";
         }
         resultValue.setText(String.format("%s %s", displayValue, unit));

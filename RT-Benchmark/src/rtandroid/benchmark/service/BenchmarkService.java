@@ -28,7 +28,6 @@ import rtandroid.benchmark.data.TestCase;
 
 public class BenchmarkService extends IntentService
 {
-    public static final String ACTION_WARMUP = "rtandroid.benchmark.ACTION_WARMUP";
     public static final String ACTION_START = "rtandroid.benchmark.ACTION_START";
     public static final String ACTION_UPDATE = "rtandroid.benchmark.ACTION_UPDATE";
     public static final String ACTION_FINISHED = "rtandroid.benchmark.ACTION_FINISHED";
@@ -39,7 +38,6 @@ public class BenchmarkService extends IntentService
     public static final String EXTRA_SLEEP = "sleep";
     public static final String EXTRA_TEST_CASE = "test_case";
 
-    public static final String EXTRA_TEST_CASE_ID = "test_case_id";
     public static final String EXTRA_TEST_CASE_NAME = "test_case_name";
     public static final String EXTRA_ITERATIONS = "iterations";
     public static final String EXTRA_FILENAME = "filename";
@@ -69,10 +67,8 @@ public class BenchmarkService extends IntentService
         super.onDestroy();
 
         // Signal stopping
-        if(mExecutor != null)
-        {
-            mExecutor.cancel();
-        }
+        if (mExecutor != null) { mExecutor.cancel(); }
+
         Log.d(TAG, "BenchmarkService destroyed");
     }
 
@@ -85,17 +81,16 @@ public class BenchmarkService extends IntentService
         int cycles = intent.getIntExtra(EXTRA_CYCLES, EXTRA_NOT_FOUND);
         int sleep = intent.getIntExtra(EXTRA_SLEEP, EXTRA_NOT_FOUND);
 
-        if(benchmarkIdx == EXTRA_NOT_FOUND || parameter == EXTRA_NOT_FOUND || sleep == EXTRA_NOT_FOUND || cycles == EXTRA_NOT_FOUND)
+        if (benchmarkIdx == EXTRA_NOT_FOUND || parameter == EXTRA_NOT_FOUND || sleep == EXTRA_NOT_FOUND || cycles == EXTRA_NOT_FOUND)
         {
             throw new RuntimeException("Missing extras in Intent from Activity!");
         }
 
         Benchmark[] benchmarks = BenchmarkManager.getBenchmarks();
-        if(benchmarkIdx >= benchmarks.length)
+        if (benchmarkIdx >= benchmarks.length)
         {
             throw new RuntimeException("Invalid benchmark index in Intent from Activity!");
         }
-        Benchmark benchmark = benchmarks[benchmarkIdx];
 
         Gson gson = new Gson();
         String jsonTestCase = intent.getStringExtra(EXTRA_TEST_CASE);
@@ -104,7 +99,7 @@ public class BenchmarkService extends IntentService
         // Start actual work in separate thread
         try
         {
-            mExecutor = new BenchmarkExecutor(getBaseContext(), benchmark, parameter, cycles, sleep, testCase);
+            mExecutor = new BenchmarkExecutor(getBaseContext(), benchmarks[benchmarkIdx], parameter, cycles, sleep, testCase);
             Thread thread = new Thread(mExecutor);
             thread.start();
             thread.join();
@@ -113,6 +108,5 @@ public class BenchmarkService extends IntentService
         {
             // Ignore it
         }
-
     }
 }

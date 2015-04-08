@@ -53,7 +53,6 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
     private OnProgressListener mListener;
     private BroadcastReceiver mUpdateReceiver;
 
-    private boolean mIsWarmupPhase = false;
     private String mCurrentTestCaseName = "";
 
     private int mCasesTotal;
@@ -109,7 +108,7 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         // Build dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         Dialog dlg = builder
-                .setTitle(String.format(Locale.US, "Performing %s Benchmark...", benchmarkName))
+                .setTitle(benchmarkName)
                 .setView(v)
                 .setNegativeButton(android.R.string.cancel, this)
                 .create();
@@ -139,7 +138,6 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         // Register listener
         mUpdateReceiver = new UpdateReceiver();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(BenchmarkService.ACTION_WARMUP);
         filter.addAction(BenchmarkService.ACTION_START);
         filter.addAction(BenchmarkService.ACTION_UPDATE);
         filter.addAction(BenchmarkService.ACTION_FINISHED);
@@ -194,9 +192,7 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         mTotalProgress.setText(String.format(Locale.US, "Total: %d%%", 100 * completedCycles / mCyclesTotal));
         mTotalProgressBar.setProgress(mCasesCompleted * mCyclesPerRun + mCyclesCompleted);
 
-        String warmup = String.format(Locale.US, "Preparing '%s'", mCurrentTestCaseName);
-        String running = String.format(Locale.US, "%s: %d%%", mCurrentTestCaseName, 100 * mCyclesCompleted / mCyclesPerRun);
-        mCurrentProgress.setText(mIsWarmupPhase ? warmup : running);
+        mCurrentProgress.setText(String.format(Locale.US, "%s: %d%%", mCurrentTestCaseName, 100 * mCyclesCompleted / mCyclesPerRun));
         mCurrentProgressBar.setProgress(mCyclesCompleted);
     }
 
@@ -213,14 +209,8 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         {
             String action = intent.getAction();
 
-            if (action.equals(BenchmarkService.ACTION_WARMUP))
+            if (action.equals(BenchmarkService.ACTION_START))
             {
-                mIsWarmupPhase = true;
-                mCurrentTestCaseName = intent.getStringExtra(BenchmarkService.EXTRA_TEST_CASE_NAME);
-            }
-            else if (action.equals(BenchmarkService.ACTION_START))
-            {
-                mIsWarmupPhase = false;
                 mCurrentTestCaseName = intent.getStringExtra(BenchmarkService.EXTRA_TEST_CASE_NAME);
             }
             else if (action.equals(BenchmarkService.ACTION_UPDATE))
@@ -237,11 +227,11 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
                 mCasesCompleted++;
 
                 // Notify
-                if(mListener != null)
+                if (mListener != null)
                 {
-                    int id = intent.getIntExtra(BenchmarkService.EXTRA_TEST_CASE_ID, -1);
-                    String fileName = intent.getStringExtra(BenchmarkService.EXTRA_FILENAME);
-                    mListener.onTestCaseCompleted(id, fileName);
+                    String name = intent.getStringExtra(BenchmarkService.EXTRA_TEST_CASE_NAME);
+                    String filename = intent.getStringExtra(BenchmarkService.EXTRA_FILENAME);
+                    mListener.onTestCaseCompleted(name, filename);
                 }
 
                 // Close
@@ -250,10 +240,7 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
                     stopService();
                     dismiss();
 
-                    if(mListener != null)
-                    {
-                        mListener.onBenchmarkFinished();
-                    }
+                    if (mListener != null) { mListener.onBenchmarkFinished(); }
                 }
             }
             else
@@ -271,10 +258,10 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
      */
     public interface OnProgressListener
     {
-        public void onTestCaseCompleted(int id, String fileName);
+        void onTestCaseCompleted(String name, String filename);
 
-        public void onBenchmarkFinished();
+        void onBenchmarkFinished();
 
-        public void onBenchmarkCanceled();
+        void onBenchmarkCanceled();
     }
 }

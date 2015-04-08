@@ -34,7 +34,9 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import rtandroid.RealTimeWrapper;
 import rtandroid.benchmark.R;
+import rtandroid.benchmark.RealTimeUtils;
 import rtandroid.benchmark.data.TestCase;
 
 /**
@@ -97,19 +99,22 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
         mPowerLevel.setOnSeekBarChangeListener(this);
         mPowerLevelText = (TextView) v.findViewById(R.id.txt_power_level);
 
-        String[] cores = new String[Runtime.getRuntime().availableProcessors()];
+        // Get number of CPUs
+        int count = RealTimeUtils.getCpuCoreCount();
+        if (count < 1) { throw new RuntimeException("Failed to get configured processors!"); }
+
+        // We want to be able to lock on all cores
+        String[] cores = new String[count];
         cores[0] = "Disabled";
-        for (int i = 1; i < cores.length; i++)
-        {
-            cores[i] = "Core " + (i+1);
-        }
+        for (int i = 1; i < count; i++) { cores[i] = "Core " + i; }
+
         SpinnerAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cores);
         mCpuLock = (Spinner) v.findViewById(R.id.input_cpu_core);
         mCpuLock.setAdapter(adapter);
 
         // Fill with values
         Bundle args = getArguments();
-        if(args != null)
+        if (args != null)
         {
             Gson gson = new Gson();
             String jsonTestCase = args.getString(ARG_CASE);
@@ -117,9 +122,10 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
 
             mName.setText(mTestCase.getName());
             mPriority.setProgress(mTestCase.getRealtimePriority());
-            mPowerLevel.setProgress(mTestCase.getRealtimePriority());
+            mPowerLevel.setProgress(mTestCase.getPowerLevel());
             mCpuLock.setSelection(mTestCase.getCpuCore());
         }
+
         onProgressChanged(mPriority, mPriority.getProgress(), false);
         onProgressChanged(mPowerLevel, mPowerLevel.getProgress(), false);
 
@@ -202,35 +208,21 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
         {
             if (mName.getText().toString().isEmpty())
             {
-                mName.setError("Name must be given!");
+                mName.setError("Please enter a name");
                 return;
             }
 
-            // Pass value to listener
+            // Pass a value to listener
             if (mTestCase == null)
             {
-                mTestCase = new TestCase(0, "");
+                mTestCase = new TestCase("", TestCase.NO_PRIORITY, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK);
             }
 
             mTestCase.setName(mName.getText().toString());
             mTestCase.setCpuCore((int) mCpuLock.getSelectedItemId());
-            if (mPriority.getProgress() == 0)
-            {
-                mTestCase.setPriority(TestCase.NO_PRIORITY);
-            }
-            else
-            {
-                mTestCase.setPriority(mPriority.getProgress());
-            }
 
-            if (mPowerLevel.getProgress() == 0)
-            {
-                mTestCase.setPowerLevel(TestCase.NO_POWER_LEVEL);
-            }
-            else
-            {
-                mTestCase.setPowerLevel(mPowerLevel.getProgress());
-            }
+            if (mPriority.getProgress() != 0) { mTestCase.setPriority(mPriority.getProgress()); }
+            if (mPowerLevel.getProgress() != 0) { mTestCase.setPowerLevel(mPowerLevel.getProgress()); }
 
             mListener.onTestCaseSave(mTestCase);
         }
@@ -244,6 +236,6 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
      */
     public interface OnTestCaseSaveListener
     {
-        public void onTestCaseSave(TestCase testCase);
+        void onTestCaseSave(TestCase testCase);
     }
 }

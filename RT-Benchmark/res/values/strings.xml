@@ -33,6 +33,8 @@
     <string name="run_input_cycles">Cycles</string>
     <string name="run_input_sleep">Sleep</string>
 
+    <string name="run_header_test_cases">Test Cases</string>
+
     <string name="run_button_run">Run Benchmark</string>
     <string name="run_button_add_case">New Test Case</string>
 
@@ -41,9 +43,9 @@
 
     <string name="dialog_test_case_title">Configure Test Case</string>
     <string name="dialog_missing_test_case_title">Missing test cases!</string>
-    <string name="dialog_missing_test_case_msg">Please select at least two test cases from the list to be able to compare results.</string>
+    <string name="dialog_missing_test_case_msg">Please select at least one test case from the list.</string>
 
-    <string name="result_switch_name">Result:</string>
+    <string name="result_switch_name">Saved results:</string>
 
     <string name="result_statistic_calc_min">Calculation Minimum</string>
     <string name="result_statistic_calc_mean">Calculation Average</string>

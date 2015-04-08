@@ -23,7 +23,6 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 import rtandroid.CpuLock;
 import rtandroid.IRealTimeService;
@@ -67,7 +66,7 @@ public class RealTimeUtils
         catch (RemoteException e) { throw new RuntimeException(e); }
     }
 
-    public static Object acquireLock(Context context, int powerLevel, int cpuCore)
+    public static Object acquireLock(Context context, int powerLevel, int cpuCore, boolean exclusive)
     {
         // Get a simple WakeLock on a non-rt system
         if (getBuildVersion() < 0)
@@ -84,18 +83,17 @@ public class RealTimeUtils
         // Set the power level to a fixed value
         if (powerLevel != TestCase.NO_POWER_LEVEL)
         {
-            Log.i(TAG, "Setting power lever to " + powerLevel);
+            Log.d(TAG, "Setting power lever to " + powerLevel);
             cpuLock.setPowerLevel(powerLevel);
         }
 
         // Set a cpu core to lock this process on
         if (cpuCore != TestCase.NO_CORE_LOCK)
         {
-            ArrayList<Integer> list = new ArrayList<Integer>();
-            list.add(cpuCore);
+            Integer[] list = new Integer[] { cpuCore };
             int tid = android.os.Process.myTid();
-            Log.i(TAG, "Setting cpu core of tid " + tid + " to " + cpuCore);
-            cpuLock.setUsedCores(tid, list, false);
+            Log.d(TAG, "Setting cpu core of tid " + tid + " to " + cpuCore);
+            cpuLock.setUsedCores(tid, list, exclusive);
         }
 
         // This will prevent the cpu from sleep even w/o fixed power level
@@ -116,5 +114,24 @@ public class RealTimeUtils
         // Release the cpu lock
         CpuLock cpuLock = (CpuLock) lock;
         cpuLock.release();
+    }
+
+    public static int getCpuCoreCount()
+    {
+        int count = 0;
+
+        // Just use the normal Java thing
+        if (getBuildVersion() < 0)
+        {
+            return Runtime.getRuntime().availableProcessors();
+        }
+        else
+        // Or use our own implementation
+        {
+            try { count = RealTimeWrapper.getService().getConfiguredProcessors(); }
+            catch (Exception e) { Log.d(TAG, "Failed to find RT erstension: " + e.getMessage()); }
+        }
+
+        return count;
     }
 }

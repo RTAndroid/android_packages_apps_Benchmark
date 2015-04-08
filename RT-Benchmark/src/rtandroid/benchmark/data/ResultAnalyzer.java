@@ -34,7 +34,7 @@ public class ResultAnalyzer
     private final BenchmarkConfiguration mConfig;
     private final String mFileName;
 
-    private Map<Kind, Integer> mResult = new HashMap<Kind, Integer>(Kind.values().length);
+    private final Map<Kind, Integer> mResult = new HashMap<Kind, Integer>(Kind.values().length);
 
     public ResultAnalyzer(BenchmarkConfiguration config, String fileName)
     {
@@ -47,25 +47,28 @@ public class ResultAnalyzer
         SummaryStatistics calcStatistic = new SummaryStatistics();
         SummaryStatistics sleepStatistic = new SummaryStatistics();
 
-        BufferedReader reader = new BufferedReader(new FileReader(mFileName));
+        FileReader fileReader = new FileReader(mFileName);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+
         String line;
-        while ((line = reader.readLine()) != null)
+        int sleep = mConfig.SleepMs * 1000;
+        while ((line = bufferedReader.readLine()) != null)
         {
             String[] parts = line.split(";", 3);
 
             try
             {
-                int calcTimeUs = Integer.valueOf(parts[0]);
-                int sleepTimeUs = Integer.valueOf(parts[1]) - mConfig.SleepMs * 1000;
+                int calcTimeUs = Integer.parseInt(parts[0]);
+                int sleepTimeUs = Integer.parseInt(parts[1]) - sleep;
 
                 calcStatistic.addValue(calcTimeUs);
                 sleepStatistic.addValue(sleepTimeUs);
             }
-            catch (ArrayIndexOutOfBoundsException e)
+            catch (ArrayIndexOutOfBoundsException ignore)
             {
                 // Ignore all garbage
             }
-            catch (NumberFormatException e)
+            catch (NumberFormatException ignore)
             {
                 // Ignore all text lines
             }
@@ -80,7 +83,8 @@ public class ResultAnalyzer
         mResult.put(Kind.SLEEP_MAXIMUM, (int) sleepStatistic.getMax());
         mResult.put(Kind.SLEEP_DEVIATION, (int) sleepStatistic.getStandardDeviation());
 
-        reader.close();
+        bufferedReader.close();
+        fileReader.close();
     }
 
     /**
@@ -88,7 +92,7 @@ public class ResultAnalyzer
      */
     public Map<Kind, Integer> getResults()
     {
-        if(mResult == null)
+        if(mResult.isEmpty())
         {
             throw new IllegalStateException("No statistics are available before evaluation!");
         }

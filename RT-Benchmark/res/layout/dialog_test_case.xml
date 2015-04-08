@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="32dp"
-                android:text="Real-time Priority"/>
+                android:text="Priority"/>
 
             <SeekBar
                 android:id="@+id/input_priority"

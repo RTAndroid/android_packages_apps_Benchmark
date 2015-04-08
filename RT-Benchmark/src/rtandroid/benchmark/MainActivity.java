@@ -48,10 +48,8 @@ import rtandroid.benchmark.ui.BenchmarkFragment;
 import rtandroid.benchmark.ui.ResultFragment;
 
 public class MainActivity extends ActionBarActivity implements BenchmarkFragment.OnFragmentInteractionListener,
-                                                                ResultFragment.OnFragmentInteractionListener
+                                                               ResultFragment.OnFragmentInteractionListener
 {
-    public static final int DEFAULT_TEST_CASE_ID_MAX = 9;
-
     private static final String KEY_TEST_CASES = "test_cases";
     private static final String KEY_RESULTS = "results";
 
@@ -60,10 +58,9 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     {
         DEFAULT_TEST_CASES = new TestCase[]
         {
-            new TestCase(0, "Standard Android (Non-RT)"),
-            new TestCase(1, "Minimal Real-Time Support", 20, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK),
-            new TestCase(2, "Basic Real-Time Support", 40, 40, TestCase.NO_CORE_LOCK),
-            new TestCase(3, "Advanced Real-Time Support", 90, 90, 1),
+            new TestCase("Standard Android (Non-RT)", TestCase.NO_PRIORITY, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK),
+            new TestCase("Basic Real-Time Support", 40, 85, TestCase.NO_CORE_LOCK),
+            new TestCase("Advanced Real-Time Support", 90, 100, TestCase.CORE_LOCK_MIN),
         };
     }
 
@@ -210,21 +207,16 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     /**
      * Takes care about the fragment switching.
      */
-    class TabNavigator extends FragmentPagerAdapter implements TabHost.OnTabChangeListener,
-                                                               ViewPager.OnPageChangeListener
+    private class TabNavigator extends FragmentPagerAdapter implements TabHost.OnTabChangeListener, ViewPager.OnPageChangeListener
     {
-        private Fragment[] mFragments;
+        private final Fragment[] mFragments;
 
         public TabNavigator(FragmentManager manager)
         {
             super(manager);
 
             // Prepare all fragments
-            mFragments = new Fragment[]
-            {
-                BenchmarkFragment.newInstance(),
-                ResultFragment.newInstance()
-            };
+            mFragments = new Fragment[] { new BenchmarkFragment(), new ResultFragment() };
         }
 
         @Override

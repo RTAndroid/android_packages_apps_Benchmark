@@ -38,8 +38,8 @@ public class HorizontalBarView extends View
 
     private int mValue;
     private int mMaxValue;
-    private Paint mPaintPrimary;
-    private Paint mPaintSecondary;
+    private final Paint mPaintPrimary;
+    private final Paint mPaintSecondary;
 
     //
     // Constructors simply passing data forward

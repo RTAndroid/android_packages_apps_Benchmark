@@ -61,16 +61,6 @@ public class ResultFragment extends Fragment implements AdapterView.OnItemSelect
     private Spinner mSpinner;
     private SpinnerAdapter mAdapter;
 
-    /**
-     * @return New instance of fragment RunBenchmarkFragment.
-     */
-    public static ResultFragment newInstance()
-    {
-        return new ResultFragment();
-    }
-
-    public ResultFragment() { }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -154,6 +144,6 @@ public class ResultFragment extends Fragment implements AdapterView.OnItemSelect
         /**
          * @return Adapter which returns BenchmarkResult objects on getItem().
          */
-        public SpinnerAdapter getResultAdapter();
+        SpinnerAdapter getResultAdapter();
     }
 }

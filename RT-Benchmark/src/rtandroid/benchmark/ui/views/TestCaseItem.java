@@ -71,7 +71,7 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
     {
         if (mListener != null)
         {
-            mListener.OnCheckedChanged(this, b);
+            mListener.onCheckedChanged(this, b);
         }
     }
 
@@ -146,6 +146,6 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
      */
     public interface OnCheckedChangeListener
     {
-        public void OnCheckedChanged(TestCaseItem item, boolean checked);
+        void onCheckedChanged(TestCaseItem item, boolean checked);
     }
 }

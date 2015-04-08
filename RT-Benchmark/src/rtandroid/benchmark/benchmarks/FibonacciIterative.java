@@ -18,7 +18,7 @@ package rtandroid.benchmark.benchmarks;
 
 public class FibonacciIterative implements Benchmark
 {
-    private static final String NAME = "Fibonacci";
+    private static final String NAME = "Fibonacci-Iterative";
 
     @Override
     public void execute(int parameter)

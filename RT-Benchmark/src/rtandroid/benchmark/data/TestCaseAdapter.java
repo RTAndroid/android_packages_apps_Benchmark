@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import rtandroid.benchmark.R;
+import rtandroid.benchmark.data.TestCase.TestCaseComparator;
 import rtandroid.benchmark.ui.views.TestCaseItem;
 
 /**
@@ -50,7 +51,7 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
         mInflater = LayoutInflater.from(context);
         mTestCases = cases;
 
-        mSelectedCases = new TreeSet<TestCase>();
+        mSelectedCases = new TreeSet<TestCase>(new TestCaseComparator());
         mSelectedCases.addAll(cases);
     }
 
@@ -100,7 +101,7 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
     }
 
     @Override
-    public void OnCheckedChanged(TestCaseItem item, boolean checked)
+    public void onCheckedChanged(TestCaseItem item, boolean checked)
     {
         TestCase testCase = item.getTestCase();
         if (checked)

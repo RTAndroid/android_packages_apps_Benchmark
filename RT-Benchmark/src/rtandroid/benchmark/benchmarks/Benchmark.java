@@ -24,10 +24,10 @@ public interface Benchmark
     /**
      * Execute actual benchmark with given parameter.
      */
-    public void execute(int parameter);
+    void execute(int parameter);
 
     /**
      * @return Name to display.
      */
-    public String getName();
+    String getName();
 }

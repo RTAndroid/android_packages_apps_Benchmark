@@ -49,14 +49,6 @@ public class NumberPickerDialog extends DialogFragment implements DialogInterfac
     /**
      * @return New instance of fragment NumberPickerDialog.
      */
-    public static NumberPickerDialog newInstance(int titleRes, int min, int max, int value, int unit)
-    {
-        return newInstance(titleRes, min, max, 1, value, unit);
-    }
-
-    /**
-     * @return New instance of fragment NumberPickerDialog.
-     */
     public static NumberPickerDialog newInstance(int titleRes, int min, int max, int step, int value, int unit)
     {
         // Check borders
@@ -154,6 +146,6 @@ public class NumberPickerDialog extends DialogFragment implements DialogInterfac
      */
     public interface OnValueSelectedListener
     {
-        public void onValueSelected(int requestCode, int value);
+        void onValueSelected(int requestCode, int value);
     }
 }
