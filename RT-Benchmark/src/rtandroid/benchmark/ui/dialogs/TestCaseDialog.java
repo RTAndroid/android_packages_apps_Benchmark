@@ -34,7 +34,6 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import rtandroid.RealTimeWrapper;
 import rtandroid.benchmark.R;
 import rtandroid.benchmark.RealTimeUtils;
 import rtandroid.benchmark.data.TestCase;

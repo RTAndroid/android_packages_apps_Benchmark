@@ -20,7 +20,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    style="?android:attr/buttonBarStyle">
 
     <Button
         android:id="@+id/add_test_case"
@@ -31,7 +32,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="24dp"
-        android:text="@string/run_button_add_case"/>
+        android:text="@string/run_button_add_case"
+        style="?android:attr/buttonBarButtonStyle"/>
 
     <Button
         android:id="@+id/start_benchmark"
@@ -42,6 +44,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="24dp"
-        android:text="@string/run_button_run"/>
+        android:text="@string/run_button_run"
+        style="?android:attr/buttonBarButtonStyle"/>
 
 </LinearLayout>
