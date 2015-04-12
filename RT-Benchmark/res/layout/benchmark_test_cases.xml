@@ -21,6 +21,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:layout_marginTop="16dp"
+    android:gravity="center_horizontal"
     style="?android:attr/buttonBarStyle">
 
     <Button
@@ -30,8 +32,8 @@
         android:layout_gravity="center"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/run_button_add_case"
         style="?android:attr/buttonBarButtonStyle"/>
 
@@ -42,8 +44,8 @@
         android:layout_gravity="center"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:text="@string/run_button_run"
         style="?android:attr/buttonBarButtonStyle"/>
 
