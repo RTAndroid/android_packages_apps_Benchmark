@@ -132,7 +132,16 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
         }
         else
         {
-            details.append("Cpu core lock");
+            boolean exclusive = testCase.isCpuLockExclusive();
+            if(exclusive)
+            {
+                details.append("Exclusive cpu core lock");
+            }
+            else
+            {
+                details.append("Cpu core lock");
+            }
+
         }
 
         mTestCase = testCase;

@@ -38,11 +38,12 @@ public class TestCase
     private int mPriority;
     private int mPowerLevel;
     private int mCpuCore;
+    private boolean mCpuLockExclusive;
 
     /**
      * Initialize test case with given values.
      */
-    public TestCase(String name, int priority, int powerLevel, int cpuCore)
+    public TestCase(String name, int priority, int powerLevel, int cpuCore, boolean exclusive)
     {
         mName = name;
 
@@ -50,6 +51,7 @@ public class TestCase
         setPriority(priority);
         setPowerLevel(powerLevel);
         setCpuCore(cpuCore);
+        setCpuLockExclusive(exclusive);
     }
 
     public String getName()
@@ -109,6 +111,22 @@ public class TestCase
         }
 
         mCpuCore = cpuCore;
+    }
+
+    public boolean isCpuLockExclusive()
+    {
+        return mCpuLockExclusive;
+    }
+
+    public void setCpuLockExclusive(boolean exclusive)
+    {
+        // Catch illegal values
+        if (getCpuCore() == NO_CORE_LOCK && exclusive)
+        {
+            throw new RuntimeException("No exclusive without core lock!");
+        }
+
+        mCpuLockExclusive = exclusive;
     }
 
     @Override

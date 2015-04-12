@@ -26,6 +26,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -52,6 +53,7 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
     private SeekBar mPowerLevel;
     private TextView mPowerLevelText;
     private Spinner mCpuLock;
+    private CheckBox mExclusiveLock;
 
     private TestCase mTestCase;
 
@@ -111,6 +113,8 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
         mCpuLock = (Spinner) v.findViewById(R.id.input_cpu_core);
         mCpuLock.setAdapter(adapter);
 
+        mExclusiveLock = (CheckBox) v.findViewById(R.id.input_cpu_lock_exclusive);
+
         // Fill with values
         Bundle args = getArguments();
         if (args != null)
@@ -123,6 +127,7 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
             mPriority.setProgress(mTestCase.getRealtimePriority());
             mPowerLevel.setProgress(mTestCase.getPowerLevel());
             mCpuLock.setSelection(mTestCase.getCpuCore());
+            mExclusiveLock.setChecked(mTestCase.isCpuLockExclusive());
         }
 
         onProgressChanged(mPriority, mPriority.getProgress(), false);
@@ -214,11 +219,12 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
             // Pass a value to listener
             if (mTestCase == null)
             {
-                mTestCase = new TestCase("", TestCase.NO_PRIORITY, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK);
+                mTestCase = new TestCase("", TestCase.NO_PRIORITY, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK, false);
             }
 
             mTestCase.setName(mName.getText().toString());
             mTestCase.setCpuCore((int) mCpuLock.getSelectedItemId());
+            mTestCase.setCpuLockExclusive(mExclusiveLock.isChecked());
 
             if (mPriority.getProgress() != 0) { mTestCase.setPriority(mPriority.getProgress()); }
             if (mPowerLevel.getProgress() != 0) { mTestCase.setPowerLevel(mPowerLevel.getProgress()); }

@@ -58,9 +58,9 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     {
         DEFAULT_TEST_CASES = new TestCase[]
         {
-            new TestCase("Standard Android (Non-RT)", TestCase.NO_PRIORITY, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK),
-            new TestCase("Basic Real-Time Support", 40, 85, TestCase.NO_CORE_LOCK),
-            new TestCase("Advanced Real-Time Support", 90, 100, TestCase.CORE_LOCK_MIN),
+            new TestCase("Standard Android (Non-RT)", TestCase.NO_PRIORITY, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK, false),
+            new TestCase("Basic Real-Time Support", 40, 85, TestCase.NO_CORE_LOCK, false),
+            new TestCase("Advanced Real-Time Support", 90, 100, TestCase.CORE_LOCK_MIN, true),
         };
     }
 

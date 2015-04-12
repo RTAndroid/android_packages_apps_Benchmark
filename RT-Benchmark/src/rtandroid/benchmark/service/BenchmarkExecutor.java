@@ -83,7 +83,7 @@ public class BenchmarkExecutor implements Runnable
         // This prevents the cpu from deep sleep
         int powerLevel = mTestCase.getPowerLevel();
         int cpuCore = mTestCase.getCpuCore();
-        boolean exclusive = true; // TODO: mTestCase.isCpuLockExclusive();
+        boolean exclusive = mTestCase.isCpuLockExclusive();
         Object lock = RealTimeUtils.acquireLock(mContext, powerLevel, cpuCore, exclusive);
 
         // Set real-time priority value

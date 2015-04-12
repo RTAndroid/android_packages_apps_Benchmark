@@ -93,4 +93,22 @@
 
     </TableRow>
 
+    <TableRow
+        android:minHeight="60dp"
+        style="@style/inputItem">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="32dp"
+            android:text="@string/dialog_test_case_cpu_lock_exclusive"/>
+
+        <CheckBox
+            android:id="@+id/input_cpu_lock_exclusive"
+            android:layout_span="2"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+    </TableRow>
+
 </TableLayout>
