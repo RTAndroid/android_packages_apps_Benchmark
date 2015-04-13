@@ -31,6 +31,9 @@ public class FibonacciIterative implements Benchmark
             prev1 = prev2;
             prev2 = savePrev1 + prev2;
         }
+
+        // Useless code to prevent warnings about useless code
+        if (prev1 > 0 && prev2 < 100) { System.nanoTime(); }
     }
 
     @Override

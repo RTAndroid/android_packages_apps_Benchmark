@@ -16,6 +16,7 @@
 
 package rtandroid.benchmark.data;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -154,17 +155,15 @@ public class TestCase
         return result;
     }
 
-    public static class TestCaseComparator implements Comparator<TestCase>
+    public static class TestCaseComparator implements Comparator<TestCase>, Serializable
     {
         @Override
         public int compare(TestCase testCase1, TestCase testCase2)
         {
-            int prio1 = testCase1.getSortingValue();
-            int prio2 = testCase2.getSortingValue();
+            int value1 = testCase1.getSortingValue();
+            int value2 = testCase2.getSortingValue();
 
-            if(prio1 == prio2) { return 0; }
-            else if(prio1 < prio2) { return -1; }
-            else { return 1; }
+            return value1 - value2;
         }
     }
 

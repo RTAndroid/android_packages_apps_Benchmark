@@ -61,7 +61,7 @@ public class StatisticView extends LinearLayout
         a.recycle();
     }
 
-    public void setTitle(String title)
+    private void setTitle(String title)
     {
         TextView titleView = (TextView) findViewById(R.id.statistic_title);
         titleView.setText(title);

@@ -206,7 +206,7 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
         // Nothing to do
     }
 
-    public void onSubmit()
+    private void onSubmit()
     {
         if (mListener != null)
         {
