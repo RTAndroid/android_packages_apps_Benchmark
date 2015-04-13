@@ -2,7 +2,6 @@ package rtandroid.benchmark.data;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Stores the result of a benchmark.
@@ -37,16 +36,6 @@ public class BenchmarkResult
     public String getName()
     {
         return mName;
-    }
-
-    public Set<String> getTestCases()
-    {
-        return mResults.keySet();
-    }
-
-    public Integer getResult(String testCase, Kind kind)
-    {
-        return mResults.get(testCase).get(kind);
     }
 
     public Map<String, Integer> getResult(Kind kind)

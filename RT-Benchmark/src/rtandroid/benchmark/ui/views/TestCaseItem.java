@@ -76,14 +76,6 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
     }
 
     /**
-     * @return True if test case is selected.
-     */
-    public boolean isChecked()
-    {
-        return mCheckBox.isChecked();
-    }
-
-    /**
      * @return Displayed test case
      */
     public TestCase getTestCase()
