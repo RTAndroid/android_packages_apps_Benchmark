@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/run_header_test_cases"
-        style="@style/sectionHeader"/>
+        style="@style/SectionHeader"/>
 
     <ListView
         android:id="@+id/test_case_list"

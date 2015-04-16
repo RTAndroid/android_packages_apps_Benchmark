@@ -26,14 +26,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/run_header_general"
-        style="@style/sectionHeader"/>
+        style="@style/SectionHeader"/>
 
     <LinearLayout
         android:id="@+id/benchmark"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
-        style="@style/inputItem">
+        style="@style/InputItem">
         
         <ImageView
             android:layout_width="32dp"
@@ -62,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
-        style="@style/inputItem">
+        style="@style/InputItem">
 
         <ImageView
             android:layout_width="32dp"
@@ -90,14 +90,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/run_header_advanced"
-        style="@style/sectionHeader"/>
+        style="@style/SectionHeader"/>
 
     <LinearLayout
         android:id="@+id/cycles"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
-        style="@style/inputItem">
+        style="@style/InputItem">
 
         <ImageView
             android:layout_width="32dp"
@@ -126,7 +126,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
-        style="@style/inputItem">
+        style="@style/InputItem">
 
         <ImageView
             android:layout_width="32dp"
@@ -154,6 +154,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/run_header_test_cases"
-        style="@style/sectionHeader"/>
+        style="@style/SectionHeader"/>
 
 </LinearLayout>

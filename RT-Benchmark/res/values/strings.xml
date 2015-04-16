@@ -46,7 +46,7 @@
     <string name="dialog_test_case_priority">Priority</string>
     <string name="dialog_test_case_power_level">Power Level</string>
     <string name="dialog_test_case_cpu_lock">Cpu Core Lock</string>
-    <string name="dialog_test_case_cpu_lock_exclusive">Exclusive Cpu Lock</string>
+    <string name="dialog_test_case_cpu_lock_exclusive">Exclusive</string>
     <string name="dialog_missing_test_case_title">Missing test cases!</string>
     <string name="dialog_missing_test_case_msg">Please select at least one test case from the list.</string>
 
