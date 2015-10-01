@@ -36,11 +36,13 @@ public class StatisticViewItem extends TableRow
     // Constructors simply passing data forward
     //
 
-    public StatisticViewItem(Context context) {
+    public StatisticViewItem(Context context)
+    {
         super(context);
     }
 
-    public StatisticViewItem(Context context, AttributeSet attrs) {
+    public StatisticViewItem(Context context, AttributeSet attrs)
+    {
         super(context, attrs);
     }
 
@@ -68,12 +70,11 @@ public class StatisticViewItem extends TableRow
         valueBar.setValue(value);
         mDisplayModeMs = displayMs;
 
-        TextView resultValue = (TextView) findViewById(R.id.test_case_value);
         String displayValue;
         String unit;
         if(displayMs)
         {
-            displayValue = String.format(Locale.getDefault(), "%.1f", (float)value/1000);
+            displayValue = String.format(Locale.getDefault(), "%.1f", (float)value / 1000.0f);
             unit = "ms";
         }
         else
@@ -81,6 +82,8 @@ public class StatisticViewItem extends TableRow
             displayValue = String.format(Locale.getDefault(), "%d", value);
             unit = "μs";
         }
+
+        TextView resultValue = (TextView) findViewById(R.id.test_case_value);
         resultValue.setText(String.format("%s %s", displayValue, unit));
     }
 

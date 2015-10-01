@@ -18,7 +18,7 @@
 
 <resources>
 
-    <string name="app_name">RT-Benchmark</string>
+    <string name="app_name">Benchmark</string>
 
     <string-array name="app_tabs">
         <item>Benchmark</item>

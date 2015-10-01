@@ -46,11 +46,13 @@ public class StatisticView extends LinearLayout
     // Constructors simply passing data forward
     //
 
-    public StatisticView(Context context) {
+    public StatisticView(Context context)
+    {
         this(context, null);
     }
 
-    public StatisticView(Context context, AttributeSet attrs) {
+    public StatisticView(Context context, AttributeSet attrs)
+    {
         super(context, attrs);
 
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -97,6 +99,7 @@ public class StatisticView extends LinearLayout
         item.setName(name);
         item.setValue(value, displayMs);
         item.setMaxValue(max);
+        item.setPadding(40, 2, 20, 0);
         table.addView(item);
     }
 
@@ -104,7 +107,6 @@ public class StatisticView extends LinearLayout
     protected Parcelable onSaveInstanceState()
     {
         Bundle bundle = new Bundle();
-
         bundle.putParcelable(KEY_SUPER, super.onSaveInstanceState());
 
         TableLayout table = (TableLayout) findViewById(R.id.test_case_table);
