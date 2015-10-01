@@ -1,48 +1,36 @@
 # Generic excludes
-*~
-*.*#
-*.*~
-*.aux
-*.atsuo
-*.bak
-*.bbl
-*.blg
+*.apk
+*.ap_
 *.class
-*.d
 *.dex
-*.dvi
-*.gz
-*.idx
-*.ilg
-*.ind
 *.log
-*.lof
-*.nlo
-*.o
-*.out
-*.prefs
-*.suo
-*.synctex
-*.toc
-*.tps
+
+# Generated files
+bin/
+gen/
+
+# Gradle files
+.gradle/
+build/
+/*/build/
+gradle/
+gradlew
+gradlew.bat
 
 # Platform-dependent files
 .DS_Store
 Thumbs.db
 
-# Project files in Atmel Studio
-Debug/
-Release/
-
-# Project files in Android Studio
-.gradle/
-build/
-local.properties
-
 # Project files in Eclipse
 bin/
 gen/
 obj/
+proguard/
+
+# Project files in Android Studio
+captures/
+navigation/
+local.properties
 
 # Project files in IntelliJ IDEA
 .idea
