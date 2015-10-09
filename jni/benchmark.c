@@ -63,7 +63,7 @@ JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_BenchmarkLib_libWriteLon
 {
 	// nothing to do, if we can't save our results :(
 	if (mIsLogWritable == 0) { return; }
-	
+
 	// try to open the file and write the data
 	FILE* file = fopen(mLogFilename, "a+");
 	if (file == NULL) { mIsLogWritable = 0; }

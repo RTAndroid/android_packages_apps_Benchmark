@@ -34,14 +34,14 @@
         android:layout_height="60dp"
         android:orientation="horizontal"
         style="@style/InputItem">
-        
+
         <ImageView
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginRight="8dp"
             android:src="@drawable/ic_action_play"
             android:contentDescription="@null"/>
-        
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:gravity="right"/>
-        
+
     </LinearLayout>
 
     <LinearLayout

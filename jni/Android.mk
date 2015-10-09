@@ -21,5 +21,5 @@ LOCAL_MODULE := benchmark
 LOCAL_SRC_FILES := benchmark.c
 
 LOCAL_LDLIBS := -llog
-	
+
 include $(BUILD_SHARED_LIBRARY)

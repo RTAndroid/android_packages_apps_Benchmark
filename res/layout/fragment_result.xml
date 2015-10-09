@@ -21,31 +21,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     tools:context="rtandroid.benchmark.ui.BenchmarkFragment"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingLeft="24dp"
-            android:paddingRight="24dp">
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/result_switch_name"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/result_switch_name"
             android:layout_marginEnd="16dp"/>
 
-            <Spinner
-                android:id="@+id/run_benchmark_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+        <Spinner
+            android:id="@+id/run_benchmark_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-        </LinearLayout>
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -107,6 +107,6 @@
 
     </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
 
 </LinearLayout>
