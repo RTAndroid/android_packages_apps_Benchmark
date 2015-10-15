@@ -16,8 +16,6 @@
 
 package rtandroid.benchmark.data;
 
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -44,6 +42,7 @@ public class ResultAnalyzer
 
     public void evaluate() throws IOException
     {
+        /*
         SummaryStatistics calcStatistic = new SummaryStatistics();
         SummaryStatistics sleepStatistic = new SummaryStatistics();
 
@@ -85,6 +84,16 @@ public class ResultAnalyzer
 
         bufferedReader.close();
         fileReader.close();
+        */
+
+        mResult.put(Kind.CALCULATION_MINIMUM,   0);
+        mResult.put(Kind.CALCULATION_MEAN,      0);
+        mResult.put(Kind.CALCULATION_MAXIMUM,   0);
+        mResult.put(Kind.CALCULATION_DEVIATION, 0);
+        mResult.put(Kind.SLEEP_MINIMUM,         0);
+        mResult.put(Kind.SLEEP_MEAN,            0);
+        mResult.put(Kind.SLEEP_MAXIMUM,         0);
+        mResult.put(Kind.SLEEP_DEVIATION,       0);
     }
 
     /**
