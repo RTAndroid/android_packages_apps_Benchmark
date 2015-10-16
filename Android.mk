@@ -25,8 +25,7 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     android-common \
     android-support-v4 \
     android-support-v7-appcompat \
-    android-support-v13 \
-    prebuilt_gson
+    android-support-v13
 
 LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := \
     prebuilt_gson:libs/gson-2.4.jar
