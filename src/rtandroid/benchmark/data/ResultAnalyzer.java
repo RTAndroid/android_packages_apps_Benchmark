@@ -32,7 +32,7 @@ public class ResultAnalyzer
     private final BenchmarkConfiguration mConfig;
     private final String mFileName;
 
-    private final Map<Kind, Integer> mResult = new HashMap<Kind, Integer>(Kind.values().length);
+    private final Map<Kind, Integer> mResult = new HashMap<>(Kind.values().length);
 
     public ResultAnalyzer(BenchmarkConfiguration config, String fileName)
     {
@@ -42,58 +42,40 @@ public class ResultAnalyzer
 
     public void evaluate() throws IOException
     {
-        /*
-        SummaryStatistics calcStatistic = new SummaryStatistics();
-        SummaryStatistics sleepStatistic = new SummaryStatistics();
+        ResultStatistics calcValues = new ResultStatistics();
+        ResultStatistics sleepValues = new ResultStatistics();
 
         FileReader fileReader = new FileReader(mFileName);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
         String line;
-        int sleep = mConfig.SleepMs * 1000;
+        int sleepUs = mConfig.SleepMs * 1000;
         while ((line = bufferedReader.readLine()) != null)
         {
             String[] parts = line.split(";", 3);
-
             try
             {
                 int calcTimeUs = Integer.parseInt(parts[0]);
-                int sleepTimeUs = Integer.parseInt(parts[1]) - sleep;
+                int sleepTimeUs = Integer.parseInt(parts[1]) - sleepUs;
 
-                calcStatistic.addValue(calcTimeUs);
-                sleepStatistic.addValue(sleepTimeUs);
+                calcValues.add(calcTimeUs);
+                sleepValues.add(sleepTimeUs);
             }
-            catch (ArrayIndexOutOfBoundsException ignore)
-            {
-                // Ignore all garbage
-            }
-            catch (NumberFormatException ignore)
-            {
-                // Ignore all text lines
-            }
+            catch (Exception ignored) { /* ignore all the garbage */ }
         }
 
-        mResult.put(Kind.CALCULATION_MINIMUM, (int) calcStatistic.getMin());
-        mResult.put(Kind.CALCULATION_MEAN, (int) calcStatistic.getMean());
-        mResult.put(Kind.CALCULATION_MAXIMUM, (int) calcStatistic.getMax());
-        mResult.put(Kind.CALCULATION_DEVIATION, (int) calcStatistic.getStandardDeviation());
-        mResult.put(Kind.SLEEP_MINIMUM, (int) sleepStatistic.getMin());
-        mResult.put(Kind.SLEEP_MEAN, (int) sleepStatistic.getMean());
-        mResult.put(Kind.SLEEP_MAXIMUM, (int) sleepStatistic.getMax());
-        mResult.put(Kind.SLEEP_DEVIATION, (int) sleepStatistic.getStandardDeviation());
+        mResult.put(Kind.CALCULATION_MINIMUM,         calcValues.getMin());
+        mResult.put(Kind.CALCULATION_MEAN,      (int) calcValues.getMean());
+        mResult.put(Kind.CALCULATION_MAXIMUM,         calcValues.getMax());
+        mResult.put(Kind.CALCULATION_DEVIATION, (int) calcValues.getDev());
+
+        mResult.put(Kind.SLEEP_MINIMUM,         sleepValues.getMin());
+        mResult.put(Kind.SLEEP_MEAN,      (int) sleepValues.getMean());
+        mResult.put(Kind.SLEEP_MAXIMUM,         sleepValues.getMax());
+        mResult.put(Kind.SLEEP_DEVIATION, (int) sleepValues.getDev());
 
         bufferedReader.close();
         fileReader.close();
-        */
-
-        mResult.put(Kind.CALCULATION_MINIMUM,   0);
-        mResult.put(Kind.CALCULATION_MEAN,      0);
-        mResult.put(Kind.CALCULATION_MAXIMUM,   0);
-        mResult.put(Kind.CALCULATION_DEVIATION, 0);
-        mResult.put(Kind.SLEEP_MINIMUM,         0);
-        mResult.put(Kind.SLEEP_MEAN,            0);
-        mResult.put(Kind.SLEEP_MAXIMUM,         0);
-        mResult.put(Kind.SLEEP_DEVIATION,       0);
     }
 
     /**
@@ -101,7 +83,7 @@ public class ResultAnalyzer
      */
     public Map<Kind, Integer> getResults()
     {
-        if(mResult.isEmpty())
+        if (mResult.isEmpty())
         {
             throw new IllegalStateException("No statistics are available before evaluation!");
         }

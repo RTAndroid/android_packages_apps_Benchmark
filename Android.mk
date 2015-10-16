@@ -18,13 +18,19 @@ include $(CLEAR_VARS)
 LOCAL_MODULE_TAGS := optional
 LOCAL_SDK_VERSION := current
 
-LOCAL_JAVA_LIBRARIES := framework
-LOCAL_JAVA_LIBRARIES += gson
+LOCAL_JAVA_LIBRARIES := \
+    framework \
+    gson
 
-LOCAL_STATIC_JAVA_LIBRARIES := android-common
-LOCAL_STATIC_JAVA_LIBRARIES += android-support-v4
-LOCAL_STATIC_JAVA_LIBRARIES += android-support-v7-appcompat
-LOCAL_STATIC_JAVA_LIBRARIES += android-support-v13
+LOCAL_STATIC_JAVA_LIBRARIES := \
+    android-common \
+    android-support-v4 \
+    android-support-v7-appcompat \
+    android-support-v13 \
+    prebuilt_gson
+
+LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := \
+    prebuilt_gson:libs/gson-2.4.jar
 
 LOCAL_PACKAGE_NAME := Benchmark
 LOCAL_JNI_SHARED_LIBRARIES := libbenchmark
@@ -33,8 +39,9 @@ LOCAL_SRC_FILES := $(call all-subdir-java-files)
 appcompat_dir := ../../../prebuilts/sdk/current/support/v7/appcompat/res
 res_dirs := res $(appcompat_dir)
 LOCAL_RESOURCE_DIR := $(addprefix $(LOCAL_PATH)/, $(res_dirs))
-LOCAL_AAPT_FLAGS := --auto-add-overlay
-LOCAL_AAPT_FLAGS += --extra-packages android.support.v7.appcompat
+LOCAL_AAPT_FLAGS := \
+    --auto-add-overlay \
+    --extra-packages android.support.v7.appcompat
 
 include $(BUILD_PACKAGE)
 include $(call all-makefiles-under,$(LOCAL_PATH))
