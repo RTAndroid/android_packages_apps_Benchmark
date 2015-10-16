@@ -25,10 +25,8 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     android-common \
     android-support-v4 \
     android-support-v7-appcompat \
-    android-support-v13
-
-LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := \
-    prebuilt_gson:libs/gson-2.4.jar
+    android-support-v13 \
+	prebuilt_gson
 
 LOCAL_PACKAGE_NAME := Benchmark
 LOCAL_JNI_SHARED_LIBRARIES := libbenchmark
@@ -43,3 +41,12 @@ LOCAL_AAPT_FLAGS := \
 
 include $(BUILD_PACKAGE)
 include $(call all-makefiles-under,$(LOCAL_PATH))
+
+##################################################
+
+include $(CLEAR_VARS)
+
+LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := \
+    prebuilt_gson:libs/gson-2.4.jar
+
+include $(BUILD_MULTI_PREBUILT)
