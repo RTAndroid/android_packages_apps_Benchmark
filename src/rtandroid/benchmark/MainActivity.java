@@ -116,9 +116,9 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     {
         try
         {
-            ResultAnalyzer result = new ResultAnalyzer(mBenchmarkConfig, fileName);
-            result.evaluate();
-            mCurrentResult.addResult(testCase.getName(), result.getResults());
+//            ResultAnalyzer result = new ResultAnalyzer(mBenchmarkConfig, fileName);
+//            result.evaluate();
+//            mCurrentResult.addResult(testCase.getName(), result.getResults());
         }
         catch (IOException e)
         {

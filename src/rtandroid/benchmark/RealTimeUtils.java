@@ -93,7 +93,7 @@ public class RealTimeUtils
             Integer[] list = new Integer[] { cpuCore };
             int tid = android.os.Process.myTid();
             Log.d(TAG, "Setting cpu core of tid " + tid + " to " + cpuCore);
-            cpuLock.setUsedCores(tid, list, exclusive);
+//            cpuLock.setUsedCores(tid, list, exclusive);
         }
 
         // This will prevent the cpu from sleep even w/o fixed power level
