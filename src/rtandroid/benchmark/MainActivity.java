@@ -114,16 +114,16 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     @Override
     public void onTestCaseCompleted(TestCase testCase, String fileName)
     {
-//        try
-//        {
-//            ResultAnalyzer result = new ResultAnalyzer(mBenchmarkConfig, fileName);
-//            result.evaluate();
-//            mCurrentResult.addResult(testCase.getName(), result.getResults());
-//        }
-//        catch (IOException e)
-//        {
-//            throw new RuntimeException("Failed to read log file of test case", e);
-//        }
+        try
+        {
+            ResultAnalyzer result = new ResultAnalyzer(mBenchmarkConfig, fileName);
+            result.evaluate();
+            mCurrentResult.addResult(testCase.getName(), result.getResults());
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException("Failed to read log file of test case", e);
+        }
     }
 
     @Override

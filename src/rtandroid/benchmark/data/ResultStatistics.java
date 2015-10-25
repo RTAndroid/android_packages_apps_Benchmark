@@ -32,6 +32,7 @@ public class ResultStatistics
     {
         int size = mValues.size();
         Integer[] values = new Integer[size];
+        mValues.toArray(values);
         Arrays.sort(values);
         return values;
     }
@@ -45,14 +46,13 @@ public class ResultStatistics
     public int getMax()
     {
         Integer[] values = getSortedArray();
-        return values[values.length];
+        return values[values.length-1];
     }
 
-    public int getSum()
+    public long getSum()
     {
-        int sum = 0;
-        Integer[] values = getSortedArray();
-        for (Integer value : values) { sum += value; }
+        long sum = 0;
+        for (Integer value : mValues) { sum += value; }
         return sum;
     }
 
@@ -67,9 +67,8 @@ public class ResultStatistics
     {
         double avg = getMean();
         double sum = 0.0;
-        Integer[] values = getSortedArray();
-        for (Integer value : values) { sum += (value - avg) * (value - avg); }
-        return sum / values.length;
+        for (Integer value : mValues) { sum += (value - avg) * (value - avg); }
+        return sum / mValues.size();
     }
 
     /** Returns the sample standard deviation */
