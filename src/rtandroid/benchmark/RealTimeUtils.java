@@ -16,122 +16,93 @@
 
 package rtandroid.benchmark;
 
-import android.content.Context;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
-import android.os.RemoteException;
 import android.util.Log;
 
-import java.lang.reflect.Field;
-
-import rtandroid.CpuLock;
-import rtandroid.IRealTimeService;
+import rtandroid.RealTimeProxy;
 import rtandroid.RealTimeWrapper;
 import rtandroid.benchmark.data.TestCase;
 
 public class RealTimeUtils
 {
     private static final String TAG = RealTimeUtils.class.getSimpleName();
+    private static final RealTimeProxy PROXY = new RealTimeProxy();
 
-    private static int getBuildVersion()
+    private static long getBuildVersion()
     {
         try
         {
-            Class cls = Class.forName("rtandroid.RealTimeWrapper");
-            Field field = cls.getField("BUILD_VERSION");
-            return (Integer) field.get(null);
+            return PROXY.getVersion();
         }
-        catch (Exception ignored)
+        catch (Exception e)
         {
+            Log.e(TAG, "Failed to find RT extensions: " + e.getMessage());
             return -1;
         }
     }
 
     public static void setPriority(int priority)
     {
-        // Real-time priorities are not supported
+        // Real-time extensions are not supported
         if (getBuildVersion() < 0) { return; }
 
         // Nothing to set
         if (priority == TestCase.NO_PRIORITY) { return; }
 
-        Log.d(TAG, "Setting the RT priority to " + priority);
-        int tid = android.os.Process.myTid();
         try
         {
-            IRealTimeService service = RealTimeWrapper.getService();
-            service.setSchedulingPolicy(tid, RealTimeWrapper.SCHED_POLICY_FIFO);
-            service.setPriority(tid, priority);
+            Log.d(TAG, "Setting the RT priority to " + priority);
+            PROXY.setSchedulingPolicy(RealTimeWrapper.SCHED_POLICY_FIFO);
+            PROXY.setPriority(priority);
         }
-        catch (RemoteException e) { throw new RuntimeException(e); }
+        catch (Exception e)
+        {
+            Log.e(TAG, "Failed to find RT extensions: " + e.getMessage());
+        }
     }
 
-    public static Object acquireLock(Context context, int powerLevel, int cpuCore, boolean exclusive)
+    public static void lockPowerLevel(int powerLevel)
     {
-        // Get a simple WakeLock on a non-rt system
-        if (getBuildVersion() < 0)
+        // Real-time extensions are not supported
+        if (getBuildVersion() < 0) { return; }
+
+        // Nothing to set
+        if (powerLevel == TestCase.NO_POWER_LEVEL) { return; }
+
+        try
         {
-            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            WakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "RT-Benchmark");
-            wakeLock.acquire();
-            return wakeLock;
+            PROXY.lockCpuPower(powerLevel);
         }
-
-        // Acquire a fully functional cpu lock
-        CpuLock cpuLock = new CpuLock(context);
-
-        // Set the power level to a fixed value
-        if (powerLevel != TestCase.NO_POWER_LEVEL)
+        catch (Exception e)
         {
-            Log.d(TAG, "Setting power lever to " + powerLevel);
-            cpuLock.setPowerLevel(powerLevel);
+            Log.e(TAG, "Failed to find RT extensions: " + e.getMessage());
         }
-
-        // Set a cpu core to lock this process on
-        if (cpuCore != TestCase.NO_CORE_LOCK)
-        {
-            Integer[] list = new Integer[] { cpuCore };
-            int tid = android.os.Process.myTid();
-            Log.d(TAG, "Setting cpu core of tid " + tid + " to " + cpuCore);
-//            cpuLock.setUsedCores(tid, list, exclusive);
-        }
-
-        // This will prevent the cpu from sleep even w/o fixed power level
-        cpuLock.acquire();
-        return cpuLock;
     }
 
-    public static void releaseLock(Object lock)
+    public static void unlockPowerLevel()
     {
-        // Release a simple wake lock
-        if (getBuildVersion() < 0)
-        {
-            WakeLock wakeLock = (WakeLock) lock;
-            wakeLock.release();
-            return;
-        }
+        // Real-time extensions are not supported
+        if (getBuildVersion() < 0) { return; }
 
-        // Release the cpu lock
-        CpuLock cpuLock = (CpuLock) lock;
-        cpuLock.release();
+        try
+        {
+            PROXY.unlockCpuPower();
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, "Failed to find RT extensions: " + e.getMessage());
+        }
     }
 
     public static int getCpuCoreCount()
     {
-        int count = 0;
-
-        // Just use the normal Java thing
-        if (getBuildVersion() < 0)
+        try
         {
+            return PROXY.getConfiguredProcessors();
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, "Failed to find RT extensions: " + e.getMessage());
             return Runtime.getRuntime().availableProcessors();
         }
-        else
-        // Or use our own implementation
-        {
-            try { count = RealTimeWrapper.getService().getConfiguredProcessors(); }
-            catch (Exception e) { Log.d(TAG, "Failed to find RT erstension: " + e.getMessage()); }
-        }
-
-        return count;
     }
 }

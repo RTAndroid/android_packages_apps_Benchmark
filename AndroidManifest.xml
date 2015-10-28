@@ -23,8 +23,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="17"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="22"
+        android:targetSdkVersion="22" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -38,6 +38,7 @@
         android:allowBackup="true"
         android:supportsRtl="false" >
 
+        <uses-library android:name="rtandroid.sdk" />
         <meta-data android:name="realtime-flag" android:value="true" />
 
         <activity

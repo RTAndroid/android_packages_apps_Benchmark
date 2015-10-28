@@ -19,7 +19,8 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_SDK_VERSION := current
 
 LOCAL_JAVA_LIBRARIES := \
-    framework
+    framework \
+    rtandroid.sdk
 
 LOCAL_STATIC_JAVA_LIBRARIES := \
     android-common \

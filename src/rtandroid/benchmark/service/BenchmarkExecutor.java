@@ -80,11 +80,9 @@ public class BenchmarkExecutor implements Runnable
         String msgStart = String.format(Locale.US, "Benchmark '%s' with case '%s' started", mBenchmark.getName(), mTestCase.getName());
         Log.d(TAG, msgStart);
 
-        // This prevents the cpu from deep sleep
+        // Keep the CPU power level constant
         int powerLevel = mTestCase.getPowerLevel();
-        int cpuCore = mTestCase.getCpuCore();
-        boolean exclusive = mTestCase.isCpuLockExclusive();
-        Object lock = RealTimeUtils.acquireLock(mContext, powerLevel, cpuCore, exclusive);
+        RealTimeUtils.lockPowerLevel(powerLevel);
 
         // Set real-time priority value
         int priority = mTestCase.getRealtimePriority();
@@ -131,7 +129,7 @@ public class BenchmarkExecutor implements Runnable
         }
 
         // Clean everything up
-        RealTimeUtils.releaseLock(lock);
+        RealTimeUtils.unlockPowerLevel();
 
         // Let the CPU cooldown
         try { Thread.sleep(500); }
