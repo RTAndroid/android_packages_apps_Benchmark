@@ -88,6 +88,10 @@ public class BenchmarkExecutor implements Runnable
         int priority = mTestCase.getRealtimePriority();
         RealTimeUtils.setPriority(priority);
 
+        // Set the core affinity
+        int cpuCore = mTestCase.getCpuCore();
+        RealTimeUtils.setCpuCore(cpuCore);
+
         // Notify activity about start
         final Intent startIntent = new Intent(BenchmarkService.ACTION_START);
         startIntent.putExtra(BenchmarkService.EXTRA_TEST_CASE_NAME, mTestCase.getName());

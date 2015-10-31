@@ -46,7 +46,7 @@ public class ResultStatistics
     public int getMax()
     {
         Integer[] values = getSortedArray();
-        return values[values.length-1];
+        return values[values.length - 1];
     }
 
     public long getSum()

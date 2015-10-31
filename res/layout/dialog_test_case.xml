@@ -99,12 +99,4 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"/>
 
-    <CheckBox
-        android:id="@+id/input_cpu_lock_exclusive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignBaseline="@id/input_cpu_label"
-        android:text="@string/dialog_test_case_cpu_lock_exclusive"/>
-
 </RelativeLayout>

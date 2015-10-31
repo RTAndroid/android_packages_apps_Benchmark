@@ -60,6 +60,35 @@ public class RealTimeUtils
         }
     }
 
+    public static void setCpuCore(int cpuCore)
+    {
+        // Real-time extensions are not supported
+        if (getBuildVersion() < 0) { return; }
+
+        // Nothing to set
+        if (cpuCore == TestCase.NO_CORE_LOCK) { return; }
+
+        try
+        {
+            // Make sure this core is online
+            int state = PROXY.getCpuState(cpuCore);
+            if (state == RealTimeWrapper.CPU_STATE_OFFLINE)
+            {
+                Log.d(TAG, "Booting CPU " + cpuCore);
+                PROXY.setCpuState(cpuCore, RealTimeWrapper.CPU_STATE_ONLINE);
+            }
+
+            // And set thread's affinity
+            int mask = (1 << cpuCore);
+            Log.d(TAG, "Setting the thread affinity to " + mask);
+            PROXY.setAffinity(mask);
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, "Failed to find RT extensions: " + e.getMessage());
+        }
+    }
+
     public static void lockPowerLevel(int powerLevel)
     {
         // Real-time extensions are not supported

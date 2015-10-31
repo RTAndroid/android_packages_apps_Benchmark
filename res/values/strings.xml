@@ -52,15 +52,10 @@
 
     <string name="result_switch_name">Saved results:</string>
 
-    <string name="result_statistic_calc_min">Calculation Minimum</string>
-    <string name="result_statistic_calc_mean">Calculation Average</string>
-    <string name="result_statistic_calc_max">Calculation Maximum</string>
-    <string name="result_statistic_calc_deviation">Calculation Standard Deviation</string>
-
-    <string name="result_statistic_sleep_min">Sleep Difference Minimum</string>
-    <string name="result_statistic_sleep_mean">Sleep Difference Average</string>
-    <string name="result_statistic_sleep_max">Sleep Difference Maximum</string>
-    <string name="result_statistic_sleep_deviation">Sleep Standard Deviation</string>
+    <string name="result_statistic_min">Minimum Value</string>
+    <string name="result_statistic_mean">Average Value</string>
+    <string name="result_statistic_max">Maximum Value</string>
+    <string name="result_statistic_dev">Standard Deviation</string>
 
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>

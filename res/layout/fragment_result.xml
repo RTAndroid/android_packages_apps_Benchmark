@@ -57,53 +57,91 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:text="Calculations" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:paddingBottom="10dp"
+            android:background="@android:color/darker_gray"/>
+
         <rtandroid.benchmark.ui.views.StatisticView
             android:id="@+id/calc_minimum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:statisticTitle="@string/result_statistic_calc_min"/>
+            custom:statisticTitle="@string/result_statistic_min"/>
 
         <rtandroid.benchmark.ui.views.StatisticView
             android:id="@+id/calc_mean"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:statisticTitle="@string/result_statistic_calc_mean"/>
+            custom:statisticTitle="@string/result_statistic_mean"/>
 
         <rtandroid.benchmark.ui.views.StatisticView
             android:id="@+id/calc_maximum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:statisticTitle="@string/result_statistic_calc_max"/>
+            custom:statisticTitle="@string/result_statistic_max"/>
 
         <rtandroid.benchmark.ui.views.StatisticView
             android:id="@+id/calc_deviation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:statisticTitle="@string/result_statistic_calc_deviation"/>
+            custom:statisticTitle="@string/result_statistic_dev"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="5dp"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+            android:text="Sleep" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"/>
 
         <rtandroid.benchmark.ui.views.StatisticView
             android:id="@+id/sleep_minimum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:statisticTitle="@string/result_statistic_sleep_min"/>
+            custom:statisticTitle="@string/result_statistic_min"/>
 
         <rtandroid.benchmark.ui.views.StatisticView
             android:id="@+id/sleep_mean"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:statisticTitle="@string/result_statistic_sleep_mean"/>
+            custom:statisticTitle="@string/result_statistic_mean"/>
 
         <rtandroid.benchmark.ui.views.StatisticView
             android:id="@+id/sleep_maximum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:statisticTitle="@string/result_statistic_sleep_max"/>
+            custom:statisticTitle="@string/result_statistic_max"/>
 
         <rtandroid.benchmark.ui.views.StatisticView
             android:id="@+id/sleep_deviation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:statisticTitle="@string/result_statistic_sleep_deviation"/>
+            custom:statisticTitle="@string/result_statistic_dev"/>
 
     </LinearLayout>
 

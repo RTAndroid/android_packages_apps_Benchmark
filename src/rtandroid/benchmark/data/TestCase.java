@@ -19,14 +19,16 @@ package rtandroid.benchmark.data;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import rtandroid.RealTimeWrapper;
+
 /**
  * Represents a possible test case.
  */
 public class TestCase
 {
     public static final int NO_PRIORITY = -1;
-    public static final int PRIORITY_MIN = 1;
-    public static final int PRIORITY_MAX = 99;
+    public static final int PRIORITY_MIN = RealTimeWrapper.THREAD_MIN_PRIORITY;
+    public static final int PRIORITY_MAX = RealTimeWrapper.THREAD_MAX_PRIORITY;
 
     public static final int NO_POWER_LEVEL = -1;
     public static final int POWER_LEVEL_MIN = 1;
@@ -39,12 +41,11 @@ public class TestCase
     private int mPriority;
     private int mPowerLevel;
     private int mCpuCore;
-    private boolean mCpuLockExclusive;
 
     /**
      * Initialize test case with given values.
      */
-    public TestCase(String name, int priority, int powerLevel, int cpuCore, boolean exclusive)
+    public TestCase(String name, int priority, int powerLevel, int cpuCore)
     {
         mName = name;
 
@@ -52,7 +53,6 @@ public class TestCase
         setPriority(priority);
         setPowerLevel(powerLevel);
         setCpuCore(cpuCore);
-        setCpuLockExclusive(exclusive);
     }
 
     public String getName()
@@ -112,22 +112,6 @@ public class TestCase
         }
 
         mCpuCore = cpuCore;
-    }
-
-    public boolean isCpuLockExclusive()
-    {
-        return mCpuLockExclusive;
-    }
-
-    public void setCpuLockExclusive(boolean exclusive)
-    {
-        // Catch illegal values
-        if (getCpuCore() == NO_CORE_LOCK && exclusive)
-        {
-            throw new RuntimeException("No exclusive without core lock!");
-        }
-
-        mCpuLockExclusive = exclusive;
     }
 
     @Override

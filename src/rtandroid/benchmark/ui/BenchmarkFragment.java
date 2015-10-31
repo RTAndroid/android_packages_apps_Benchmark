@@ -331,7 +331,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         }
 
         // Add a warmup case
-        selectedCases.add(new TestCase("Warmup Phase", TestCase.NO_PRIORITY, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK, false));
+        selectedCases.add(new TestCase("Warmup Phase", TestCase.NO_PRIORITY, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK));
 
         // Notify listener
         if (mListener != null) { mListener.onBenchmarkStart(mConfig); }
