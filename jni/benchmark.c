@@ -13,7 +13,7 @@
 #include <sys/select.h>
 
 #include <android/log.h>
-#define LOG(...) __android_log_print(ANDROID_LOG_DEBUG, "BenchmarkJNI", __VA_ARGS__)
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, "BenchmarkJNI", __VA_ARGS__)
 
 #include "benchmark.h"
 
@@ -48,14 +48,13 @@ JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_BenchmarkLib_libInit(JNI
 	if (file == NULL)
 	{
 		mIsLogWritable = 0;
-		LOG("Failed to create the log file!");
+        LOGE("Failed to create the log file!");
 	}
 	else
 	{
 		fprintf(file, "calculationTime;sleepTime\n");
 		fclose(file);
 		mIsLogWritable = 1;
-		LOG("Log file was initialized!");
     }
 }
 

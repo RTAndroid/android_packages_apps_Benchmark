@@ -116,9 +116,8 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     {
         try
         {
-            ResultAnalyzer result = new ResultAnalyzer(mBenchmarkConfig, fileName);
-            result.evaluate();
-            mCurrentResult.addResult(testCase.getName(), result.getResults());
+            ResultAnalyzer analyzer = new ResultAnalyzer(mBenchmarkConfig, fileName);
+            mCurrentResult.addResult(testCase.getName(), analyzer.getResults());
         }
         catch (IOException e)
         {
@@ -150,7 +149,7 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     @Override
     public List<TestCase> loadTestCases()
     {
-        List<TestCase> testCaseList = new ArrayList<TestCase>();
+        List<TestCase> testCaseList = new ArrayList<>();
         testCaseList.addAll(Arrays.asList(DEFAULT_TEST_CASES));
 
         // Try to load from settings
@@ -197,7 +196,7 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
 
         Gson gson = new Gson();
         BenchmarkResult[] results = gson.fromJson(jsonTestCases, BenchmarkResult[].class);
-        mResults = new ArrayList<BenchmarkResult>();
+        mResults = new ArrayList<>();
         mResults.addAll(Arrays.asList(results));
 
         mAdapter = new BenchmarkResultAdapter(this, mResults);

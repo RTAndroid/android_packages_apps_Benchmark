@@ -33,7 +33,7 @@ public class BenchmarkExecutor implements Runnable
     private static final String TAG = BenchmarkExecutor.class.getSimpleName();
     private static final String RESULT_FOLDER = "Benchmark";
     private static final String FILE_TEMPLATE =  RESULT_FOLDER.toLowerCase(Locale.getDefault()) + "_b=%s_p=%d_s=%d_c=%d_case=%s.csv";
-    private static final long GUI_UPDATE_TIME = 500 * 1000 * 1000; // in ms
+    private static final long GUI_UPDATE_TIME = 500 * 1000 * 1000; // in ns
 
     private final Context mContext;
     private final Benchmark mBenchmark;

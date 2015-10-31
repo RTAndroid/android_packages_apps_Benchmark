@@ -34,13 +34,15 @@ public class ResultAnalyzer
 
     private final Map<Kind, Integer> mResult = new HashMap<>(Kind.values().length);
 
-    public ResultAnalyzer(BenchmarkConfiguration config, String fileName)
+    public ResultAnalyzer(BenchmarkConfiguration config, String fileName) throws IOException
     {
         mConfig = config;
         mFileName = fileName;
+
+        evaluate();
     }
 
-    public void evaluate() throws IOException
+    private void evaluate() throws IOException
     {
         ResultStatistics calcValues = new ResultStatistics();
         ResultStatistics sleepValues = new ResultStatistics();

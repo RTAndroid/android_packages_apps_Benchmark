@@ -22,6 +22,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import java.util.Locale;
+
 import rtandroid.benchmark.benchmarks.Benchmark;
 import rtandroid.benchmark.benchmarks.BenchmarkManager;
 import rtandroid.benchmark.data.TestCase;
@@ -45,7 +47,7 @@ public class BenchmarkService extends IntentService
     private static final String TAG = BenchmarkService.class.getSimpleName();
     private static final int EXTRA_NOT_FOUND = -1;
 
-    private volatile BenchmarkExecutor mExecutor;
+    private volatile BenchmarkExecutor mExecutor = null;
 
     public BenchmarkService()
     {
@@ -92,14 +94,21 @@ public class BenchmarkService extends IntentService
             throw new RuntimeException("Invalid benchmark index in Intent from Activity!");
         }
 
+        // Parse the test configuration
         Gson gson = new Gson();
         String jsonTestCase = intent.getStringExtra(EXTRA_TEST_CASE);
         TestCase testCase = gson.fromJson(jsonTestCase, TestCase.class);
 
+        // Don't waste too much time with a long warmup
+        Log.d(TAG, String.format(Locale.US, "Next test case: '%s'", testCase.getName()));
+        if (testCase.getName().startsWith("Warmup")) { cycles = cycles / 2; }
+
         // Start actual work in separate thread
         try
         {
-            mExecutor = new BenchmarkExecutor(getBaseContext(), benchmarks[benchmarkIdx], parameter, cycles, sleep, testCase);
+            Benchmark benchmark = benchmarks[benchmarkIdx];
+            mExecutor = new BenchmarkExecutor(getBaseContext(), benchmark, parameter, cycles, sleep, testCase);
+
             Thread thread = new Thread(mExecutor);
             thread.start();
             thread.join();
