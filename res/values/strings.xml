@@ -51,6 +51,8 @@
     <string name="dialog_missing_test_case_msg">Please select at least one test case from the list.</string>
 
     <string name="result_switch_name">Saved results:</string>
+    <string name="result_title_calc">Calculations</string>
+    <string name="result_title_sleep">Sleep</string>
 
     <string name="result_statistic_min">Minimum Value</string>
     <string name="result_statistic_mean">Average Value</string>
