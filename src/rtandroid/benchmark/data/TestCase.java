@@ -19,7 +19,7 @@ package rtandroid.benchmark.data;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import rtandroid.RealTimeWrapper;
+import rtandroid.RealTimeConstants;
 
 /**
  * Represents a possible test case.
@@ -27,8 +27,8 @@ import rtandroid.RealTimeWrapper;
 public class TestCase
 {
     public static final int NO_PRIORITY = -1;
-    public static final int PRIORITY_MIN = RealTimeWrapper.THREAD_MIN_PRIORITY;
-    public static final int PRIORITY_MAX = RealTimeWrapper.THREAD_MAX_PRIORITY;
+    public static final int PRIORITY_MIN = RealTimeConstants.THREAD_MIN_PRIORITY;
+    public static final int PRIORITY_MAX = RealTimeConstants.THREAD_MAX_PRIORITY;
 
     public static final int NO_POWER_LEVEL = -1;
     public static final int POWER_LEVEL_MIN = 1;

@@ -28,8 +28,8 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.USE_RT_CPU_LOCK"/>
-    <uses-permission android:name="android.permission.USE_RT_PRIORITY"/>
+    <uses-permission android:name="rtandroid.permission.USE_RT_CPU"/>
+    <uses-permission android:name="rtandroid.permission.USE_RT_PROCESS"/>
 
     <application
         android:theme="@style/AppTheme"
@@ -39,7 +39,7 @@
         android:supportsRtl="false" >
 
         <uses-library android:name="rtandroid.sdk" />
-        <meta-data android:name="realtime-flag" android:value="true" />
+        <meta-data android:name="rtandroid.persistent" android:value="true" />
 
         <activity
             android:configChanges="keyboardHidden"
