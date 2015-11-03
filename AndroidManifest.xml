@@ -28,8 +28,9 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <uses-permission android:name="rtandroid.permission.USE_RT_CPU"/>
-    <uses-permission android:name="rtandroid.permission.USE_RT_PROCESS"/>
+    <uses-permission android:name="rtandroid.permission.USE_RT_PROCESSES"/>
 
     <application
         android:theme="@style/AppTheme"

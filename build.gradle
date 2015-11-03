@@ -64,7 +64,7 @@ task cleanNative(type: Exec) {
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     sourceSets {
         main {
