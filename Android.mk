@@ -31,7 +31,7 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
 
 LOCAL_PACKAGE_NAME := Benchmark
 LOCAL_JNI_SHARED_LIBRARIES := libbenchmark
-LOCAL_SRC_FILES := $(call all-subdir-java-files)
+LOCAL_SRC_FILES := $(call all-java-files-under, src)
 
 appcompat_dir := ../../../prebuilts/sdk/current/support/v7/appcompat/res
 res_dirs := res $(appcompat_dir)
