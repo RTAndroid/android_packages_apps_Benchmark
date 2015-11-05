@@ -67,6 +67,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:padding="5dp"
+            android:background="@android:color/darker_gray"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             android:text="@string/result_title_calc" />
 
@@ -110,6 +111,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:padding="5dp"
+            android:background="@android:color/darker_gray"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             android:text="@string/result_title_sleep" />
 
