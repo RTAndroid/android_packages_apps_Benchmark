@@ -100,8 +100,8 @@ public class BenchmarkService extends IntentService
         TestCase testCase = gson.fromJson(jsonTestCase, TestCase.class);
 
         // Don't waste too much time with a long warmup
-        Log.d(TAG, String.format(Locale.US, "Next test case: '%s'", testCase.getName()));
-        if (testCase.getName().startsWith("Warmup")) { cycles = cycles / 2; }
+        if (testCase.getName().startsWith("Warmup")) { cycles = cycles / 4; }
+        Log.d(TAG, String.format(Locale.US, "Next test case: '%s' with %d cycles", testCase.getName(), cycles));
 
         // Start actual work in separate thread
         try
