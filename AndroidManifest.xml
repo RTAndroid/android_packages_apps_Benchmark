@@ -32,6 +32,12 @@
     <uses-permission android:name="rtandroid.permission.USE_RT_CPU"/>
     <uses-permission android:name="rtandroid.permission.USE_RT_PROCESSES"/>
 
+    <supports-screens
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true" />
+
     <application
         android:theme="@style/AppTheme"
         android:icon="@drawable/ic_launcher"
@@ -44,7 +50,7 @@
 
         <activity
             android:configChanges="keyboardHidden"
-            android:name=".MainActivity"
+            android:name="rtandroid.benchmark.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,7 +59,7 @@
         </activity>
 
         <service
-            android:name=".service.BenchmarkService"
+            android:name="rtandroid.benchmark.service.BenchmarkService"
             android:enabled="true"
             android:process=":BenchmarkService" />
 

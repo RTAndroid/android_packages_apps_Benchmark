@@ -100,7 +100,7 @@ public class BenchmarkService extends IntentService
         TestCase testCase = gson.fromJson(jsonTestCase, TestCase.class);
 
         // Don't waste too much time with a long warmup
-        if (testCase.getName().startsWith("Warmup")) { cycles = cycles / 4; }
+        if (testCase.getName().startsWith("Warmup")) { cycles = cycles / 3; }
         Log.d(TAG, String.format(Locale.US, "Next test case: '%s' with %d cycles", testCase.getName(), cycles));
 
         // Start actual work in separate thread
@@ -113,9 +113,6 @@ public class BenchmarkService extends IntentService
             thread.start();
             thread.join();
         }
-        catch (InterruptedException e)
-        {
-            // Ignore it
-        }
+        catch (InterruptedException ignored) { }
     }
 }
