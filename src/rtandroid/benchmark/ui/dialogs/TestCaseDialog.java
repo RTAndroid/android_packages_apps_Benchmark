@@ -21,12 +21,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -35,8 +35,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import rtandroid.RealTimeProxy;
 import rtandroid.benchmark.R;
-import rtandroid.benchmark.RealTimeUtils;
 import rtandroid.benchmark.data.TestCase;
 
 /**
@@ -83,77 +83,87 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        try {
+            LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        // Retrieve views
-        View v = inflater.inflate(R.layout.dialog_test_case, null);
-        mName = (EditText) v.findViewById(R.id.input_name);
+            // Retrieve views
+            View v = inflater.inflate(R.layout.dialog_test_case, null);
+            mName = (EditText) v.findViewById(R.id.input_name);
 
-        mPriority = (SeekBar) v.findViewById(R.id.input_priority);
-        mPriority.setMax(TestCase.PRIORITY_MAX);
-        mPriority.setOnSeekBarChangeListener(this);
-        mPriorityText = (TextView) v.findViewById(R.id.txt_priority);
+            mPriority = (SeekBar) v.findViewById(R.id.input_priority);
+            mPriority.setMax(TestCase.PRIORITY_MAX);
+            mPriority.setOnSeekBarChangeListener(this);
+            mPriorityText = (TextView) v.findViewById(R.id.txt_priority);
 
-        mPowerLevel = (SeekBar) v.findViewById(R.id.input_power_level);
-        mPowerLevel.setMax(TestCase.POWER_LEVEL_MAX);
-        mPowerLevel.setOnSeekBarChangeListener(this);
-        mPowerLevelText = (TextView) v.findViewById(R.id.txt_power_level);
+            mPowerLevel = (SeekBar) v.findViewById(R.id.input_power_level);
+            mPowerLevel.setMax(TestCase.POWER_LEVEL_MAX);
+            mPowerLevel.setOnSeekBarChangeListener(this);
+            mPowerLevelText = (TextView) v.findViewById(R.id.txt_power_level);
 
-        // Get number of CPUs
-        int count = RealTimeUtils.getCpuCoreCount();
-        if (count < 1) { throw new RuntimeException("Failed to get configured processors!"); }
-
-        // We want to be able to lock on all cores
-        String[] cores = new String[count];
-        cores[0] = "Disabled";
-        for (int i = 1; i < count; i++) { cores[i] = "Core " + i; }
-
-        SpinnerAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cores);
-        mCpuLock = (Spinner) v.findViewById(R.id.input_cpu_core);
-        mCpuLock.setAdapter(adapter);
-
-        // Fill with values
-        Bundle args = getArguments();
-        if (args != null)
-        {
-            Gson gson = new Gson();
-            String jsonTestCase = args.getString(ARG_CASE);
-            mTestCase = gson.fromJson(jsonTestCase, TestCase.class);
-
-            mName.setText(mTestCase.getName());
-            mPriority.setProgress(mTestCase.getRealtimePriority());
-            mPowerLevel.setProgress(mTestCase.getPowerLevel());
-            mCpuLock.setSelection(mTestCase.getCpuCore());
-        }
-
-        onProgressChanged(mPriority, mPriority.getProgress(), false);
-        onProgressChanged(mPowerLevel, mPowerLevel.getProgress(), false);
-
-        // Build dialog
-        final AlertDialog dialog = new AlertDialog.Builder(getActivity())
-            .setTitle(R.string.dialog_test_case_title)
-            .setView(v)
-            .setPositiveButton(android.R.string.ok, null)
-            .setNegativeButton(android.R.string.cancel, null)
-            .create();
-
-        dialog.setOnShowListener(new DialogInterface.OnShowListener()
-        {
-            @Override
-            public void onShow(DialogInterface dialogInterface)
+            // We want to be able to lock on isolated cores
+            int[] isolatedCpus = new RealTimeProxy().getIsolatedProcessors();
+            String[] cores = new String[1+isolatedCpus.length];
+            cores[0] = "Disabled";
+            for(int i = 0; i < isolatedCpus.length; i++)
             {
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View view)
-                    {
-                        onSubmit();
-                    }
-                });
+                cores[i+1] = "Core " + isolatedCpus[i];
             }
-        });
 
-        return dialog;
+            SpinnerAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cores);
+            mCpuLock = (Spinner) v.findViewById(R.id.input_cpu_core);
+            mCpuLock.setAdapter(adapter);
+
+            // Fill with values
+            Bundle args = getArguments();
+            if(args != null)
+            {
+                Gson gson = new Gson();
+                String jsonTestCase = args.getString(ARG_CASE);
+                mTestCase = gson.fromJson(jsonTestCase, TestCase.class);
+
+                mName.setText(mTestCase.getName());
+                mPriority.setProgress(mTestCase.getRealtimePriority());
+                mPowerLevel.setProgress(mTestCase.getPowerLevel());
+                int core = mTestCase.getCpuCore();
+                for(int i = 0; i < isolatedCpus.length; i++)
+                {
+                    if(isolatedCpus[i] == core)
+                    {
+                        mCpuLock.setSelection(i);
+                        break;
+                    }
+                }
+            }
+
+            onProgressChanged(mPriority, mPriority.getProgress(), false);
+            onProgressChanged(mPowerLevel, mPowerLevel.getProgress(), false);
+
+            // Build dialog
+            final AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.dialog_test_case_title)
+                .setView(v)
+                .setPositiveButton(android.R.string.ok, null)
+                .setNegativeButton(android.R.string.cancel, null)
+                .create();
+
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialogInterface) {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            onSubmit();
+                        }
+                    });
+                }
+            });
+
+            return dialog;
+        }
+        catch(RemoteException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

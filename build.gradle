@@ -35,7 +35,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.1.0'
     compile 'com.android.support:appcompat-v7:22.0.0'
 
-    provided fileTree(dir: 'api', include: 'rtandroid-20151101.jar')
+    provided fileTree(dir: 'api', include: 'rtandroid-20151110.jar')
 }
 
 def getNdkExecutable() {
@@ -65,6 +65,10 @@ task cleanNative(type: Exec) {
 android {
     compileSdkVersion 22
     buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "rtandroid.benchmark.dev"
+    }
 
     sourceSets {
         main {
