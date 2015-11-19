@@ -44,6 +44,10 @@ LOCAL_AAPT_FLAGS := \
     --auto-add-overlay \
     --extra-packages android.support.v7.appcompat
 
+# Suppress loggings
+LOCAL_PROGUARD_ENABLED := optimization
+LOCAL_PROGUARD_FLAG_FILES := proguard.cfg
+
 include $(BUILD_PACKAGE)
 
 ##################################################
