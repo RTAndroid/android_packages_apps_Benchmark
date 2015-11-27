@@ -21,7 +21,7 @@ public class BenchmarkResult
     }
 
     private final String mName;
-    private final Map<String, Map<Kind, Integer>> mResults = new LinkedHashMap<String, Map<Kind, Integer>>();
+    private final Map<String, Map<Kind, Integer>> mResults = new LinkedHashMap<>();
 
     public BenchmarkResult(String name)
     {

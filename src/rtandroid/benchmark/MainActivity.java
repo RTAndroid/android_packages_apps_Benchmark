@@ -150,7 +150,6 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     public List<TestCase> loadTestCases()
     {
         List<TestCase> testCaseList = new ArrayList<>();
-        testCaseList.addAll(Arrays.asList(DEFAULT_TEST_CASES));
 
         // Try to load from settings
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -161,6 +160,10 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
             TestCase[] cases = gson.fromJson(jsonTestCases, TestCase[].class);
             testCaseList.addAll(Arrays.asList(cases));
         }
+        // Take default ones on first run
+        else {
+            testCaseList.addAll(Arrays.asList(DEFAULT_TEST_CASES));
+        }
 
         return testCaseList;
     }
@@ -168,9 +171,6 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     @Override
     public void saveTestCases(List<TestCase> testCases)
     {
-        // Filter out all default test cases
-        testCases = testCases.subList(DEFAULT_TEST_CASES.length, testCases.size());
-
         // Convert to array
         TestCase[] casesArray = new TestCase[testCases.size()];
         testCases.toArray(casesArray);
