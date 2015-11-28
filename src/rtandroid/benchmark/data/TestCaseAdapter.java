@@ -33,12 +33,14 @@ import java.util.TreeSet;
 
 import rtandroid.benchmark.R;
 import rtandroid.benchmark.data.TestCase.TestCaseComparator;
+import rtandroid.benchmark.ui.dialogs.TestCaseDialog;
 import rtandroid.benchmark.ui.views.TestCaseItem;
 
 /**
  * Adapter for a list of test cases.
  */
-public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheckedChangeListener
+public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheckedChangeListener,
+                                                            TestCaseDialog.OnTestCaseUpdateListener
 {
     private static final String BUNDLE_SELECTED_CASES = "selected_cases";
 
@@ -51,7 +53,7 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
         mInflater = LayoutInflater.from(context);
         mTestCases = cases;
 
-        mSelectedCases = new TreeSet<TestCase>(new TestCaseComparator());
+        mSelectedCases = new TreeSet<>(new TestCaseComparator());
         mSelectedCases.addAll(cases);
     }
 
@@ -111,6 +113,14 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
         else
         {
             mSelectedCases.remove(testCase);
+        }
+    }
+
+    @Override
+    public void onTestCaseUpdated(TestCase oldTestCase, TestCase newTestCase) {
+        if(mSelectedCases.contains(oldTestCase)) {
+            mSelectedCases.remove(oldTestCase);
+            mSelectedCases.add(newTestCase);
         }
     }
 

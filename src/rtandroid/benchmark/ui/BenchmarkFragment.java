@@ -62,7 +62,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
                                                            NumberPickerDialog.OnValueSelectedListener,
                                                            BenchmarkPickerDialog.OnValueSelectedListener,
                                                            ProgressDialog.OnProgressListener,
-                                                           TestCaseDialog.OnTestCaseSaveListener
+                                                           TestCaseDialog.OnTestCaseUpdateListener
 {
     private static final String TAG = BenchmarkFragment.class.getSimpleName();
 
@@ -245,10 +245,6 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-//        TestCaseItem testCaseView = (TestCaseItem) info.targetView;
-//        TestCase testCase = testCaseView.getTestCase();
-
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.menu_test_case, menu);
     }
@@ -273,6 +269,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
             case R.id.menu_delete:
                 mTestCases.remove(testCase);
                 mTestCaseAdapter.notifyDataSetChanged();
+                mListener.saveTestCases(mTestCases);
                 return true;
 
             default:
@@ -391,12 +388,18 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onTestCaseSave(TestCase testCase)
+    public void onTestCaseUpdated(TestCase oldTestCase, TestCase newTestCase)
     {
-        // Add new cases
-        if (!mTestCases.contains(testCase))
+        // Replace existing
+        int caseIdx = mTestCases.indexOf(oldTestCase);
+        if (caseIdx != -1)
         {
-            mTestCases.add(testCase);
+            mTestCases.set(caseIdx, newTestCase);
+            mTestCaseAdapter.onTestCaseUpdated(oldTestCase, newTestCase);
+        }
+        // Add new cases
+        else {
+            mTestCases.add(newTestCase);
         }
 
         // Save list

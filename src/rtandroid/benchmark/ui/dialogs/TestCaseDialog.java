@@ -46,7 +46,7 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
 {
     private static final String ARG_CASE = "name";
 
-    private OnTestCaseSaveListener mListener;
+    private OnTestCaseUpdateListener mListener;
     private EditText mName;
     private SeekBar mPriority;
     private TextView mPriorityText;
@@ -54,7 +54,7 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
     private TextView mPowerLevelText;
     private Spinner mCpuLock;
 
-    private TestCase mTestCase;
+    private TestCase mOldTestCase;
 
     /**
      * @return New instance of fragment TestCaseDialog to create a test case.
@@ -119,12 +119,12 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
             {
                 Gson gson = new Gson();
                 String jsonTestCase = args.getString(ARG_CASE);
-                mTestCase = gson.fromJson(jsonTestCase, TestCase.class);
+                mOldTestCase = gson.fromJson(jsonTestCase, TestCase.class);
 
-                mName.setText(mTestCase.getName());
-                mPriority.setProgress(mTestCase.getRealtimePriority());
-                mPowerLevel.setProgress(mTestCase.getPowerLevel());
-                int core = mTestCase.getCpuCore();
+                mName.setText(mOldTestCase.getName());
+                mPriority.setProgress(mOldTestCase.getRealtimePriority());
+                mPowerLevel.setProgress(mOldTestCase.getPowerLevel());
+                int core = mOldTestCase.getCpuCore();
                 for(int i = 0; i < isolatedCpus.length; i++)
                 {
                     if(isolatedCpus[i] == core)
@@ -172,7 +172,7 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
         super.onAttach(activity);
         try
         {
-            mListener = (OnTestCaseSaveListener) getTargetFragment();
+            mListener = (OnTestCaseUpdateListener) getTargetFragment();
         }
         catch (ClassCastException e)
         {
@@ -223,18 +223,13 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
             }
 
             // Pass a value to listener
-            if (mTestCase == null)
-            {
-                mTestCase = new TestCase("", TestCase.NO_PRIORITY, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK);
-            }
+            TestCase newTestCase = new TestCase(mName.getText().toString(), TestCase.NO_PRIORITY, TestCase.NO_POWER_LEVEL, TestCase.NO_CORE_LOCK);
+            newTestCase.setCpuCore((int) mCpuLock.getSelectedItemId());
 
-            mTestCase.setName(mName.getText().toString());
-            mTestCase.setCpuCore((int) mCpuLock.getSelectedItemId());
+            if (mPriority.getProgress() != 0) { newTestCase.setPriority(mPriority.getProgress()); }
+            if (mPowerLevel.getProgress() != 0) { newTestCase.setPowerLevel(mPowerLevel.getProgress()); }
 
-            if (mPriority.getProgress() != 0) { mTestCase.setPriority(mPriority.getProgress()); }
-            if (mPowerLevel.getProgress() != 0) { mTestCase.setPowerLevel(mPowerLevel.getProgress()); }
-
-            mListener.onTestCaseSave(mTestCase);
+            mListener.onTestCaseUpdated(mOldTestCase, newTestCase);
         }
 
         dismiss();
@@ -244,8 +239,8 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
      * This interface must be implemented by target fragments that show this
      * dialog to allow an passing of chosen value.
      */
-    public interface OnTestCaseSaveListener
+    public interface OnTestCaseUpdateListener
     {
-        void onTestCaseSave(TestCase testCase);
+        void onTestCaseUpdated(TestCase oldTestCase, TestCase newTestCase);
     }
 }

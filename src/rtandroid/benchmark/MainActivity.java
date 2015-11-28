@@ -160,8 +160,9 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
             TestCase[] cases = gson.fromJson(jsonTestCases, TestCase[].class);
             testCaseList.addAll(Arrays.asList(cases));
         }
+
         // Take default ones on first run
-        else {
+        if(testCaseList.isEmpty()) {
             testCaseList.addAll(Arrays.asList(DEFAULT_TEST_CASES));
         }
 
