@@ -19,12 +19,20 @@
 <resources>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#00539f</item>
+        <item name="colorPrimaryDark">#004380</item>
+        <item name="colorAccent">#F6A800</item>
+    </style>
+
+    <style name="AppBarTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">#00539f</item>
+        <item name="colorPrimaryDark">#004380</item>
+        <item name="colorAccent">#F6A800</item>
     </style>
 
     <!-- Section header -->
-    <style name="SectionHeader" parent="android:Widget.Holo.Light.TextView">
+    <style name="SectionHeader">
         <item name="android:height">48dp</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:gravity">center_vertical</item>
