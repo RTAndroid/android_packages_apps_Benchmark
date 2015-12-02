@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/input_priority_label"
-        style="@style/OptionLabel"
+        style="@style/TextAppearance.AppTheme.TestCaseDialog.ItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/input_name_layout"
@@ -56,7 +56,7 @@
 
     <TextView
         android:id="@+id/input_power_level_label"
-        style="@style/OptionLabel"
+        style="@style/TextAppearance.AppTheme.TestCaseDialog.ItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/input_priority"
@@ -82,7 +82,7 @@
 
     <TextView
         android:id="@+id/input_cpu_label"
-        style="@style/OptionLabel"
+        style="@style/TextAppearance.AppTheme.TestCaseDialog.ItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/input_power_level"

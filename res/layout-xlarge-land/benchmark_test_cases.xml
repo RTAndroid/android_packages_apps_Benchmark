@@ -16,31 +16,28 @@
     limitations under the License.
 -->
 
-<rtandroid.benchmark.ui.views.StatisticViewItem
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:gravity="center_vertical">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/test_case_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"/>
+        android:text="@string/run_header_test_cases"
+        style="@style/AppTheme.SubHeader"/>
 
-    <rtandroid.benchmark.ui.views.HorizontalBarView
-        android:id="@+id/test_case_bar"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="30dp"/>
+    <ListView
+        android:id="@+id/test_case_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
-    <TextView
-        android:id="@+id/test_case_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:gravity="end"/>
+    <Button
+        style="@style/AppTheme.RaisedButton"
+        android:id="@+id/add_test_case"
+        android:layout_gravity="center"
+        android:text="@string/run_button_add_case"/>
 
-</rtandroid.benchmark.ui.views.StatisticViewItem>
+</LinearLayout>

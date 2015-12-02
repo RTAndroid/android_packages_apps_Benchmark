@@ -20,36 +20,94 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#00539f</item>
-        <item name="colorPrimaryDark">#004380</item>
-        <item name="colorAccent">#F6A800</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppBarTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">#00539f</item>
-        <item name="colorPrimaryDark">#004380</item>
-        <item name="colorAccent">#F6A800</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- Section header -->
-    <style name="SectionHeader">
-        <item name="android:height">48dp</item>
-        <item name="android:paddingLeft">16dp</item>
+    <style name="AppTheme.SubHeader" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
+
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:textSize">16sp</item>
+
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <!-- Input item style -->
-    <style name="InputItem">
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:background">@drawable/item_bottom_line</item>
+    <style name="AppTheme.RaisedButton" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginTop">24dp</item>
+
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
     </style>
 
-    <style name="OptionLabel" parent="android:TextAppearance.Holo.Widget.TextView">
+    <!-- Settings appearance -->
+    <style name="AppTheme.Settings.ItemLayout" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">54dp</item>
+
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/item_bottom_line</item>
+    </style>
+
+    <style name="AppTheme.Settings.Icon" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+
+        <item name="android:layout_marginEnd">16dp</item>
+    </style>
+
+    <style name="AppTheme.Settings.Name" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AppTheme.Settings.Value" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">right</item>
+    </style>
+
+    <!-- Test case item appearance -->
+    <style name="TextAppearance.AppTheme.TestCaseItem.Title" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.AppTheme.TestCaseItem.Details" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.AppTheme.TestCaseDialog.ItemName" parent="">
         <item name="android:layout_alignParentStart">true</item>
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_marginBottom">16dp</item>
