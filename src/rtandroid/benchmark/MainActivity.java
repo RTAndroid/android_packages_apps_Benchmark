@@ -24,7 +24,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.SpinnerAdapter;
 
@@ -47,7 +47,7 @@ import rtandroid.benchmark.data.TestCase;
 import rtandroid.benchmark.ui.BenchmarkFragment;
 import rtandroid.benchmark.ui.ResultFragment;
 
-public class MainActivity extends ActionBarActivity implements BenchmarkFragment.OnFragmentInteractionListener,
+public class MainActivity extends AppCompatActivity implements BenchmarkFragment.OnFragmentInteractionListener,
                                                                ResultFragment.OnFragmentInteractionListener
 {
     private static final String KEY_TEST_CASES = "test_cases";

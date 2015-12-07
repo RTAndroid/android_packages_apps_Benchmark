@@ -154,7 +154,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         root.findViewById(R.id.add_test_case).setOnClickListener(this);
 
         // Fill test case list
-        mTestCases = new ArrayList<TestCase>();
+        mTestCases = new ArrayList<>();
         mTestCases.addAll(mListener.loadTestCases());
         mTestCaseAdapter = new TestCaseAdapter(getActivity(), mTestCases);
 

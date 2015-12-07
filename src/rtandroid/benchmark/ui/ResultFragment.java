@@ -45,7 +45,7 @@ public class ResultFragment extends Fragment implements AdapterView.OnItemSelect
 
     static
     {
-        Map<Integer, BenchmarkResult.Kind> viewMap = new HashMap<Integer, BenchmarkResult.Kind>();
+        Map<Integer, BenchmarkResult.Kind> viewMap = new HashMap<>();
         viewMap.put(R.id.calc_minimum, BenchmarkResult.Kind.CALCULATION_MINIMUM);
         viewMap.put(R.id.calc_mean, BenchmarkResult.Kind.CALCULATION_MEAN);
         viewMap.put(R.id.calc_maximum, BenchmarkResult.Kind.CALCULATION_MAXIMUM);

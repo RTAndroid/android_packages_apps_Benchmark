@@ -109,7 +109,7 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
                 cores[i+1] = "Core " + isolatedCpus[i];
             }
 
-            SpinnerAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cores);
+            SpinnerAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cores);
             mCpuLock = (Spinner) v.findViewById(R.id.input_cpu_core);
             mCpuLock.setAdapter(adapter);
 
