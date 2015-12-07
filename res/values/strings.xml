@@ -35,8 +35,7 @@
 
     <string name="run_header_test_cases">Test Cases</string>
 
-    <string name="run_button_run">Run Benchmark</string>
-    <string name="run_button_add_case">New Test Case</string>
+    <string name="run_button_add_case">Add Test Case</string>
 
     <string name="run_input_sleep_unit">ms</string>
     <string name="run_input_no_unit">&#160;</string>
@@ -46,7 +45,6 @@
     <string name="dialog_test_case_priority">Priority</string>
     <string name="dialog_test_case_power_level">Power Level</string>
     <string name="dialog_test_case_cpu_lock">Cpu Core Lock</string>
-    <string name="dialog_test_case_cpu_lock_exclusive">Exclusive</string>
     <string name="dialog_missing_test_case_title">Missing test cases!</string>
     <string name="dialog_missing_test_case_msg">Please select at least one test case from the list.</string>
 

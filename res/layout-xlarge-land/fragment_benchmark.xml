@@ -16,37 +16,73 @@
     limitations under the License.
 -->
 
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:baselineAligned="false"
     tools:context="rtandroid.benchmark.ui.BenchmarkFragment">
 
-    <!-- Run settings -->
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="35"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/right_side_line">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
-        <include layout="@layout/benchmark_settings"/>
+        <!-- Run settings -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="35"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/right_side_line">
+
+            <include layout="@layout/benchmark_settings"/>
+
+        </LinearLayout>
+
+        <!-- Test cases to run -->
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="65"
+            android:layout_height="match_parent"
+            android:background="@drawable/right_side_line">
+
+            <include
+                layout="@layout/benchmark_test_cases_header"
+                android:id="@+id/test_case_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"/>
+
+            <include
+                layout="@layout/benchmark_test_cases_footer"
+                android:id="@+id/add_test_case"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
+                android:layout_centerHorizontal="true"/>
+
+            <ListView
+                android:id="@+id/test_case_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/test_case_header"
+                android:layout_above="@id/add_test_case"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 
-    <!-- Test cases to run -->
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="65"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/right_side_line">
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/start_benchmark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:elevation="4dp"
+        android:src="@drawable/ic_start" />
 
-        <include layout="@layout/benchmark_test_cases"/>
-
-    </LinearLayout>
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

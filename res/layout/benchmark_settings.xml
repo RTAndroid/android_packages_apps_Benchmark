@@ -18,16 +18,99 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <include layout="@layout/benchmark_settings_common"/>
+    <TextView
+        style="@style/AppTheme.SubHeader"
+        android:text="@string/run_header_general"/>
+
+    <LinearLayout
+        style="@style/AppTheme.Settings.ItemLayout"
+        android:id="@+id/benchmark">
+
+        <ImageView
+            style="@style/AppTheme.Settings.Icon"
+            android:src="@drawable/ic_benchmark"
+            android:contentDescription="@null"/>
+
+        <TextView
+            style="@style/AppTheme.Settings.Name"
+            android:text="@string/run_input_benchmark"/>
+
+        <TextView
+            style="@style/AppTheme.Settings.Value"
+            android:id="@+id/input_benchmark_display"
+            tools:text="Just a name"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/AppTheme.Settings.ItemLayout"
+        android:id="@+id/parameter"
+        android:background="@null">
+
+        <ImageView
+            style="@style/AppTheme.Settings.Icon"
+            android:src="@drawable/ic_parameter"
+            android:contentDescription="@null"/>
+
+        <TextView
+            style="@style/AppTheme.Settings.Name"
+            android:text="@string/run_input_parameter"/>
+
+        <TextView
+            style="@style/AppTheme.Settings.Value"
+            android:id="@+id/input_parameter_display"
+            tools:text="52145"/>
+
+    </LinearLayout>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/run_header_test_cases"
-        style="@style/AppTheme.SubHeader"/>
+        style="@style/AppTheme.SubHeader"
+        android:text="@string/run_header_advanced"/>
+
+    <LinearLayout
+        style="@style/AppTheme.Settings.ItemLayout"
+        android:id="@+id/cycles">
+
+        <ImageView
+            style="@style/AppTheme.Settings.Icon"
+            android:src="@drawable/ic_cycles"
+            android:contentDescription="@null"/>
+
+        <TextView
+            style="@style/AppTheme.Settings.Name"
+            android:text="@string/run_input_cycles"/>
+
+        <TextView
+            style="@style/AppTheme.Settings.Value"
+            android:id="@+id/input_cycles_display"
+            tools:text="42"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/AppTheme.Settings.ItemLayout"
+        android:id="@+id/sleep"
+        android:background="@null">
+
+        <ImageView
+            style="@style/AppTheme.Settings.Icon"
+            android:src="@drawable/ic_sleep"
+            android:contentDescription="@null"/>
+
+        <TextView
+            style="@style/AppTheme.Settings.Name"
+            android:text="@string/run_input_sleep"/>
+
+        <TextView
+            style="@style/AppTheme.Settings.Value"
+            android:id="@+id/input_sleep_display"
+            tools:text="10 ms"/>
+
+    </LinearLayout>
 
 </LinearLayout>

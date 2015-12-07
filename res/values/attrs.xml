@@ -22,4 +22,11 @@
         <attr name="statisticTitle" format="string" localization="suggested" />
     </declare-styleable>
 
+    <declare-styleable name="ExtendedListView">
+        <attr name="header" format="reference"/>
+        <attr name="header2" format="reference"/>
+        <attr name="footer" format="reference"/>
+        <attr name="footer2" format="reference"/>
+    </declare-styleable>
+
 </resources>

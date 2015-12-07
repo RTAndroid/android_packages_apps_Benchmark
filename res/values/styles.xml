@@ -25,16 +25,33 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="alertDialogTheme">@style/AppTheme.Dialog</item>
+        <item name="actionButtonStyle">@style/AppTheme.ActionButton</item>
     </style>
 
     <style name="AppBarTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="actionButtonStyle">@style/AppTheme.ActionButton</item>
     </style>
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.ActionButton" parent="Widget.AppCompat.ActionButton">
+        <item name="android:layout_marginLeft">64dp</item>
+        <item name="android:layout_marginRight">64dp</item>
+    </style>
+
+    <style name="AppTheme.BorderlessButton" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
+
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
     </style>
 
     <!-- Section header -->
@@ -53,20 +70,16 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="AppTheme.RaisedButton" parent="Widget.AppCompat.Button">
-        <item name="android:layout_width">wrap_content</item>
+    <style name="AppTheme.Header" parent="TextAppearance.AppCompat.Large">
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
 
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:layout_marginBottom">16dp</item>
-        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_margin">8dp</item>
 
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="android:gravity">center_horizontal</item>
 
-        <item name="android:backgroundTint">@color/colorPrimary</item>
-        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- Settings appearance -->

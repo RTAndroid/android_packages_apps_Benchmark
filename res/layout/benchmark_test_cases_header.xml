@@ -16,18 +16,13 @@
     limitations under the License.
 -->
 
-<LinearLayout
+<TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/test_case_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <include layout="@layout/benchmark_settings_common"/>
-
-    <Button
-        style="@style/AppTheme.RaisedButton"
-        android:id="@+id/start_benchmark"
-        android:layout_gravity="center"
-        android:text="@string/run_button_run"/>
-
-</LinearLayout>
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:text="@string/run_header_test_cases"
+    android:layout_alignParentTop="true"
+    style="@style/AppTheme.SubHeader" />
