@@ -29,6 +29,7 @@ The following steps require the installation of the Android NDK.
 
 Benchmark app is released under the terms of Apache 2.0 License. It uses following third-party libraries:
 
+* Android Support Library
 * Google Gson
 
 All of them are released under the Apache 2.0 License.

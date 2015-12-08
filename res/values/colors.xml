@@ -17,5 +17,9 @@
 -->
 
 <resources>
+    <color name="colorPrimary">#00539f</color>
+    <color name="colorPrimaryDark">#004380</color>
+    <color name="colorAccent">#F6A800</color>
+
     <color name="item_divider">#20000000</color>
 </resources>

@@ -19,14 +19,14 @@ package rtandroid.benchmark;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.SpinnerAdapter;
-import android.widget.TabHost;
 
 import com.google.gson.Gson;
 
@@ -47,7 +47,7 @@ import rtandroid.benchmark.data.TestCase;
 import rtandroid.benchmark.ui.BenchmarkFragment;
 import rtandroid.benchmark.ui.ResultFragment;
 
-public class MainActivity extends ActionBarActivity implements BenchmarkFragment.OnFragmentInteractionListener,
+public class MainActivity extends AppCompatActivity implements BenchmarkFragment.OnFragmentInteractionListener,
                                                                ResultFragment.OnFragmentInteractionListener
 {
     private static final String KEY_TEST_CASES = "test_cases";
@@ -64,7 +64,7 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
         };
     }
 
-    private FragmentTabHost mTabHost;
+    private TabLayout mTabs;
     private ViewPager mViewPager;
 
     private BenchmarkConfiguration mBenchmarkConfig;
@@ -78,26 +78,17 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.actionbar);
+        setSupportActionBar(toolbar);
+
         TabNavigator navigator = new TabNavigator(getSupportFragmentManager());
 
-        // Create view pager
+        // Create view pager and tab navigation
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setOffscreenPageLimit(2);
         mViewPager.setAdapter(navigator);
-        mViewPager.setOnPageChangeListener(navigator);
 
-        // Create tab navigation with empty fragments
-        mTabHost = (FragmentTabHost) findViewById(R.id.tabHost);
-        mTabHost.setup(this, getSupportFragmentManager(), R.id.tabDummyContent);
-        mTabHost.setOnTabChangedListener(navigator);
-
-        String[] tabHeader = getResources().getStringArray(R.array.app_tabs);
-        for (int i = 0; i < tabHeader.length; i++)
-        {
-            String id = Integer.toString(i);
-            String title = tabHeader[i];
-            mTabHost.addTab(mTabHost.newTabSpec(id).setIndicator(title), Fragment.class, null);
-        }
+        mTabs = (TabLayout) findViewById(R.id.tabs);
+        mTabs.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -207,9 +198,10 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
     /**
      * Takes care about the fragment switching.
      */
-    private class TabNavigator extends FragmentPagerAdapter implements TabHost.OnTabChangeListener, ViewPager.OnPageChangeListener
+    private class TabNavigator extends FragmentPagerAdapter
     {
         private final Fragment[] mFragments;
+        private final String[] mTabHeaders;
 
         public TabNavigator(FragmentManager manager)
         {
@@ -217,6 +209,7 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
 
             // Prepare all fragments
             mFragments = new Fragment[] { new BenchmarkFragment(), new ResultFragment() };
+            mTabHeaders = getResources().getStringArray(R.array.app_tabs);
         }
 
         @Override
@@ -232,23 +225,8 @@ public class MainActivity extends ActionBarActivity implements BenchmarkFragment
         }
 
         @Override
-        public void onTabChanged(String s)
-        {
-            // Synchronize view pager with tabs
-            mViewPager.setCurrentItem(Integer.parseInt(s), true);
+        public CharSequence getPageTitle(int position) {
+            return mTabHeaders[position];
         }
-
-        @Override
-        public void onPageSelected(int position)
-        {
-            // Synchronize tabs with view pager
-            mTabHost.setCurrentTab(position);
-        }
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
-
-        @Override
-        public void onPageScrollStateChanged(int state) { }
     }
 }

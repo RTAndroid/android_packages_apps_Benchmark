@@ -18,8 +18,10 @@
 
 <rtandroid.benchmark.ui.views.TestCaseItem
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="wrap_content"
+    android:minHeight="72dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
 
@@ -27,30 +29,30 @@
         android:id="@+id/test_case_chosen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_marginEnd="16dp"/>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/test_case_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/test_case_chosen">
+        android:layout_toEndOf="@id/test_case_chosen"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.TestCaseItem.Title"
+        tools:text="Title of test case"/>
 
-        <TextView
-            android:id="@+id/test_case_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-        <TextView
-            android:id="@+id/test_case_details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"/>
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/test_case_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/test_case_chosen"
+        android:layout_below="@id/test_case_title"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:textAppearance="@style/TextAppearance.AppTheme.TestCaseItem.Details"
+        tools:text="Realtime priority: 50, Power level: 100%, Cpu core lock: 1"/>
 
 </rtandroid.benchmark.ui.views.TestCaseItem>

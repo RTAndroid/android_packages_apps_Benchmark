@@ -16,17 +16,13 @@
     limitations under the License.
 -->
 
-<resources>
-
-    <declare-styleable name="StatisticView">
-        <attr name="statisticTitle" format="string" localization="suggested" />
-    </declare-styleable>
-
-    <declare-styleable name="ExtendedListView">
-        <attr name="header" format="reference"/>
-        <attr name="header2" format="reference"/>
-        <attr name="footer" format="reference"/>
-        <attr name="footer2" format="reference"/>
-    </declare-styleable>
-
-</resources>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/test_case_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:text="@string/run_header_test_cases"
+    android:layout_alignParentTop="true"
+    style="@style/AppTheme.SubHeader" />

@@ -28,21 +28,24 @@ LOCAL_JAVA_LIBRARIES := \
 
 LOCAL_STATIC_JAVA_LIBRARIES := \
     android-common \
-    android-support-v4 \
-    android-support-v7-appcompat \
-    android-support-v13 \
+    cmfm-android-support-v4 \
+    cmfm-android-support-v7-appcompat \
+    cmfm-android-support-design \
     prebuilt_gson
 
 LOCAL_PACKAGE_NAME := Benchmark
 LOCAL_JNI_SHARED_LIBRARIES := libbenchmark
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
 
-appcompat_dir := ../../../prebuilts/sdk/current/support/v7/appcompat/res
-res_dirs := res $(appcompat_dir)
+appcompat_dir := ../../../external/android/support-prebuilt/appcompat/res
+supportdesign_dir := ../../../external/android/support-prebuilt/support-design/res
+res_dirs := res $(appcompat_dir) $(supportdesign_dir)
 LOCAL_RESOURCE_DIR := $(addprefix $(LOCAL_PATH)/, $(res_dirs))
+
 LOCAL_AAPT_FLAGS := \
     --auto-add-overlay \
-    --extra-packages android.support.v7.appcompat
+    --extra-packages android.support.v7.appcompat \
+    --extra-packages android.support.design
 
 # Suppress loggings
 LOCAL_PROGUARD_ENABLED := optimization
@@ -55,7 +58,10 @@ include $(BUILD_PACKAGE)
 include $(CLEAR_VARS)
 
 LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := \
-    prebuilt_gson:libs/gson-2.4.jar
+    prebuilt_gson:libs/gson-2.4.jar \
+    cmfm-android-support-v4:../../../external/android/support-prebuilt/appcompat/android-support-v4.jar \
+    cmfm-android-support-v7-appcompat:../../../external/android/support-prebuilt/appcompat/android-support-v7-appcompat.jar \
+    cmfm-android-support-design:../../../external/android/support-prebuilt/support-design/android-support-design.jar
 
 include $(BUILD_MULTI_PREBUILT)
 

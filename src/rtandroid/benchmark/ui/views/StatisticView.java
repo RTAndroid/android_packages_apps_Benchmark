@@ -110,10 +110,10 @@ public class StatisticView extends LinearLayout
         bundle.putParcelable(KEY_SUPER, super.onSaveInstanceState());
 
         TableLayout table = (TableLayout) findViewById(R.id.test_case_table);
-        ArrayList<String> names = new ArrayList<String>();
-        ArrayList<Integer> values = new ArrayList<Integer>();
-        ArrayList<Integer> maximum = new ArrayList<Integer>();
-        ArrayList<Boolean> displayMs = new ArrayList<Boolean>();
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<Integer> values = new ArrayList<>();
+        ArrayList<Integer> maximum = new ArrayList<>();
+        ArrayList<Boolean> displayMs = new ArrayList<>();
 
         for (int i = 0; i < table.getChildCount(); i++)
         {

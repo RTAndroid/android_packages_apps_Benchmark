@@ -17,7 +17,6 @@
 package rtandroid.benchmark.ui.dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,6 +26,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -209,43 +209,43 @@ public class ProgressDialog extends DialogFragment implements DialogInterface.On
         {
             String action = intent.getAction();
 
-            if (action.equals(BenchmarkService.ACTION_START))
-            {
-                mCurrentTestCaseName = intent.getStringExtra(BenchmarkService.EXTRA_TEST_CASE_NAME);
-            }
-            else if (action.equals(BenchmarkService.ACTION_UPDATE))
-            {
-                mCyclesCompleted = intent.getIntExtra(BenchmarkService.EXTRA_ITERATIONS, -1);
-                if (mCyclesCompleted == -1 || mCasesCompleted > mCyclesPerRun)
-                {
-                    throw new RuntimeException("Invalid count of completed cycles received");
-                }
-            }
-            else if (action.equals(BenchmarkService.ACTION_FINISHED))
-            {
-                mCyclesCompleted = 0;
-                mCasesCompleted++;
+            switch (action) {
+                case BenchmarkService.ACTION_START:
+                    mCurrentTestCaseName = intent.getStringExtra(BenchmarkService.EXTRA_TEST_CASE_NAME);
+                    break;
 
-                // Notify
-                if (mListener != null)
-                {
-                    String name = intent.getStringExtra(BenchmarkService.EXTRA_TEST_CASE_NAME);
-                    String filename = intent.getStringExtra(BenchmarkService.EXTRA_FILENAME);
-                    mListener.onTestCaseCompleted(name, filename);
-                }
+                case BenchmarkService.ACTION_UPDATE:
+                    mCyclesCompleted = intent.getIntExtra(BenchmarkService.EXTRA_ITERATIONS, -1);
+                    if (mCyclesCompleted == -1 || mCasesCompleted > mCyclesPerRun)
+                    {
+                        throw new RuntimeException("Invalid count of completed cycles received");
+                    }
+                    break;
 
-                // Close
-                if (mCasesCompleted == mCasesTotal)
-                {
-                    stopService();
-                    dismiss();
+                case BenchmarkService.ACTION_FINISHED:
+                    mCyclesCompleted = 0;
+                    mCasesCompleted++;
 
-                    if (mListener != null) { mListener.onBenchmarkFinished(); }
-                }
-            }
-            else
-            {
-                throw new RuntimeException("Received intent has unknown action!");
+                    // Notify
+                    if (mListener != null)
+                    {
+                        String name = intent.getStringExtra(BenchmarkService.EXTRA_TEST_CASE_NAME);
+                        String filename = intent.getStringExtra(BenchmarkService.EXTRA_FILENAME);
+                        mListener.onTestCaseCompleted(name, filename);
+                    }
+
+                    // Close
+                    if (mCasesCompleted == mCasesTotal)
+                    {
+                        stopService();
+                        dismiss();
+
+                        if (mListener != null) { mListener.onBenchmarkFinished(); }
+                    }
+                    break;
+
+                default:
+                    throw new RuntimeException("Received intent has unknown action!");
             }
 
             updateProgress();

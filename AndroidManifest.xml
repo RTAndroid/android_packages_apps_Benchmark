@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
     Copyright (C) 2015 RTAndroid Project
 
@@ -15,53 +14,54 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="rtandroid.benchmark"
-    android:versionCode="1"
-    android:versionName="1.0" >
+<manifest package="rtandroid.benchmark"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          android:versionCode="1"
+          android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="22"
-        android:targetSdkVersion="22" />
+        android:targetSdkVersion="22"/>
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
     <uses-permission android:name="rtandroid.permission.USE_RT_CPU"/>
     <uses-permission android:name="rtandroid.permission.USE_RT_PROCESSES"/>
 
     <supports-screens
-        android:resizeable="true"
-        android:smallScreens="true"
+        android:largeScreens="true"
         android:normalScreens="true"
-        android:largeScreens="true" />
+        android:resizeable="true"
+        android:smallScreens="true"/>
 
     <application
-        android:theme="@style/AppTheme"
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:allowBackup="true"
-        android:supportsRtl="false" >
+        android:supportsRtl="false"
+        android:theme="@style/AppTheme">
 
-        <uses-library android:name="rtandroid.sdk" />
-        <meta-data android:name="rtandroid.persistent" android:value="true" />
+        <uses-library android:name="rtandroid.sdk"/>
+
+        <meta-data
+            android:name="rtandroid.persistent"
+            android:value="true"/>
 
         <activity
+            android:name=".MainActivity"
             android:configChanges="keyboardHidden"
-            android:name="rtandroid.benchmark.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
         <service
-            android:name="rtandroid.benchmark.service.BenchmarkService"
+            android:name=".service.BenchmarkService"
             android:enabled="true"
-            android:process=":BenchmarkService" />
+            android:process=":BenchmarkService"/>
 
     </application>
 

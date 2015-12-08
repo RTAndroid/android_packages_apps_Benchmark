@@ -40,7 +40,7 @@ public class BenchmarkResult
 
     public Map<String, Integer> getResult(Kind kind)
     {
-        Map<String, Integer> results = new LinkedHashMap<String, Integer>();
+        Map<String, Integer> results = new LinkedHashMap<>();
 
         for(Map.Entry<String, Map<Kind, Integer>> e : mResults.entrySet())
         {

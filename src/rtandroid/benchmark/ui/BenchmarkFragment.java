@@ -17,7 +17,6 @@
 package rtandroid.benchmark.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +25,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -101,21 +101,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_benchmark, container, false);
-
-        // Adapt to phone layout
-        boolean isTwinMode = (root.findViewById(R.id.start_benchmark) != null);
-        if (!isTwinMode)
-        {
-            ListView listView = (ListView) root.findViewById(R.id.test_case_list);
-
-            View header = inflater.inflate(R.layout.benchmark_settings, listView, false);
-            View footer = inflater.inflate(R.layout.benchmark_test_cases, listView, false);
-            listView.addHeaderView(header);
-            listView.addFooterView(footer);
-        }
-
-        return root;
+        return inflater.inflate(R.layout.fragment_benchmark, container, false);
     }
 
     @Override
@@ -154,7 +140,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         root.findViewById(R.id.add_test_case).setOnClickListener(this);
 
         // Fill test case list
-        mTestCases = new ArrayList<TestCase>();
+        mTestCases = new ArrayList<>();
         mTestCases.addAll(mListener.loadTestCases());
         mTestCaseAdapter = new TestCaseAdapter(getActivity(), mTestCases);
 

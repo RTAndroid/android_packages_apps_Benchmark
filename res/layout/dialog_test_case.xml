@@ -9,32 +9,30 @@
 
     <!-- Name -->
 
-    <TextView
-        android:id="@+id/input_name_label"
-        style="@style/OptionLabel"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_name_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignBaseline="@+id/input_name"
-        android:labelFor="@+id/input_name"
-        android:text="@string/dialog_test_case_name"/>
+        android:layout_alignParentTop="true">
 
-    <EditText
-        android:id="@+id/input_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/input_name_label"
-        android:inputType="text"/>
+        <EditText
+            android:id="@+id/input_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:inputType="text"
+            android:hint="@string/dialog_test_case_name"/>
+
+    </android.support.design.widget.TextInputLayout>
 
     <!-- Priority -->
 
     <TextView
         android:id="@+id/input_priority_label"
-        style="@style/OptionLabel"
+        style="@style/TextAppearance.AppTheme.TestCaseDialog.ItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/input_name_label"
+        android:layout_below="@id/input_name_layout"
         android:labelFor="@+id/input_priority"
         android:text="@string/dialog_test_case_priority"/>
 
@@ -58,7 +56,7 @@
 
     <TextView
         android:id="@+id/input_power_level_label"
-        style="@style/OptionLabel"
+        style="@style/TextAppearance.AppTheme.TestCaseDialog.ItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/input_priority"
@@ -84,7 +82,7 @@
 
     <TextView
         android:id="@+id/input_cpu_label"
-        style="@style/OptionLabel"
+        style="@style/TextAppearance.AppTheme.TestCaseDialog.ItemName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/input_power_level"

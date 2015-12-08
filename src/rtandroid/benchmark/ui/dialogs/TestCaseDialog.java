@@ -17,13 +17,13 @@
 package rtandroid.benchmark.ui.dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -109,7 +109,7 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
                 cores[i+1] = "Core " + isolatedCpus[i];
             }
 
-            SpinnerAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cores);
+            SpinnerAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cores);
             mCpuLock = (Spinner) v.findViewById(R.id.input_cpu_core);
             mCpuLock.setAdapter(adapter);
 

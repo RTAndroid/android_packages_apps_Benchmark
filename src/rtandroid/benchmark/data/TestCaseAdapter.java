@@ -87,7 +87,7 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
         // Inflate new view if necessary
         if (convertView == null)
         {
-            convertView = mInflater.inflate(R.layout.test_case_item, parent, false);
+            convertView = mInflater.inflate(R.layout.view_test_case_item, parent, false);
         }
 
         // Fill with correct data
