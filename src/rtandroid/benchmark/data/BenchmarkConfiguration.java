@@ -16,18 +16,26 @@
 
 package rtandroid.benchmark.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import rtandroid.benchmark.benchmarks.Benchmark;
 import rtandroid.benchmark.benchmarks.BenchmarkManager;
 
 /**
  * Data class containing all values of benchmark.
  */
-public class BenchmarkConfiguration
+public class BenchmarkConfiguration implements Parcelable
 {
     public int BenchmarkIdx;
     public int Parameter;
     public int Cycles;
     public int SleepMs;
+
+    public BenchmarkConfiguration()
+    {
+        // Only for public constructor
+    }
 
     public Benchmark getBenchmark()
     {
@@ -36,4 +44,44 @@ public class BenchmarkConfiguration
 
         return benchmarks[BenchmarkIdx];
     }
+
+    //
+    // Parcelable
+    //
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags)
+    {
+        dest.writeInt(BenchmarkIdx);
+        dest.writeInt(Parameter);
+        dest.writeInt(Cycles);
+        dest.writeInt(SleepMs);
+    }
+
+    public static final Parcelable.Creator<BenchmarkConfiguration> CREATOR = new Parcelable.Creator<BenchmarkConfiguration>()
+    {
+        public BenchmarkConfiguration createFromParcel(Parcel in)
+        {
+            return new BenchmarkConfiguration(in);
+        }
+
+        public BenchmarkConfiguration[] newArray(int size)
+        {
+            return new BenchmarkConfiguration[size];
+        }
+    };
+
+    private BenchmarkConfiguration(Parcel in) {
+        BenchmarkIdx = in.readInt();
+        Parameter = in.readInt();
+        Cycles = in.readInt();
+        SleepMs =  in.readInt();
+    }
+
 }

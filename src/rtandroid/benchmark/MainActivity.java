@@ -50,6 +50,8 @@ import rtandroid.benchmark.ui.ResultFragment;
 public class MainActivity extends AppCompatActivity implements BenchmarkFragment.OnFragmentInteractionListener,
                                                                ResultFragment.OnFragmentInteractionListener
 {
+    private static final String KEY_BENCHMARK_CONFIG = "benchmark_config";
+    private static final String KEY_CURRENT_RESULT = "current_result";
     private static final String KEY_TEST_CASES = "test_cases";
     private static final String KEY_RESULTS = "results";
 
@@ -89,6 +91,22 @@ public class MainActivity extends AppCompatActivity implements BenchmarkFragment
 
         mTabs = (TabLayout) findViewById(R.id.tabs);
         mTabs.setupWithViewPager(mViewPager);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        mBenchmarkConfig = savedInstanceState.getParcelable(KEY_BENCHMARK_CONFIG);
+        mCurrentResult = savedInstanceState.getParcelable(KEY_CURRENT_RESULT);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable(KEY_BENCHMARK_CONFIG, mBenchmarkConfig);
+        outState.putParcelable(KEY_CURRENT_RESULT, mCurrentResult);
     }
 
     @Override
