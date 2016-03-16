@@ -53,6 +53,6 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="16dp"
         android:textAppearance="@style/TextAppearance.AppTheme.TestCaseItem.Details"
-        tools:text="Realtime priority: 50, Power level: 100%, Cpu core lock: 1"/>
+        tools:text="Real-time priority: 50, Power lock: 100%, CPU lock: 1"/>
 
 </rtandroid.benchmark.ui.views.TestCaseItem>

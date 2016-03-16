@@ -117,8 +117,10 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
     }
 
     @Override
-    public void onTestCaseUpdated(TestCase oldTestCase, TestCase newTestCase) {
-        if(mSelectedCases.contains(oldTestCase)) {
+    public void onTestCaseUpdated(TestCase oldTestCase, TestCase newTestCase)
+    {
+        if (mSelectedCases.contains(oldTestCase))
+        {
             mSelectedCases.remove(oldTestCase);
             mSelectedCases.add(newTestCase);
         }
@@ -150,7 +152,7 @@ public class TestCaseAdapter extends BaseAdapter implements TestCaseItem.OnCheck
         Iterator<TestCase> iter = mSelectedCases.iterator();
         while (iter.hasNext())
         {
-            if(!mTestCases.contains(iter.next()))
+            if (!mTestCases.contains(iter.next()))
             {
                 iter.remove();
             }

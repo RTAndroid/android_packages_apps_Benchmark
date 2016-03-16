@@ -77,11 +77,11 @@ public class BenchmarkConfiguration implements Parcelable
         }
     };
 
-    private BenchmarkConfiguration(Parcel in) {
+    private BenchmarkConfiguration(Parcel in)
+    {
         BenchmarkIdx = in.readInt();
         Parameter = in.readInt();
         Cycles = in.readInt();
         SleepMs =  in.readInt();
     }
-
 }

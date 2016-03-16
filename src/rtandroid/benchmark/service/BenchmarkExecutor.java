@@ -60,7 +60,7 @@ public class BenchmarkExecutor implements Runnable
         if (!resultFolder.exists())
         {
             boolean res = resultFolder.mkdirs();
-            if (!res) { throw new RuntimeException("Cannot create the output directory!"); }
+            if (!res) { throw new RuntimeException("Cannot create the output directory"); }
         }
 
         // Generate the filename
@@ -133,7 +133,7 @@ public class BenchmarkExecutor implements Runnable
         }
 
         // Clean everything up
-        RealTimeUtils.unlockPowerLevel();
+        RealTimeUtils.unlockPowerLevel(powerLevel);
 
         // Let the CPU cooldown
         try { Thread.sleep(500); }

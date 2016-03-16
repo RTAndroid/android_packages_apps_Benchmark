@@ -30,8 +30,7 @@ import rtandroid.benchmark.data.TestCase;
 /**
  * Selectable list item of a test case.
  */
-public class TestCaseItem extends RelativeLayout implements View.OnClickListener,
-                                                            CompoundButton.OnCheckedChangeListener
+public class TestCaseItem extends RelativeLayout implements View.OnClickListener, CompoundButton.OnCheckedChangeListener
 {
     private OnCheckedChangeListener mListener;
     private CheckBox mCheckBox;
@@ -98,33 +97,33 @@ public class TestCaseItem extends RelativeLayout implements View.OnClickListener
         int priority = testCase.getRealtimePriority();
         if (priority == TestCase.NO_PRIORITY)
         {
-            details.append("No real-time priority");
+            details.append("Real-time priority: none");
         }
         else
         {
             details.append("Real-time priority: ").append(priority);
         }
-        details.append(", ");
+        details.append("\n");
 
         int powerLevel = testCase.getPowerLevel();
         if (powerLevel == TestCase.NO_POWER_LEVEL)
         {
-            details.append("No power level");
+            details.append("Power lock: none");
         }
         else
         {
-            details.append("Power level: ").append(powerLevel).append("%");
+            details.append("Power lock: ").append(powerLevel).append("%");
         }
-        details.append(", ");
+        details.append("\n");
 
         int cpuCore = testCase.getCpuCore();
         if (cpuCore == TestCase.NO_CORE_LOCK)
         {
-            details.append("No cpu core lock");
+            details.append("CPU core lock: none");
         }
         else
         {
-            details.append("Cpu core lock: ").append(cpuCore);
+            details.append("CPU core lock: ").append(cpuCore);
         }
 
         mTestCase = testCase;

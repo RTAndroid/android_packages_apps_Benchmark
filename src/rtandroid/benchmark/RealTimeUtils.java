@@ -29,10 +29,7 @@ public class RealTimeUtils
 
     private static long getBuildVersion()
     {
-        try
-        {
-            return PROXY.getVersion();
-        }
+        try { return PROXY.getVersion(); }
         catch (Exception e)
         {
             Log.e(TAG, "Failed to find RT extensions: " + e.getMessage());
@@ -43,7 +40,11 @@ public class RealTimeUtils
     public static void setPriority(int priority)
     {
         // Real-time extensions are not supported
-        if (getBuildVersion() < 0) { return; }
+        if (getBuildVersion() < 0)
+        {
+            Log.e(TAG, "RT extension not found, RT priority be skipped");
+            return;
+        }
 
         // Nothing to set
         if (priority == TestCase.NO_PRIORITY) { return; }
@@ -63,13 +64,34 @@ public class RealTimeUtils
     public static void setCpuCore(int cpuCore)
     {
         // Real-time extensions are not supported
-        if (getBuildVersion() < 0) { return; }
+        if (getBuildVersion() < 0)
+        {
+            Log.e(TAG, "RT extension not found, CPU lock will be skipped");
+            return;
+        }
 
         // Nothing to set
         if (cpuCore == TestCase.NO_CORE_LOCK) { return; }
 
         try
         {
+            // Is this a valid CPU?
+            int cpuCount = PROXY.getConfiguredProcessors();
+            if (cpuCore >= cpuCount)
+            {
+                Log.e(TAG, "Can't set thread affinity for CPU " + cpuCore + ": only " + cpuCount + " CPUs found");
+                return;
+            }
+
+            // Is this an isolated CPU?
+            int[] isolatedCPUs = PROXY.getIsolatedProcessors();
+            boolean isolated = false;
+            for (int cpu : isolatedCPUs)
+             if (cpu == cpuCore) { isolated = true; }
+
+            // Warn if we are trying to isolate this process on a non-isolated CPU
+            if (!isolated) { Log.w(TAG, "WARNING: trying to isolate a process on a non-isolated CPU " + cpuCore); }
+
             // Make sure this core is online
             int state = PROXY.getCpuState(cpuCore);
             if (state == RealTimeConstants.CPU_STATE_OFFLINE)
@@ -92,13 +114,18 @@ public class RealTimeUtils
     public static void lockPowerLevel(int powerLevel)
     {
         // Real-time extensions are not supported
-        if (getBuildVersion() < 0) { return; }
+        if (getBuildVersion() < 0)
+        {
+            Log.e(TAG, "RT extension not found, power lock will be skipped");
+            return;
+        }
 
         // Nothing to set
         if (powerLevel == TestCase.NO_POWER_LEVEL) { return; }
 
         try
         {
+            Log.d(TAG, "Locking power level at " + powerLevel + "%");
             PROXY.lockCpuPower(powerLevel);
         }
         catch (Exception e)
@@ -107,31 +134,26 @@ public class RealTimeUtils
         }
     }
 
-    public static void unlockPowerLevel()
+    public static void unlockPowerLevel(int powerLevel)
     {
         // Real-time extensions are not supported
-        if (getBuildVersion() < 0) { return; }
+        if (getBuildVersion() < 0)
+        {
+            Log.e(TAG, "RT extension not found, power unlock will be skipped");
+            return;
+        }
+
+        // Nothing to reset
+        if (powerLevel == TestCase.NO_POWER_LEVEL) { return; }
 
         try
         {
+            Log.d(TAG, "Unlocking power level from " + powerLevel + "%");
             PROXY.unlockCpuPower();
         }
         catch (Exception e)
         {
             Log.e(TAG, "Failed to find RT extensions: " + e.getMessage());
-        }
-    }
-
-    public static int getCpuCoreCount()
-    {
-        try
-        {
-            return PROXY.getConfiguredProcessors();
-        }
-        catch (Exception e)
-        {
-            Log.e(TAG, "Failed to find RT extensions: " + e.getMessage());
-            return Runtime.getRuntime().availableProcessors();
         }
     }
 }
