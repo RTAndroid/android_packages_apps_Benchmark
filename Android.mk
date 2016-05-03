@@ -38,7 +38,7 @@ LOCAL_JNI_SHARED_LIBRARIES := libbenchmark
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
 
 appcompat_dir := ../../../prebuilts/sdk/current/support/v7/appcompat/res
-supportdesign_dir := ../../../../../../prebuilts/sdk/current/support/design/res
+supportdesign_dir := ../../../prebuilts/sdk/current/support/design/res
 res_dirs := res $(appcompat_dir) $(supportdesign_dir)
 LOCAL_RESOURCE_DIR := $(addprefix $(LOCAL_PATH)/, $(res_dirs))
 
@@ -58,10 +58,7 @@ include $(BUILD_PACKAGE)
 include $(CLEAR_VARS)
 
 LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := \
-    prebuilt_gson:libs/gson-2.4.jar \
-    android-support-v4:../../../prebuilts/sdk/current/support/v4/android-support-v4.jar \
-    android-support-v7-appcompat:../../../prebuilts/sdk/current/support/v7/appcompat/libs/android-support-v7-appcompat.jar \
-    android-support-design:../../../prebuilts/sdk/current/support/design/libs/android-support-design.jar
+    prebuilt_gson:libs/gson-2.4.jar
 
 include $(BUILD_MULTI_PREBUILT)
 
