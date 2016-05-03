@@ -37,10 +37,10 @@ LOCAL_PACKAGE_NAME := Benchmark
 LOCAL_JNI_SHARED_LIBRARIES := libbenchmark
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
 
-appcompat_dir := ../../../prebuilts/sdk/current/support/v7/appcompat/res
-supportdesign_dir := ../../../prebuilts/sdk/current/support/design/res
-res_dirs := res $(appcompat_dir) $(supportdesign_dir)
-LOCAL_RESOURCE_DIR := $(addprefix $(LOCAL_PATH)/, $(res_dirs))
+LOCAL_RESOURCE_DIR := \
+    $(addprefix $(LOCAL_PATH)/, res) \
+    frameworks/support/v7/appcompat/res \
+    frameworks/support/design/res
 
 LOCAL_AAPT_FLAGS := \
     --auto-add-overlay \
