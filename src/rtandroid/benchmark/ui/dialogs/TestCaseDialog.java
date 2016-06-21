@@ -35,7 +35,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import rtandroid.RealTimeProxy;
+import rtandroid.realtime.RealTimeProxy;
 import rtandroid.benchmark.R;
 import rtandroid.benchmark.data.TestCase;
 
