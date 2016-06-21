@@ -18,8 +18,7 @@ package rtandroid.benchmark;
 
 import android.util.Log;
 
-import rtandroid.RealTimeConstants;
-import rtandroid.RealTimeProxy;
+import rtandroid.realtime.RealTimeProxy;
 import rtandroid.benchmark.data.TestCase;
 
 public class RealTimeUtils
@@ -52,7 +51,7 @@ public class RealTimeUtils
         try
         {
             Log.d(TAG, "Setting the RT priority to " + priority);
-            PROXY.setSchedulingPolicy(RealTimeConstants.SCHED_POLICY_FIFO);
+            PROXY.setSchedulingPolicy(rtandroid.Constants.SCHED_POLICY_FIFO);
             PROXY.setPriority(priority);
         }
         catch (Exception e)
@@ -94,10 +93,10 @@ public class RealTimeUtils
 
             // Make sure this core is online
             int state = PROXY.getCpuState(cpuCore);
-            if (state == RealTimeConstants.CPU_STATE_OFFLINE)
+            if (state == rtandroid.Constants.CPU_STATE_OFFLINE)
             {
                 Log.d(TAG, "Booting CPU " + cpuCore);
-                PROXY.setCpuState(cpuCore, RealTimeConstants.CPU_STATE_ONLINE);
+                PROXY.setCpuState(cpuCore, rtandroid.Constants.CPU_STATE_ONLINE);
             }
 
             // And set thread's affinity
