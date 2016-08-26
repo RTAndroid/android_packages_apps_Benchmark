@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Copyright (C) 2015 RTAndroid Project
+    Copyright (C) 2016 RTAndroid Project
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<manifest package="rtandroid.benchmark"
-          xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="rtandroid.benchmark"
           android:versionCode="1"
           android:versionName="1.0">
 
@@ -23,8 +23,9 @@
         android:minSdkVersion="22"
         android:targetSdkVersion="22"/>
 
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="rtandroid.permission.USE_RT_CPU"/>
     <uses-permission android:name="rtandroid.permission.USE_RT_PROCESSES"/>
 
@@ -52,16 +53,15 @@
             android:configChanges="keyboardHidden"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
             android:name=".service.BenchmarkService"
             android:enabled="true"
-            android:process=":BenchmarkService"/>
+            android:process=":BenchmarkService" />
 
     </application>
 
