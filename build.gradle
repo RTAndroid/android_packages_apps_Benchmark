@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 RTAndroid Project
+ * Copyright (C) 2016 RTAndroid Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,18 +25,19 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.android.tools.build:gradle:2.2.2'
     }
 }
+
 apply plugin: 'com.android.application'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
-    compile 'com.android.support:support-v4:22.2.0'
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.android.support:design:22.2.1'
+    compile 'com.android.support:support-v4:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:design:25.0.1'
 
-    provided fileTree(dir: 'api', include: 'rtandroid-20151110.jar')
+    provided fileTree(dir: 'api', include: 'rtandroid-20161128.jar')
 }
 
 def getNdkExecutable() {
@@ -64,11 +65,15 @@ task cleanNative(type: Exec) {
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25"
 
     defaultConfig {
-        applicationId "rtandroid.benchmark.dev"
+        applicationId "rtandroid.benchmark"
+        minSdkVersion 22
+        targetSdkVersion 25
+        versionCode 3
+        versionName "3.0"
     }
 
     sourceSets {
@@ -84,19 +89,11 @@ android {
             res.srcDirs = ['res']
         }
 
-        // Move the tests to tests/java, tests/res, etc...
         instrumentTest.setRoot('tests')
-
-        // Move the build types to build-types/<type>
-        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
-        // This moves them out of them default location under src/<type>/... which would
-        // conflict with src/ being used by the main source set.
-        // Adding new build types or product flavors should be accompanied
-        // by a similar customization.
         debug.setRoot('build/debug')
         release.setRoot('build/release')
 
-        // Consider native libraries on build and clean
+        // consider native libraries on build and clean
         tasks.withType(JavaCompile) { compileTask -> compileTask.dependsOn buildNative }
         clean.dependsOn cleanNative
     }
@@ -104,5 +101,17 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles 'proguard.cfg'
+        }
+        manual {
+            initWith debug
+            minifyEnabled false
+            applicationIdSuffix ".manual"
+        }
     }
 }
