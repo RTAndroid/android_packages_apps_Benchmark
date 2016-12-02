@@ -33,8 +33,11 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     android-support-design \
     prebuilt_gson
 
+LOCAL_JNI_SHARED_LIBRARIES := \
+    libbenchmark \
+    librtandroid-thread
+
 LOCAL_PACKAGE_NAME := Benchmark
-LOCAL_JNI_SHARED_LIBRARIES := libbenchmark
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
 
 LOCAL_RESOURCE_DIR := \
@@ -49,7 +52,7 @@ LOCAL_AAPT_FLAGS := \
 
 # Suppress loggings
 LOCAL_PROGUARD_ENABLED := optimization
-LOCAL_PROGUARD_FLAG_FILES := proguard.cfg
+LOCAL_PROGUARD_FLAG_FILES := proguard.flags
 
 include $(BUILD_PACKAGE)
 
@@ -61,7 +64,3 @@ LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := \
     prebuilt_gson:libs/gson-2.4.jar
 
 include $(BUILD_MULTI_PREBUILT)
-
-##################################################
-
-include $(call all-makefiles-under, $(LOCAL_PATH))

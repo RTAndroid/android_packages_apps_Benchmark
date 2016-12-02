@@ -37,7 +37,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support:design:25.0.1'
 
-    provided fileTree(dir: 'api', include: 'rtandroid-20161128.jar')
+    provided fileTree(dir: 'api', include: 'rtandroid-20161201.jar')
 }
 
 def getNdkExecutable() {
@@ -55,6 +55,7 @@ def getNdkExecutable() {
 task buildNative(type: Exec) {
     commandLine getNdkExecutable(),
             '-C', file('jni').absolutePath,
+            'NDK_LIBS_OUT=./../obj/shared'
             'APP_PLATFORM=android-22'
 }
 
@@ -83,7 +84,7 @@ android {
             assets.srcDirs = ['assets']
             java.srcDirs = ['src']
             jni.srcDirs = []
-            jniLibs.srcDirs = ['libs']
+            jniLibs.srcDirs = ['jniLibs']
             renderscript.srcDirs = ['src']
             resources.srcDirs = ['src']
             res.srcDirs = ['res']
@@ -106,7 +107,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles 'proguard.cfg'
+            proguardFiles 'proguard.flags'
         }
         manual {
             initWith debug
