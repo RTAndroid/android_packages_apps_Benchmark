@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 RTAndroid Project
+ * Copyright (C) 2016 RTAndroid Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,12 +102,9 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
 
             // We want to be able to lock on isolated cores
             int[] isolatedCpus = new RealTimeProxy().getIsolatedProcessors();
-            String[] cores = new String[1+isolatedCpus.length];
+            String[] cores = new String[1 + isolatedCpus.length];
             cores[0] = "Disabled";
-            for(int i = 0; i < isolatedCpus.length; i++)
-            {
-                cores[i+1] = "Core " + isolatedCpus[i];
-            }
+            for (int i = 0; i < isolatedCpus.length; i++) { cores[i+1] = "Core " + isolatedCpus[i]; }
 
             SpinnerAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cores);
             mCpuLock = (Spinner) v.findViewById(R.id.input_cpu_core);
@@ -115,7 +112,7 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
 
             // Fill with values
             Bundle args = getArguments();
-            if(args != null)
+            if (args != null)
             {
                 Gson gson = new Gson();
                 String jsonTestCase = args.getString(ARG_CASE);
@@ -125,9 +122,9 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
                 mPriority.setProgress(mOldTestCase.getRealtimePriority());
                 mPowerLevel.setProgress(mOldTestCase.getPowerLevel());
                 int core = mOldTestCase.getCpuCore();
-                for(int i = 0; i < isolatedCpus.length; i++)
+                for (int i = 0; i < isolatedCpus.length; i++)
                 {
-                    if(isolatedCpus[i] == core)
+                    if (isolatedCpus[i] == core)
                     {
                         mCpuLock.setSelection(i);
                         break;
@@ -146,14 +143,14 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
 
-            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            dialog.setOnShowListener(new DialogInterface.OnShowListener()
+            {
                 @Override
                 public void onShow(DialogInterface dialogInterface) {
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+                    {
                         @Override
-                        public void onClick(View view) {
-                            onSubmit();
-                        }
+                        public void onClick(View view) { onSubmit(); }
                     });
                 }
             });

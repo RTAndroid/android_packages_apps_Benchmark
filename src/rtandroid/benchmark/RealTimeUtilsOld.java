@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 RTAndroid Project
+ * Copyright (C) 2016 RTAndroid Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,30 +21,13 @@ import android.util.Log;
 import rtandroid.realtime.RealTimeProxy;
 import rtandroid.benchmark.data.TestCase;
 
-public class RealTimeUtils
+public class RealTimeUtilsOld
 {
-    private static final String TAG = RealTimeUtils.class.getSimpleName();
+    private static final String TAG = RealTimeUtilsOld.class.getSimpleName();
     private static final RealTimeProxy PROXY = new RealTimeProxy();
-
-    private static long getBuildVersion()
-    {
-        try { return PROXY.getVersion(); }
-        catch (Exception e)
-        {
-            Log.e(TAG, "Failed to find RT extensions: " + e.getMessage());
-            return -1;
-        }
-    }
 
     public static void setPriority(int priority)
     {
-        // Real-time extensions are not supported
-        if (getBuildVersion() < 0)
-        {
-            Log.e(TAG, "RT extension not found, RT priority be skipped");
-            return;
-        }
-
         // Nothing to set
         if (priority == TestCase.NO_PRIORITY) { return; }
 
@@ -62,13 +45,6 @@ public class RealTimeUtils
 
     public static void setCpuCore(int cpuCore)
     {
-        // Real-time extensions are not supported
-        if (getBuildVersion() < 0)
-        {
-            Log.e(TAG, "RT extension not found, CPU lock will be skipped");
-            return;
-        }
-
         // Nothing to set
         if (cpuCore == TestCase.NO_CORE_LOCK) { return; }
 
@@ -112,13 +88,6 @@ public class RealTimeUtils
 
     public static void lockPowerLevel(int powerLevel)
     {
-        // Real-time extensions are not supported
-        if (getBuildVersion() < 0)
-        {
-            Log.e(TAG, "RT extension not found, power lock will be skipped");
-            return;
-        }
-
         // Nothing to set
         if (powerLevel == TestCase.NO_POWER_LEVEL) { return; }
 
@@ -135,13 +104,6 @@ public class RealTimeUtils
 
     public static void unlockPowerLevel(int powerLevel)
     {
-        // Real-time extensions are not supported
-        if (getBuildVersion() < 0)
-        {
-            Log.e(TAG, "RT extension not found, power unlock will be skipped");
-            return;
-        }
-
         // Nothing to reset
         if (powerLevel == TestCase.NO_POWER_LEVEL) { return; }
 
