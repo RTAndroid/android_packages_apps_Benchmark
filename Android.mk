@@ -1,4 +1,4 @@
-# Copyright (C) 2015 RTAndroid Project
+# Copyright (C) 2016 RTAndroid Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,6 +32,10 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     cmfm-android-support-v7-appcompat \
     cmfm-android-support-design \
     prebuilt_gson
+
+LOCAL_REQUIRED_MODULES := \
+    libbenchmark \
+    librtandroid-thread
 
 LOCAL_JNI_SHARED_LIBRARIES := \
     libbenchmark \
@@ -67,3 +71,7 @@ LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := \
     cmfm-android-support-design:../../../external/android/support-prebuilt/support-design/android-support-design.jar
 
 include $(BUILD_MULTI_PREBUILT)
+
+##################################################
+
+include $(call all-makefiles-under, $(LOCAL_PATH))
