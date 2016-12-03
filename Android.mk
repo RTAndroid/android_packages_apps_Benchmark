@@ -64,3 +64,7 @@ LOCAL_PREBUILT_STATIC_JAVA_LIBRARIES := \
     prebuilt_gson:libs/gson-2.4.jar
 
 include $(BUILD_MULTI_PREBUILT)
+
+##################################################
+
+include $(call all-makefiles-under, $(LOCAL_PATH))
