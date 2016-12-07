@@ -126,7 +126,8 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
                 {
                     if (isolatedCpus[i] == core)
                     {
-                        mCpuLock.setSelection(i);
+                        //core[0] is Disabled
+                        mCpuLock.setSelection(i+1);
                         break;
                     }
                 }
