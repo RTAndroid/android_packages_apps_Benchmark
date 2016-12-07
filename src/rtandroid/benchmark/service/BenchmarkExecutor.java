@@ -24,7 +24,7 @@ import android.util.Log;
 import java.io.File;
 import java.util.Locale;
 
-import rtandroid.benchmark.RealTimeUtilsOld;
+import rtandroid.benchmark.RealTimeUtils;
 import rtandroid.benchmark.benchmarks.Benchmark;
 import rtandroid.benchmark.data.TestCase;
 
@@ -82,15 +82,15 @@ public class BenchmarkExecutor implements Runnable
 
         // Keep the CPU power level constant
         int powerLevel = mTestCase.getPowerLevel();
-        RealTimeUtilsOld.lockPowerLevel(powerLevel);
+        RealTimeUtils.lockPowerLevel(powerLevel);
 
         // Set real-time priority value
         int priority = mTestCase.getRealtimePriority();
-        RealTimeUtilsOld.setPriority(priority);
+        RealTimeUtils.setPriority(priority);
 
         // Set the core affinity
         int cpuCore = mTestCase.getCpuCore();
-        RealTimeUtilsOld.setCpuCore(cpuCore);
+        RealTimeUtils.setCpuCore(cpuCore);
 
         // Notify activity about start
         final Intent startIntent = new Intent(BenchmarkService.ACTION_START);
@@ -133,7 +133,7 @@ public class BenchmarkExecutor implements Runnable
         }
 
         // Clean everything up
-        RealTimeUtilsOld.unlockPowerLevel(powerLevel);
+        RealTimeUtils.unlockPowerLevel(powerLevel);
 
         // Let the CPU cooldown
         try { Thread.sleep(500); }
