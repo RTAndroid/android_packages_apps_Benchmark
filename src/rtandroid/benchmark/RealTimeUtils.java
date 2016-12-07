@@ -28,10 +28,11 @@ import rtandroid.cpu.CpuPackage;
 import rtandroid.thread.ForeignRealtimeThread;
 import rtandroid.thread.SchedulingPolicy;
 
-public class RealTimeUtilsNew
+public class RealTimeUtils
 {
-    private static final String TAG = RealTimeUtilsNew.class.getSimpleName();
+    private static final String TAG = RealTimeUtils.class.getSimpleName();
     private static final CpuPackage CPU_PACKAGE = CpuPackage.getCpuPackage();
+    private static ForeignRealtimeThread mRealtimeThread = null;
 
     private static long getBuildVersion()
     {
@@ -43,6 +44,13 @@ public class RealTimeUtilsNew
         }
     }
 
+    public static ForeignRealtimeThread getRealtimeThread()
+    {
+        int tid = android.os.Process.myTid();
+        mRealtimeThread = new ForeignRealtimeThread(tid);
+        return mRealtimeThread;
+    }
+
     public static void setPriority(int priority)
     {
         // Real-time extensions are not supported
@@ -52,8 +60,6 @@ public class RealTimeUtilsNew
             return;
         }
 
-        int tid = android.os.Process.myTid();
-        ForeignRealtimeThread realtimeThread = new ForeignRealtimeThread(tid);
 
         // Nothing to set
         if (priority == TestCase.NO_PRIORITY) { return; }
@@ -61,8 +67,8 @@ public class RealTimeUtilsNew
         try
         {
             Log.d(TAG, "Setting the RT priority to " + priority);
-            realtimeThread.setSchedulingPriority(priority);
-            realtimeThread.setSchedulingPolicy(SchedulingPolicy.FIFO);
+            getRealtimeThread().setSchedulingPolicy(SchedulingPolicy.FIFO);
+            getRealtimeThread().setSchedulingPriority(priority);
         }
         catch (Exception e)
         {
@@ -88,9 +94,6 @@ public class RealTimeUtilsNew
             if (core.getID() == cpuCore) { targetCore = core; }
         }
 
-        int tid = android.os.Process.myTid();
-        ForeignRealtimeThread realtimeThread = new ForeignRealtimeThread(tid);
-
         try
         {
             // Is this a valid CPU?
@@ -102,7 +105,6 @@ public class RealTimeUtilsNew
             }
 
             // Is this an isolated CPU?
-            List<Integer> isolatedCpus = new ArrayList<>();
             boolean isolated = false;
             for (CpuCore currentCpuCore : cpuCores)
             {
@@ -113,7 +115,7 @@ public class RealTimeUtilsNew
             if (!isolated) { Log.w(TAG, "WARNING: trying to isolate a process on a non-isolated CPU " + cpuCore); }
 
             // Make sure this core is online
-            if (targetCore.isOnline())
+            if (!targetCore.isOnline())
             {
                 Log.d(TAG, "Booting CPU " + cpuCore);
                 targetCore.wakeup();
@@ -124,7 +126,7 @@ public class RealTimeUtilsNew
             Log.d(TAG, "Setting the thread affinity to " + mask);
             ArrayList<CpuCore> affineCores = new ArrayList<CpuCore>();
             affineCores.add(targetCore);
-            realtimeThread.setAffinity(affineCores);
+            getRealtimeThread().setAffinity(affineCores);
         }
         catch (Exception e)
         {
