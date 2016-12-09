@@ -38,7 +38,8 @@ LOCAL_REQUIRED_MODULES := \
     librtandroid-thread
 
 LOCAL_JNI_SHARED_LIBRARIES := \
-    libbenchmark \
+    libbenchmark-sleep \
+    libbenchmark-log \
     librtandroid-thread
 
 LOCAL_PACKAGE_NAME := Benchmark
