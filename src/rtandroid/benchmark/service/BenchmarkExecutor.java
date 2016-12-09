@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 RTAndroid Project
+ * Copyright (C) 2017 RTAndroid Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import android.util.Log;
 import java.io.File;
 import java.util.Locale;
 
-import rtandroid.benchmark.RealTimeUtilsOld;
+import rtandroid.benchmark.RealTimeUtils;
 import rtandroid.benchmark.benchmarks.Benchmark;
 import rtandroid.benchmark.data.TestCase;
 
@@ -63,14 +63,22 @@ public class BenchmarkExecutor implements Runnable
             if (!res) { throw new RuntimeException("Cannot create the output directory"); }
         }
 
-        // Generate the filename
-        String benchmarkName = mBenchmark.getName().replaceAll("\\s","").replace('/', '-');
-        String caseName = mTestCase.getName().replaceAll("\\s","").replace('/', '-');
-        String fileName = String.format(Locale.US, FILE_TEMPLATE, benchmarkName, mParameter, mSleep, mCycles, caseName);
-        mFileName = new File(resultFolder, fileName).getAbsolutePath();
+        if(!testCase.getName().startsWith("Warmup")) {
+            // Generate the filename
+            String benchmarkName = mBenchmark.getName().replaceAll("\\s", "").replace('/', '-');
+            String caseName = mTestCase.getName().replaceAll("\\s", "").replace('/', '-');
+            String fileName = String.format(Locale.US, FILE_TEMPLATE, benchmarkName, mParameter, mSleep, mCycles, caseName);
+            mFileName = new File(resultFolder, fileName).getAbsolutePath();
 
-        // Create the library
-        mLib = new BenchmarkLib(mFileName);
+            // Create the library
+            mLib = new BenchmarkLib(mFileName);
+        }
+        else{
+            // Create the library
+            mLib = new BenchmarkLib();
+            mFileName = null;
+        }
+
         mInterrupted = false;
     }
 
@@ -82,15 +90,15 @@ public class BenchmarkExecutor implements Runnable
 
         // Keep the CPU power level constant
         int powerLevel = mTestCase.getPowerLevel();
-        RealTimeUtilsOld.lockPowerLevel(powerLevel);
+        RealTimeUtils.lockPowerLevel(powerLevel);
 
         // Set real-time priority value
         int priority = mTestCase.getRealtimePriority();
-        RealTimeUtilsOld.setPriority(priority);
+        RealTimeUtils.setPriority(priority);
 
         // Set the core affinity
         int cpuCore = mTestCase.getCpuCore();
-        RealTimeUtilsOld.setCpuCore(cpuCore);
+        RealTimeUtils.setCpuCore(cpuCore);
 
         // Notify activity about start
         final Intent startIntent = new Intent(BenchmarkService.ACTION_START);
@@ -117,10 +125,12 @@ public class BenchmarkExecutor implements Runnable
             mBenchmark.execute(mParameter);
             long calcTimeUs = System.nanoTime() - timestamp;
 
-            // Write data to file
-            mLib.libWriteLong(calcTimeUs);
-            mLib.libWriteLong(sleepTimeUs);
-            mLib.libWriteCR();
+            if(mFileName != null) {
+                // Write data to file
+                mLib.libWriteLong(calcTimeUs);
+                mLib.libWriteLong(sleepTimeUs);
+                mLib.libWriteCR();
+            }
 
             // Send progress to activity
             long time = System.nanoTime();
@@ -133,7 +143,7 @@ public class BenchmarkExecutor implements Runnable
         }
 
         // Clean everything up
-        RealTimeUtilsOld.unlockPowerLevel(powerLevel);
+        RealTimeUtils.unlockPowerLevel(powerLevel);
 
         // Let the CPU cooldown
         try { Thread.sleep(500); }

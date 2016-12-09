@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 RTAndroid Project
+ * Copyright (C) 2017 RTAndroid Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -126,7 +126,8 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
                 {
                     if (isolatedCpus[i] == core)
                     {
-                        mCpuLock.setSelection(i);
+                        //core[0] is Disabled
+                        mCpuLock.setSelection(i+1);
                         break;
                     }
                 }

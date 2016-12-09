@@ -18,10 +18,8 @@ The following steps require the installation of the Android NDK.
   - Start Android Studio
   - Select "Import Non-Android Studio project"
   - Choose the file "build.gradle" in the application folder (e.g. C:\Projects\Benchmark\build.gradle)
-2. Configure Gradle
-  - When being asked about using the Gradle wrapper, click Cancel (You can also select Ok if you know what you are doing)
-  - Select your local Gradle copy in the Android Studio folder (e.g. C:\Path\to\AndroidStudio\gradle\gradle-2.2.1)
-3. Configure NDK
+  - Click OK to use the Gradle Wrapper
+2. Configure NDK
   - Open file "local.properties" in the application folder
   - Add line ndk.dir=C:\Projects\Android\NDK with your corresponding path
 
