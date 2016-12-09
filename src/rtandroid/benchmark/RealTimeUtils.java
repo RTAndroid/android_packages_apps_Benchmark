@@ -32,7 +32,6 @@ public class RealTimeUtils
 {
     private static final String TAG = RealTimeUtils.class.getSimpleName();
     private static final CpuPackage CPU_PACKAGE = CpuPackage.getCpuPackage();
-    private ForeignRealtimeThread mRealtimeThread = null;
 
     private static long getBuildVersion()
     {
@@ -41,16 +40,6 @@ public class RealTimeUtils
         {
             Log.e(TAG, "No RT extensions found: " + e.getMessage());
             return -1;
-        }
-    }
-
-    private ForeignRealtimeThread getRealtimeThread()
-    {
-        if(mRealtimeThread == null)
-        {
-            int tid = android.os.Process.myTid();
-            mRealtimeThread = new ForeignRealtimeThread(tid);
-            return mRealtimeThread;
         }
     }
 
@@ -69,9 +58,11 @@ public class RealTimeUtils
 
         try
         {
+            int tid = android.os.Process.myTid();
+            ForeignRealtimeThread realtimeThread = new ForeignRealtimeThread(tid);
             Log.d(TAG, "Setting the RT priority to " + priority);
-            getRealtimeThread().setSchedulingPolicy(SchedulingPolicy.FIFO);
-            getRealtimeThread().setSchedulingPriority(priority);
+            realtimeThread.setSchedulingPolicy(SchedulingPolicy.FIFO);
+            realtimeThread.setSchedulingPriority(priority);
         }
         catch (Exception e)
         {
@@ -129,7 +120,9 @@ public class RealTimeUtils
             Log.d(TAG, "Setting the thread affinity to " + mask);
             ArrayList<CpuCore> affineCores = new ArrayList<CpuCore>();
             affineCores.add(targetCore);
-            getRealtimeThread().setAffinity(affineCores);
+            int tid = android.os.Process.myTid();
+            ForeignRealtimeThread realtimeThread = new ForeignRealtimeThread(tid);
+            realtimeThread.setAffinity(affineCores);
         }
         catch (Exception e)
         {
