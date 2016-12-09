@@ -13,3 +13,6 @@
 -keepattributes Signature
 -keep class sun.misc.Unsafe { *; }
 -keep class rtandroid.benchmark.data.** { *; }
+
+# Fix for "Behavior could not be instantiated" exception
+-keepclassmembers class android.support.design.widget.FloatingActionButton?$Behavior { public (); }
