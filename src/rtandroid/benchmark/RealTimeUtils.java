@@ -32,7 +32,7 @@ public class RealTimeUtils
 {
     private static final String TAG = RealTimeUtils.class.getSimpleName();
     private static final CpuPackage CPU_PACKAGE = CpuPackage.getCpuPackage();
-    private static ForeignRealtimeThread mRealtimeThread = null;
+    private ForeignRealtimeThread mRealtimeThread = null;
 
     private static long getBuildVersion()
     {
@@ -44,11 +44,14 @@ public class RealTimeUtils
         }
     }
 
-    public static ForeignRealtimeThread getRealtimeThread()
+    private ForeignRealtimeThread getRealtimeThread()
     {
-        int tid = android.os.Process.myTid();
-        mRealtimeThread = new ForeignRealtimeThread(tid);
-        return mRealtimeThread;
+        if(mRealtimeThread == null)
+        {
+            int tid = android.os.Process.myTid();
+            mRealtimeThread = new ForeignRealtimeThread(tid);
+            return mRealtimeThread;
+        }
     }
 
     public static void setPriority(int priority)
