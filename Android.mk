@@ -34,7 +34,8 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
     prebuilt_gson
 
 LOCAL_JNI_SHARED_LIBRARIES := \
-    libbenchmark \
+    libbenchmark-sleep \
+    libbenchmark-log \
     librtandroid-thread
 
 LOCAL_PACKAGE_NAME := Benchmark
