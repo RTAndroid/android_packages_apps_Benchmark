@@ -11,7 +11,6 @@ JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_BenchmarkLib_libInit(JNI
 JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_BenchmarkLib_libWriteLong(JNIEnv* env, jobject obj, jlong val);
 JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_BenchmarkLib_libWriteTime(JNIEnv* env, jobject obj);
 JNIEXPORT void JNICALL Java_rtandroid_benchmark_service_BenchmarkLib_libWriteCR(JNIEnv* env, jobject obj);
-JNIEXPORT jlong JNICALL Java_rtandroid_benchmark_service_BenchmarkLib_libSleep(JNIEnv* env, jobject obj, jint us);
 
 #ifdef __cplusplus
 }
