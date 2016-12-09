@@ -15,4 +15,6 @@
 -keep class rtandroid.benchmark.data.** { *; }
 
 # Fix for "Behavior could not be instantiated" exception
--keepclassmembers class android.support.design.widget.FloatingActionButton?$Behavior { public (); }
+-keep interface android.support.design.** { *; }
+-keep class android.support.design.** { *; }
+-keepclassmembers class android.support.design.widget.FloatingActionButton$Behavior { public <init>(); }
