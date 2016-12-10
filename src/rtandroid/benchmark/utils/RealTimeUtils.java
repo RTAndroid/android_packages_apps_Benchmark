@@ -18,10 +18,10 @@ package rtandroid.benchmark.utils;
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import rtandroid.BuildInfo;
 import rtandroid.benchmark.data.TestCase;
 import rtandroid.cpu.CpuCore;
 import rtandroid.cpu.CpuPackage;
@@ -33,23 +33,10 @@ public class RealTimeUtils
     private static final String TAG = RealTimeUtils.class.getSimpleName();
     private static final CpuPackage CPU_PACKAGE = CpuPackage.getCpuPackage();
 
-    private static long getBuildVersion()
-    {
-        try { return BuildInfo.getVersion(); }
-        catch (Exception e) { return -1; }
-    }
-
     public static void setPriority(int priority)
     {
         // nothing to set
         if (priority == TestCase.NO_PRIORITY) { return; }
-
-        // real-time extensions are not supported
-        if (getBuildVersion() < 0)
-        {
-            Log.e(TAG, "RT extension not found, RT priority be skipped");
-            return;
-        }
 
         try
         {
@@ -67,13 +54,6 @@ public class RealTimeUtils
     {
         // nothing to set
         if (cpuCoreID == TestCase.NO_CORE_LOCK) { return; }
-
-        // real-time extensions are not supported
-        if (getBuildVersion() < 0)
-        {
-            Log.e(TAG, "RT extension not found, setting CPU core will be skipped");
-            return;
-        }
 
         // is this a valid CPU?
         List<CpuCore> cpuCores = CPU_PACKAGE.getCpuCores();
@@ -121,13 +101,6 @@ public class RealTimeUtils
         // nothing to set
         if (powerLevel == TestCase.NO_POWER_LEVEL) { return; }
 
-        // real-time extensions are not supported
-        if (getBuildVersion() < 0)
-        {
-            Log.e(TAG, "RT extension not found, power lock will be skipped");
-            return;
-        }
-
         try
         {
             Log.d(TAG, "Locking power level at " + powerLevel + "%");
@@ -142,18 +115,21 @@ public class RealTimeUtils
         // nothing to reset
         if (powerLevel == TestCase.NO_POWER_LEVEL) { return; }
 
-        // real-time extensions are not supported
-        if (getBuildVersion() < 0)
-        {
-            Log.e(TAG, "RT extension not found, power unlock will be skipped");
-            return;
-        }
-
         try
         {
             Log.d(TAG, "Unlocking power level from " + powerLevel + "%");
             CPU_PACKAGE.unlockPower();
         }
         catch (Exception e) { Log.e(TAG, "Failed to find RT extensions: " + e.getMessage()); }
+    }
+
+    public static Integer[] getIsolatedCpus()
+    {
+        List<CpuCore> cpuCores = CPU_PACKAGE.getCpuCores();
+        List<Integer> isolatedCpus = new ArrayList<Integer>();
+        for (CpuCore cpuCore : cpuCores)
+         if (cpuCore.isIsolated()) { isolatedCpus.add(cpuCore.getID()); }
+
+        return isolatedCpus.toArray(new Integer[0]);
     }
 }
