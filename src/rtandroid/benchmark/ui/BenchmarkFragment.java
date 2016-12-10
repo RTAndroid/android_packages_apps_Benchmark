@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -53,6 +54,7 @@ import rtandroid.benchmark.ui.dialogs.NumberPickerDialog;
 import rtandroid.benchmark.ui.dialogs.ProgressDialog;
 import rtandroid.benchmark.ui.dialogs.TestCaseDialog;
 import rtandroid.benchmark.ui.views.TestCaseItem;
+import rtandroid.benchmark.utils.PermissionUtils;
 
 /**
  * A fragment allowing to execute different benchmarks with different test cases.
@@ -89,6 +91,8 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     private final BenchmarkConfiguration mConfig = new BenchmarkConfiguration();
 
     private OnFragmentInteractionListener mListener;
+    private PermissionUtils mPermissions;
+
     private TestCaseAdapter mTestCaseAdapter;
     private List<TestCase> mTestCases;
 
@@ -100,7 +104,6 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_benchmark, container, false);
     }
 
@@ -121,10 +124,11 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         // Load last benchmark settings
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mConfig.Parameter = prefs.getInt(KEY_PARAMETER, PARAMETER_DEFAULT);
-        mParameterDisplay.setText(Integer.toString(mConfig.Parameter));
         mConfig.Cycles = prefs.getInt(KEY_CYCLES, CYCLES_DEFAULT);
-        mCyclesDisplay.setText(Integer.toString(mConfig.Cycles));
         mConfig.SleepMs = prefs.getInt(KEY_SLEEP, SLEEP_DEFAULT);
+
+        mParameterDisplay.setText(Integer.toString(mConfig.Parameter));
+        mCyclesDisplay.setText(Integer.toString(mConfig.Cycles));
         mSleepDisplay.setText(Integer.toString(mConfig.SleepMs) + " ms");
 
         mConfig.BenchmarkIdx = prefs.getInt(KEY_BENCHMARK, 0);
@@ -159,14 +163,17 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
-        try
-        {
-            mListener = (OnFragmentInteractionListener) activity;
-        }
-        catch (ClassCastException e)
-        {
-            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
-        }
+        mListener = (OnFragmentInteractionListener) activity;
+
+        mPermissions = new PermissionUtils();
+        mPermissions.setup(this);
+    }
+
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+        mListener = null;
     }
 
     @Override
@@ -178,10 +185,17 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     }
 
     @Override
-    public void onDetach()
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
-        super.onDetach();
-        mListener = null;
+        // this is not what we requested
+        if (requestCode != PermissionUtils.REQUEST_ASK_PERMISSIONS)
+        {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            return;
+        }
+
+        // forward the result to the task
+        mPermissions.onPermissionResult(grantResults);
     }
 
     @Override
@@ -353,14 +367,12 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         // can't notify without the listener
         if (mListener == null) { return; }
 
-        // Find corresponding test case
+        // find corresponding test case
         TestCase completedTest = null;
         for (TestCase testCase : mTestCases)
-        {
-            if (testCase.getName().equals(name)) { completedTest = testCase; }
-        }
+         if (testCase.getName().equals(name)) { completedTest = testCase; }
 
-        // Add only valid tests to shown statistics
+        // add only valid tests to shown statistics
         if (completedTest != null) { mListener.onTestCaseCompleted(completedTest, filename); }
     }
 
@@ -384,7 +396,8 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
             mTestCaseAdapter.onTestCaseUpdated(oldTestCase, newTestCase);
         }
         // Add new cases
-        else {
+        else
+        {
             mTestCases.add(newTestCase);
         }
 
@@ -398,21 +411,16 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
+     * This interface must be implemented by activities that contain this fragment
+     * to allow an interaction in this fragment to be communicated to the activity
+     * and potentially other fragments contained in that activity.
      */
     public interface OnFragmentInteractionListener
     {
         void onBenchmarkStart(BenchmarkConfiguration config);
-
         void onTestCaseCompleted(TestCase testCase, String fileName);
-
         void onBenchmarkFinished();
-
         List<TestCase> loadTestCases();
-
         void saveTestCases(List<TestCase> testCases);
     }
 }

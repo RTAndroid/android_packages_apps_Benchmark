@@ -20,7 +20,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -35,7 +34,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import rtandroid.realtime.RealTimeProxy;
+import rtandroid.benchmark.utils.RealTimeUtils;
 import rtandroid.benchmark.R;
 import rtandroid.benchmark.data.TestCase;
 
@@ -83,105 +82,91 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        try {
-            LayoutInflater inflater = getActivity().getLayoutInflater();
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View v = inflater.inflate(R.layout.dialog_test_case, null);
+        mName = (EditText) v.findViewById(R.id.input_name);
 
-            // Retrieve views
-            View v = inflater.inflate(R.layout.dialog_test_case, null);
-            mName = (EditText) v.findViewById(R.id.input_name);
+        mPriority = (SeekBar) v.findViewById(R.id.input_priority);
+        mPriority.setMax(TestCase.PRIORITY_MAX);
+        mPriority.setOnSeekBarChangeListener(this);
+        mPriorityText = (TextView) v.findViewById(R.id.txt_priority);
 
-            mPriority = (SeekBar) v.findViewById(R.id.input_priority);
-            mPriority.setMax(TestCase.PRIORITY_MAX);
-            mPriority.setOnSeekBarChangeListener(this);
-            mPriorityText = (TextView) v.findViewById(R.id.txt_priority);
+        mPowerLevel = (SeekBar) v.findViewById(R.id.input_power_level);
+        mPowerLevel.setMax(TestCase.POWER_LEVEL_MAX);
+        mPowerLevel.setOnSeekBarChangeListener(this);
+        mPowerLevelText = (TextView) v.findViewById(R.id.txt_power_level);
 
-            mPowerLevel = (SeekBar) v.findViewById(R.id.input_power_level);
-            mPowerLevel.setMax(TestCase.POWER_LEVEL_MAX);
-            mPowerLevel.setOnSeekBarChangeListener(this);
-            mPowerLevelText = (TextView) v.findViewById(R.id.txt_power_level);
+        Integer[] isolatedCpuIDs = RealTimeUtils.getIsolatedCpus();
+        String[] values = new String[1 + isolatedCpuIDs.length];
+        values[0] = "Disabled";
+        for (int i = 0; i < isolatedCpuIDs.length; i++) { values[i+1] = "Core " + isolatedCpuIDs[i]; }
 
-            // We want to be able to lock on isolated cores
-            int[] isolatedCpus = new RealTimeProxy().getIsolatedProcessors();
-            String[] cores = new String[1 + isolatedCpus.length];
-            cores[0] = "Disabled";
-            for (int i = 0; i < isolatedCpus.length; i++) { cores[i+1] = "Core " + isolatedCpus[i]; }
+        SpinnerAdapter adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, values);
+        mCpuLock = (Spinner) v.findViewById(R.id.input_cpu_core);
+        mCpuLock.setAdapter(adapter);
 
-            SpinnerAdapter adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, cores);
-            mCpuLock = (Spinner) v.findViewById(R.id.input_cpu_core);
-            mCpuLock.setAdapter(adapter);
+        // fill with values
+        Bundle args = getArguments();
+        if (args != null)
+        {
+            Gson gson = new Gson();
+            String jsonTestCase = args.getString(ARG_CASE);
+            mOldTestCase = gson.fromJson(jsonTestCase, TestCase.class);
 
-            // Fill with values
-            Bundle args = getArguments();
-            if (args != null)
+            mName.setText(mOldTestCase.getName());
+            mPriority.setProgress(mOldTestCase.getRealtimePriority());
+            mPowerLevel.setProgress(mOldTestCase.getPowerLevel());
+
+            int core = mOldTestCase.getCpuCore();
+            for (int i = 0; i < isolatedCpuIDs.length; i++)
             {
-                Gson gson = new Gson();
-                String jsonTestCase = args.getString(ARG_CASE);
-                mOldTestCase = gson.fromJson(jsonTestCase, TestCase.class);
-
-                mName.setText(mOldTestCase.getName());
-                mPriority.setProgress(mOldTestCase.getRealtimePriority());
-                mPowerLevel.setProgress(mOldTestCase.getPowerLevel());
-                int core = mOldTestCase.getCpuCore();
-                for (int i = 0; i < isolatedCpus.length; i++)
+                if (isolatedCpuIDs[i] == core)
                 {
-                    if (isolatedCpus[i] == core)
-                    {
-                        //core[0] is Disabled
-                        mCpuLock.setSelection(i+1);
-                        break;
-                    }
+                    mCpuLock.setSelection(i+1); // core[0] is disabled
+                    break;
                 }
             }
+        }
 
-            onProgressChanged(mPriority, mPriority.getProgress(), false);
-            onProgressChanged(mPowerLevel, mPowerLevel.getProgress(), false);
+        onProgressChanged(mPriority, mPriority.getProgress(), false);
+        onProgressChanged(mPowerLevel, mPowerLevel.getProgress(), false);
 
-            // Build dialog
-            final AlertDialog dialog = new AlertDialog.Builder(getActivity())
+        // Build dialog
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.dialog_test_case_title)
                 .setView(v)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
 
-            dialog.setOnShowListener(new DialogInterface.OnShowListener()
-            {
-                @Override
-                public void onShow(DialogInterface dialogInterface) {
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View view) { onSubmit(); }
-                    });
-                }
-            });
-
-            return dialog;
-        }
-        catch(RemoteException e)
+        dialog.setOnShowListener(new DialogInterface.OnShowListener()
         {
-            throw new RuntimeException(e);
-        }
+            @Override
+            public void onShow(DialogInterface dialogInterface)
+            {
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View view) { onSubmit(); }
+                });
+            }
+        });
+
+        return dialog;
     }
 
     @Override
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
-        try
-        {
-            mListener = (OnTestCaseUpdateListener) getTargetFragment();
-        }
-        catch (ClassCastException e)
-        {
-            throw new ClassCastException(getTargetFragment().toString() + " must implement OnTestCaseSaveListener");
-        }
+
+        try { mListener = (OnTestCaseUpdateListener) getTargetFragment(); }
+        catch (ClassCastException e) { throw new ClassCastException(getTargetFragment().toString() + " must implement onTestCaseSaveListener"); }
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
     {
-
         if (seekBar == mPriority)
         {
             String text = (progress == 0) ? "Disabled" : Integer.toString(progress);
@@ -234,8 +219,7 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
     }
 
     /**
-     * This interface must be implemented by target fragments that show this
-     * dialog to allow an passing of chosen value.
+     * This interface must be implemented by target fragments that show this dialog to allow an passing of chosen value.
      */
     public interface OnTestCaseUpdateListener
     {

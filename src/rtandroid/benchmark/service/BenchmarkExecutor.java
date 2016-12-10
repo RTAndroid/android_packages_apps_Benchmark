@@ -24,7 +24,7 @@ import android.util.Log;
 import java.io.File;
 import java.util.Locale;
 
-import rtandroid.benchmark.RealTimeUtils;
+import rtandroid.benchmark.utils.RealTimeUtils;
 import rtandroid.benchmark.benchmarks.Benchmark;
 import rtandroid.benchmark.data.TestCase;
 
