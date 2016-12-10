@@ -83,7 +83,8 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        try {
+        try
+        {
             LayoutInflater inflater = getActivity().getLayoutInflater();
 
             // Retrieve views
@@ -147,7 +148,8 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
             dialog.setOnShowListener(new DialogInterface.OnShowListener()
             {
                 @Override
-                public void onShow(DialogInterface dialogInterface) {
+                public void onShow(DialogInterface dialogInterface)
+                {
                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
                     {
                         @Override
@@ -168,20 +170,14 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
-        try
-        {
-            mListener = (OnTestCaseUpdateListener) getTargetFragment();
-        }
-        catch (ClassCastException e)
-        {
-            throw new ClassCastException(getTargetFragment().toString() + " must implement OnTestCaseSaveListener");
-        }
+
+        try { mListener = (OnTestCaseUpdateListener) getTargetFragment(); }
+        catch (ClassCastException e) { throw new ClassCastException(getTargetFragment().toString() + " must implement onTestCaseSaveListener"); }
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
     {
-
         if (seekBar == mPriority)
         {
             String text = (progress == 0) ? "Disabled" : Integer.toString(progress);
@@ -234,8 +230,7 @@ public class TestCaseDialog extends DialogFragment implements SeekBar.OnSeekBarC
     }
 
     /**
-     * This interface must be implemented by target fragments that show this
-     * dialog to allow an passing of chosen value.
+     * This interface must be implemented by target fragments that show this dialog to allow an passing of chosen value.
      */
     public interface OnTestCaseUpdateListener
     {

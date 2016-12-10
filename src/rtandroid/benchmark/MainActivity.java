@@ -47,13 +47,12 @@ import rtandroid.benchmark.data.TestCase;
 import rtandroid.benchmark.ui.BenchmarkFragment;
 import rtandroid.benchmark.ui.ResultFragment;
 
-public class MainActivity extends AppCompatActivity implements BenchmarkFragment.OnFragmentInteractionListener,
-                                                               ResultFragment.OnFragmentInteractionListener
+public class MainActivity extends AppCompatActivity implements BenchmarkFragment.OnFragmentInteractionListener, ResultFragment.OnFragmentInteractionListener
 {
-    private static final String KEY_BENCHMARK_CONFIG = "benchmark_config";
-    private static final String KEY_CURRENT_RESULT = "current_result";
+    private static final String KEY_CONFIG = "benchmark_config";
     private static final String KEY_TEST_CASES = "test_cases";
-    private static final String KEY_RESULTS = "results";
+    private static final String KEY_RESULT = "current_result";
+    private static final String KEY_RESULTS = "all_results";
 
     private static final TestCase[] DEFAULT_TEST_CASES;
     static
@@ -66,9 +65,7 @@ public class MainActivity extends AppCompatActivity implements BenchmarkFragment
         };
     }
 
-    private TabLayout mTabs;
     private ViewPager mViewPager;
-
     private BenchmarkConfiguration mBenchmarkConfig;
     private BenchmarkResult mCurrentResult;
     private List<BenchmarkResult> mResults;
@@ -83,30 +80,32 @@ public class MainActivity extends AppCompatActivity implements BenchmarkFragment
         Toolbar toolbar = (Toolbar) findViewById(R.id.actionbar);
         setSupportActionBar(toolbar);
 
-        TabNavigator navigator = new TabNavigator(getSupportFragmentManager());
+        FragmentManager manager = getSupportFragmentManager();
+        TabNavigator navigator = new TabNavigator(manager);
 
-        // Create view pager and tab navigation
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(navigator);
 
-        mTabs = (TabLayout) findViewById(R.id.tabs);
-        mTabs.setupWithViewPager(mViewPager);
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs.setupWithViewPager(mViewPager);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
         super.onRestoreInstanceState(savedInstanceState);
 
-        mBenchmarkConfig = savedInstanceState.getParcelable(KEY_BENCHMARK_CONFIG);
-        mCurrentResult = savedInstanceState.getParcelable(KEY_CURRENT_RESULT);
+        mBenchmarkConfig = savedInstanceState.getParcelable(KEY_CONFIG);
+        mCurrentResult = savedInstanceState.getParcelable(KEY_RESULT);
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState)
+    {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable(KEY_BENCHMARK_CONFIG, mBenchmarkConfig);
-        outState.putParcelable(KEY_CURRENT_RESULT, mCurrentResult);
+        outState.putParcelable(KEY_CONFIG, mBenchmarkConfig);
+        outState.putParcelable(KEY_RESULT, mCurrentResult);
     }
 
     @Override
@@ -128,10 +127,7 @@ public class MainActivity extends AppCompatActivity implements BenchmarkFragment
             ResultAnalyzer analyzer = new ResultAnalyzer(mBenchmarkConfig, fileName);
             mCurrentResult.addResult(testCase.getName(), analyzer.getResults());
         }
-        catch (IOException e)
-        {
-            throw new RuntimeException("Failed to read log file of test case", e);
-        }
+        catch (IOException e) { throw new RuntimeException("Failed to read log file of test case", e); }
     }
 
     @Override
@@ -171,9 +167,7 @@ public class MainActivity extends AppCompatActivity implements BenchmarkFragment
         }
 
         // Take default ones on first run
-        if(testCaseList.isEmpty()) {
-            testCaseList.addAll(Arrays.asList(DEFAULT_TEST_CASES));
-        }
+        if (testCaseList.isEmpty()) { testCaseList.addAll(Arrays.asList(DEFAULT_TEST_CASES)); }
 
         return testCaseList;
     }

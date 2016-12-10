@@ -95,14 +95,7 @@ public class ResultFragment extends Fragment implements AdapterView.OnItemSelect
     public void onAttach(Activity activity)
     {
         super.onAttach(activity);
-        try
-        {
-            mListener = (OnFragmentInteractionListener) activity;
-        }
-        catch (ClassCastException e)
-        {
-            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
-        }
+        mListener = (OnFragmentInteractionListener) activity;
     }
 
     @Override
@@ -134,16 +127,12 @@ public class ResultFragment extends Fragment implements AdapterView.OnItemSelect
     }
 
     /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
+     * This interface must be implemented by activities that contain this fragment
+     * to allow an interaction in this fragment to be communicated to the activity
+     * and potentially other fragments contained in that activity.
      */
     public interface OnFragmentInteractionListener
     {
-        /**
-         * @return Adapter which returns BenchmarkResult objects on getItem().
-         */
         SpinnerAdapter getResultAdapter();
     }
 }
