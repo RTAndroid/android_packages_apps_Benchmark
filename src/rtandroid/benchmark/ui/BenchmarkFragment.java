@@ -165,8 +165,10 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         super.onAttach(activity);
         mListener = (OnFragmentInteractionListener) activity;
 
+/*
         mPermissions = new PermissionUtils();
         mPermissions.setup(this);
+*/
     }
 
     @Override
@@ -184,6 +186,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         mTestCaseAdapter.saveInstance(outState);
     }
 
+/*
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
@@ -197,6 +200,7 @@ public class BenchmarkFragment extends Fragment implements View.OnClickListener,
         // forward the result to the task
         mPermissions.onPermissionResult(grantResults);
     }
+*/
 
     @Override
     public void onClick(View view)

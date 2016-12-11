@@ -28,6 +28,7 @@ import java.util.List;
 
 public class PermissionUtils
 {
+/*
     public static final int REQUEST_ASK_PERMISSIONS = 17;
 
     private Fragment mFragment = null;
@@ -77,4 +78,5 @@ public class PermissionUtils
         // and repeat if needed
         if (!granted) { requestPermissions(); }
     }
+*/
 }
